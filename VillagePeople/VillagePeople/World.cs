@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VillagePeople.Entities;
+using VillagePeople.Entities.NPC;
+using VillagePeople.Util;
 
 namespace VillagePeople
 {
@@ -23,17 +25,21 @@ namespace VillagePeople
 
         public void Init()
         {
-
+            Villager v = new Villager(new Vector2D(10, 10), this) { Color = Color.Red };
+            _movingEntities.Add(v);
         }
 
-        public void Update(float delta)
+        public void Update(float timeElapsed)
         {
-
+            foreach (MovingEntity me in _movingEntities)
+            {
+                me.Update(timeElapsed);
+            }
         }
 
-        public void Render(Graphics graphics)
+        public void Render(Graphics g)
         {
-
+            _movingEntities.ForEach(e => e.Render(g));
         }
     }
 }
