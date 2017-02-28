@@ -8,3 +8,6 @@ E:\Dropbox\Windesheim\Jaar 3\Periode 3\AAI\Opdrachten\Final Assignment\Laptop RO
 E:\Dropbox\Windesheim\Jaar 3\Periode 3\AAI\Opdrachten\Final Assignment\Laptop ROOT\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.csproj.GenerateResource.Cache
 E:\Dropbox\Windesheim\Jaar 3\Periode 3\AAI\Opdrachten\Final Assignment\Laptop ROOT\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.exe
 E:\Dropbox\Windesheim\Jaar 3\Periode 3\AAI\Opdrachten\Final Assignment\Laptop ROOT\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.pdb
+D:\VillagePeople\VillagePeople\VillagePeople\bin\Debug\VillagePeople.exe.config
+D:\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.exe
+D:\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.pdb
