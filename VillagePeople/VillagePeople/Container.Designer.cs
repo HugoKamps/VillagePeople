@@ -1,5 +1,5 @@
 ﻿namespace VillagePeople {
-    partial class Form1 {
+    partial class Container {
         /// <summary>
         /// Required designer variable.
         /// </summary>
