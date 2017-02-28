@@ -23,34 +23,37 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.GamePanel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
-            // panel1
+            // GamePanel
             // 
-            this.panel1.BackgroundImage = global::VillagePeople.Properties.Resources.spel;
-            this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(675, 653);
-            this.panel1.TabIndex = 0;
+            this.GamePanel.BackColor = System.Drawing.Color.White;
+            this.GamePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.GamePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.GamePanel.Location = new System.Drawing.Point(0, 0);
+            this.GamePanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.GamePanel.Name = "GamePanel";
+            this.GamePanel.Size = new System.Drawing.Size(900, 804);
+            this.GamePanel.TabIndex = 0;
+            this.GamePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.GamePanel_Paint);
             // 
-            // Form1
+            // Container
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(675, 653);
-            this.Controls.Add(this.panel1);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(900, 804);
+            this.Controls.Add(this.GamePanel);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Name = "Container";
+            this.Text = "Village People";
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel GamePanel;
     }
 }
 
