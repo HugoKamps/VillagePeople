@@ -1,1 +1,10 @@
 C:\Users\Hugo\Dropbox\Windesheim\Jaar 3\Periode 3\C++\VillagePeople\VillagePeople\bin\Debug\VillagePeople.exe.config
+D:\VillagePeople\VillagePeople\VillagePeople\bin\Debug\VillagePeople.exe.config
+D:\VillagePeople\VillagePeople\VillagePeople\bin\Debug\VillagePeople.exe
+D:\VillagePeople\VillagePeople\VillagePeople\bin\Debug\VillagePeople.pdb
+D:\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.csprojResolveAssemblyReference.cache
+D:\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.Properties.Resources.resources
+D:\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.csproj.GenerateResource.Cache
+D:\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.exe
+D:\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.pdb
+D:\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.Container.resources
