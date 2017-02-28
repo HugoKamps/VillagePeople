@@ -7,15 +7,17 @@ namespace VillagePeople.Util
     {
         public double X { get; set; }
         public double Y { get; set; }
+        public double W { get; set; }
 
-        public Vector2D() : this(0, 0)
+        public Vector2D() : this(0, 0, 0)
         {
         }
 
-        public Vector2D(double x, double y)
+        public Vector2D(double x, double y, double w = 0)
         {
             X = x;
             Y = y;
+            W = w;
         }
 
         public double Length() => Math.Sqrt(X * X + Y * Y);
@@ -25,6 +27,7 @@ namespace VillagePeople.Util
         {
             X += v.X;
             Y += v.Y;
+            W += v.W;
             return this;
         }
 
@@ -32,6 +35,15 @@ namespace VillagePeople.Util
         {
             X -= v.X;
             Y -= v.Y;
+            W -= v.W;
+            return this;
+        }
+
+        public Vector2D Multiply(Vector2D v)
+        {
+            X *= v.X;
+            Y *= v.Y;
+            W *= v.W;
             return this;
         }
 
@@ -39,6 +51,7 @@ namespace VillagePeople.Util
         {
             X *= value;
             Y *= value;
+            W *= value;
             return this;
         }
 
