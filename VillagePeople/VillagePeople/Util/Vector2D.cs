@@ -13,7 +13,7 @@ namespace VillagePeople.Util
         {
         }
 
-        public Vector2D(double x, double y, double w = 0)
+        public Vector2D(double x, double y, double w = 0, double targetLength = 0)
         {
             X = x;
             Y = y;
@@ -22,6 +22,28 @@ namespace VillagePeople.Util
 
         public double Length() => Math.Sqrt(X * X + Y * Y);
         public double LengthSquared() => X * X + Y * Y;
+
+        public static Vector2D Scale(Vector2D v1, double target)
+        {
+            return new Vector2D(v1.X, v1.Y, v1.W).Scale(target);
+        }
+
+        public Vector2D Scale(double target)
+        {
+            double diff = 1;
+            var length = Length();
+
+            if (length < target)
+            {
+                diff = 1 + Math.Abs(length / target - 1);
+            }
+            else
+            {
+                diff = target / length;
+            }
+
+            return this * Matrix.Scale((float)diff);
+        }
 
         public Vector2D Add(Vector2D v)
         {
@@ -64,6 +86,7 @@ namespace VillagePeople.Util
             {
                 X /= length;
                 Y /= length;
+                W /= length;
             }
             return this;
         }
@@ -78,7 +101,7 @@ namespace VillagePeople.Util
             return this;
         }
 
-        public Vector2D Clone() => new Vector2D(X, Y);
+        public Vector2D Clone() => new Vector2D(X, Y, W);
         public override string ToString() => $"({X},{Y})";
     }
 

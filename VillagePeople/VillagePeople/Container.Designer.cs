@@ -32,19 +32,18 @@
             this.GamePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.GamePanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.GamePanel.Location = new System.Drawing.Point(0, 0);
-            this.GamePanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.GamePanel.Name = "GamePanel";
-            this.GamePanel.Size = new System.Drawing.Size(900, 804);
+            this.GamePanel.Size = new System.Drawing.Size(742, 653);
             this.GamePanel.TabIndex = 0;
             this.GamePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.GamePanel_Paint);
+            this.GamePanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GamePanel_MouseClick);
             // 
             // Container
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(900, 804);
+            this.ClientSize = new System.Drawing.Size(742, 653);
             this.Controls.Add(this.GamePanel);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Container";
             this.Text = "Village People";
             this.ResumeLayout(false);
