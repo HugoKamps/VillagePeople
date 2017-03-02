@@ -29,7 +29,7 @@ namespace VillagePeople.Util
         { }
 
         // Function that converts a vector2d converted from a matrix
-        public static Vector2D ToVector2D(Matrix m1) => new Vector2D(m1.M[0, 0], m1.M[1, 0], m1.M[2, 0]);
+        public static Vector2D ToVector2D(Matrix m1, double targetLength = 0) => new Vector2D(m1.M[0, 0], m1.M[1, 0], m1.M[2, 0], targetLength);
 
         // Function that returns a new default identity matrix
         public static Matrix Identity() => new Matrix();
@@ -126,6 +126,7 @@ namespace VillagePeople.Util
 
         // Function that returns a Vector2D multiplied with a matrix
         public static Vector2D operator *(Matrix m1, Vector2D v1) => ToVector2D(m1 * new Matrix(v1));
+        public static Vector2D operator *(Vector2D v1, Matrix m1) => ToVector2D(m1 * new Matrix(v1));
 
         public override string ToString()
         {
