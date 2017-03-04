@@ -210,3 +210,6 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+*.suo
+VillagePeople/VillagePeople/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+*.txt
