@@ -1,0 +1,29 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace VillagePeople.Util
+{
+    class Edge
+    {
+        public Node Target;
+        public Node Origin;
+        public int Cost;
+        public Color color = Color.Black;
+
+        public void Render(Graphics g)
+        {
+            Pen p = new Pen(color, 2);
+            g.DrawLine(
+                p, 
+                (int)Origin.WorldPosition.X, 
+                (int)Origin.WorldPosition.Y, 
+                (int)Target.WorldPosition.X, 
+                (int)Target.WorldPosition.Y
+                );
+        }
+    }
+}

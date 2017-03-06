@@ -29,12 +29,8 @@ namespace VillagePeople.Entities.NPC
             double size = Scale * 2;
 
             Pen p = new Pen(Color, 2);
-            try
-            {
-                g.DrawEllipse(p, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
-                g.DrawLine(p, (int)Position.X, (int)Position.Y, (int)Position.X + (int)Velocity.X, (int)Position.Y + (int)Velocity.Y);
-            }
-            catch (Exception) { }
+            g.DrawEllipse(p, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
+            g.DrawLine(p, (int)Position.X, (int)Position.Y, (int)Position.X + (int)Velocity.X, (int)Position.Y + (int)Velocity.Y);
         }
     }
 }

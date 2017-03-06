@@ -213,3 +213,9 @@ ModelManifest.xml
 *.suo
 VillagePeople/VillagePeople/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
 *.txt
+*.suo
+VillagePeople/VillagePeople/bin/Debug/VillagePeople.exe
+*.cache
+VillagePeople/VillagePeople/obj/Debug/VillagePeople.csproj.FileListAbsolute.txt
+*.Cache
+*.pdb
