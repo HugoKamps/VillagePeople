@@ -25,5 +25,10 @@ namespace VillagePeople.Util
                 (int)Target.WorldPosition.Y
                 );
         }
+
+        public override string ToString()
+        {
+            return "f:" + Origin.ToString() + " - t:" + Target.ToString() + " c:" + Cost.ToString();
+        }
     }
 }

@@ -33,15 +33,25 @@ namespace VillagePeople.Util
             Edges.ForEach(e => e.Render(g));
         }
 
-        public void TwoWayConnect(Node n1, int cost1 = 1, int cost2 = 1)
-        {
-            Connect(n1, cost1);
-            n1.Connect(this, cost2);
-        }
-
         public void Connect(Node n1, int cost = 1)
         {
             Edges.Add(new Edge() { Origin = this, Target = n1, Cost = cost});
+        }
+
+        public bool IsConnected(Node n1)
+        {
+            if (n1 == null) { return true; } // A node is always connected with 'nothing'
+
+            foreach (var edge in Edges)
+                if ((edge.Origin == this && edge.Target == n1) || (edge.Origin == n1 && edge.Target == this))
+                    return true;
+
+            return false;
+        }
+
+        public override string ToString()
+        {
+            return "(" + WorldPosition.X + ", " + WorldPosition.Y + ")";
         }
     }
 }

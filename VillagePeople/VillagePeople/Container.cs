@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace VillagePeople {
+namespace VillagePeople
+{
     public partial class Container : Form
     {
         private World _world;
@@ -9,14 +10,15 @@ namespace VillagePeople {
         private System.Timers.Timer timer;
         public const float delta = 0.8f;
 
-        public Container() {
+        public Container()
+        {
             InitializeComponent();
 
             _world = new World(GamePanel.Width, GamePanel.Height, this);
 
             timer = new System.Timers.Timer();
             timer.Elapsed += Timer_Elapsed;
-            timer.Interval = 20;
+            timer.Interval = 60;
             timer.Enabled = true;
         }
 
@@ -55,6 +57,6 @@ namespace VillagePeople {
     public enum DebugType
     {
         Velocity,
-        Position        
+        Position
     }
 }
