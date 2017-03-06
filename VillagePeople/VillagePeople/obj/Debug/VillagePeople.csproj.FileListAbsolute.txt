@@ -8,3 +8,11 @@ E:\Dropbox\Windesheim\Jaar 3\Periode 3\AAI\Opdrachten\Final Assignment\Laptop RO
 E:\Dropbox\Windesheim\Jaar 3\Periode 3\AAI\Opdrachten\Final Assignment\Laptop ROOT\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.exe
 E:\Dropbox\Windesheim\Jaar 3\Periode 3\AAI\Opdrachten\Final Assignment\Laptop ROOT\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.pdb
 E:\Dropbox\Windesheim\Jaar 3\Periode 3\AAI\Opdrachten\Final Assignment\Laptop ROOT\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.Container.resources
+D:\GitHub\VillagePeople\VillagePeople\VillagePeople\bin\Debug\VillagePeople.exe.config
+D:\GitHub\VillagePeople\VillagePeople\VillagePeople\bin\Debug\VillagePeople.exe
+D:\GitHub\VillagePeople\VillagePeople\VillagePeople\bin\Debug\VillagePeople.pdb
+D:\GitHub\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.Container.resources
+D:\GitHub\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.Properties.Resources.resources
+D:\GitHub\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.csproj.GenerateResource.Cache
+D:\GitHub\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.exe
+D:\GitHub\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.pdb
