@@ -44,6 +44,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(649, 591);
             this.Controls.Add(this.GamePanel);
+            this.DoubleBuffered = true;
             this.Name = "Container";
             this.Text = "Village People";
             this.ResumeLayout(false);
