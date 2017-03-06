@@ -49,7 +49,7 @@ namespace VillagePeople.Entities
 
         public void NextStep(float timeElapsed)
         {
-            
+            Update(timeElapsed);
         }
 
         public override string ToString()

@@ -16,9 +16,11 @@ namespace VillagePeople
 
         public int Width { get; set; }
         public int Height { get; set; }
+
         public int NodeSize = 50;
 
-        public bool Debug = true;
+        public bool Debug = false;
+        public bool AutoUpdate = true;
 
         public World(int width, int height, Container container)
         {
@@ -40,7 +42,8 @@ namespace VillagePeople
 
         public void Update(float timeElapsed)
         {
-            _movingEntities.ForEach(e => e.Update(timeElapsed));
+            if (AutoUpdate)
+                _movingEntities.ForEach(e => e.Update(timeElapsed));
         }
 
         public bool IsValidWorldPosition(Vector2D v1)

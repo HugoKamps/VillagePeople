@@ -57,6 +57,16 @@ namespace VillagePeople
         {
             _world.NextStep(delta);
         }
+
+        private void cbDebug_CheckedChanged(object sender, EventArgs e)
+        {
+            _world.Debug = cbDebug.Checked;
+        }
+
+        private void cbUpdate_CheckedChanged(object sender, EventArgs e)
+        {
+            _world.AutoUpdate = cbUpdate.Checked;
+        }
     }
 
     public enum DebugType
