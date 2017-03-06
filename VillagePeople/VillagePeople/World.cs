@@ -119,10 +119,10 @@ namespace VillagePeople
 
         public void Render(Graphics g)
         {
-            _movingEntities.ForEach(e => e.Render(g));
             if (Debug)
                 _graph.Render(g);
 
+            _movingEntities.ForEach(e => e.Render(g));
         }
 
         public void NextStep(float timeElapsed)

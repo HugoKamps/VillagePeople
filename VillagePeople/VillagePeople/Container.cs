@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace VillagePeople
@@ -14,11 +15,15 @@ namespace VillagePeople
         {
             InitializeComponent();
 
+            typeof(Panel).InvokeMember("DoubleBuffered",
+    BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
+    null, GamePanel, new object[] { true });
+
             _world = new World(GamePanel.Width, GamePanel.Height, this);
 
             timer = new System.Timers.Timer();
             timer.Elapsed += Timer_Elapsed;
-            timer.Interval = 60;
+            timer.Interval = 20;
             timer.Enabled = true;
         }
 
