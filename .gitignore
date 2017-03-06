@@ -219,3 +219,5 @@ VillagePeople/VillagePeople/bin/Debug/VillagePeople.exe
 VillagePeople/VillagePeople/obj/Debug/VillagePeople.csproj.FileListAbsolute.txt
 *.Cache
 *.pdb
+*.cache
+*.txt
