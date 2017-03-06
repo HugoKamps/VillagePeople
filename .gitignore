@@ -210,14 +210,10 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
-*.suo
-VillagePeople/VillagePeople/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+
+*.exe
 *.txt
 *.suo
-VillagePeople/VillagePeople/bin/Debug/VillagePeople.exe
 *.cache
-VillagePeople/VillagePeople/obj/Debug/VillagePeople.csproj.FileListAbsolute.txt
 *.Cache
 *.pdb
-*.cache
-*.txt
