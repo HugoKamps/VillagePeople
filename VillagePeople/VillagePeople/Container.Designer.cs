@@ -24,8 +24,9 @@
         /// </summary>
         private void InitializeComponent() {
             this.GamePanel = new System.Windows.Forms.Panel();
-            this.cbDebug = new System.Windows.Forms.CheckBox();
             this.cbUpdate = new System.Windows.Forms.CheckBox();
+            this.cbDebug = new System.Windows.Forms.CheckBox();
+            this.lblVelocity = new System.Windows.Forms.Label();
             this.GamePanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -33,6 +34,7 @@
             // 
             this.GamePanel.BackColor = System.Drawing.Color.White;
             this.GamePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.GamePanel.Controls.Add(this.lblVelocity);
             this.GamePanel.Controls.Add(this.cbUpdate);
             this.GamePanel.Controls.Add(this.cbDebug);
             this.GamePanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -42,17 +44,6 @@
             this.GamePanel.TabIndex = 0;
             this.GamePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.GamePanel_Paint);
             this.GamePanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GamePanel_MouseClick);
-            // 
-            // cbDebug
-            // 
-            this.cbDebug.AutoSize = true;
-            this.cbDebug.Location = new System.Drawing.Point(570, 574);
-            this.cbDebug.Name = "cbDebug";
-            this.cbDebug.Size = new System.Drawing.Size(79, 17);
-            this.cbDebug.TabIndex = 0;
-            this.cbDebug.Text = "Debug Info";
-            this.cbDebug.UseVisualStyleBackColor = true;
-            this.cbDebug.CheckedChanged += new System.EventHandler(this.cbDebug_CheckedChanged);
             // 
             // cbUpdate
             // 
@@ -66,6 +57,26 @@
             this.cbUpdate.Text = "Auto Update";
             this.cbUpdate.UseVisualStyleBackColor = true;
             this.cbUpdate.CheckedChanged += new System.EventHandler(this.cbUpdate_CheckedChanged);
+            // 
+            // cbDebug
+            // 
+            this.cbDebug.AutoSize = true;
+            this.cbDebug.Location = new System.Drawing.Point(570, 574);
+            this.cbDebug.Name = "cbDebug";
+            this.cbDebug.Size = new System.Drawing.Size(79, 17);
+            this.cbDebug.TabIndex = 0;
+            this.cbDebug.Text = "Debug Info";
+            this.cbDebug.UseVisualStyleBackColor = true;
+            this.cbDebug.CheckedChanged += new System.EventHandler(this.cbDebug_CheckedChanged);
+            // 
+            // lblVelocity
+            // 
+            this.lblVelocity.AutoSize = true;
+            this.lblVelocity.Location = new System.Drawing.Point(12, 575);
+            this.lblVelocity.Name = "lblVelocity";
+            this.lblVelocity.Size = new System.Drawing.Size(28, 13);
+            this.lblVelocity.TabIndex = 2;
+            this.lblVelocity.Text = "(0,0)";
             // 
             // Container
             // 
@@ -87,6 +98,7 @@
         private System.Windows.Forms.Panel GamePanel;
         private System.Windows.Forms.CheckBox cbDebug;
         private System.Windows.Forms.CheckBox cbUpdate;
+        private System.Windows.Forms.Label lblVelocity;
     }
 }
 

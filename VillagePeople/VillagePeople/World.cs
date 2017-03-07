@@ -43,7 +43,13 @@ namespace VillagePeople
         public void Update(float timeElapsed)
         {
             if (AutoUpdate)
-                _movingEntities.ForEach(e => e.Update(timeElapsed));
+            {
+                foreach (MovingEntity me in _movingEntities)
+                {
+                    me.Update(timeElapsed);
+                    _container.DebugInfo(DebugType.Velocity, me.Velocity.ToString());
+                }
+            }
         }
 
         public bool IsValidWorldPosition(Vector2D v1)
@@ -133,7 +139,7 @@ namespace VillagePeople
             foreach (MovingEntity me in _movingEntities)
             {
                 me.NextStep(timeElapsed);
-                _container.DebugInfo(DebugType.Velocity, me.Position.ToString() + "---" + me.Velocity.ToString() + me.targetSpeed + " " + me.Acceleration.ToString() + me.Acceleration.Length().ToString() + " " + (me.targetSpeed + me.Acceleration.Length()).ToString());
+                _container.DebugInfo(DebugType.Velocity, me.Velocity.ToString());
             }
         }
     }
