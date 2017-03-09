@@ -49,8 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviours\ArriveBehaviour.cs" />
     <Compile Include="Behaviours\SeekBehaviour.cs" />
     <Compile Include="Behaviours\SteeringBehaviour.cs" />
+    <Compile Include="Behaviours\WanderBehaviour.cs" />
     <Compile Include="Container.cs">
       <SubType>Form</SubType>
     </Compile>
