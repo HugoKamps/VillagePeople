@@ -8,6 +8,7 @@ namespace VillagePeople.Entities
         public Vector2D Acceleration { get; set; }
         public float Mass { get; set; }
         public float MaxSpeed { get; set; }
+        public int MaxInventorySpace { get; set; }
         public double targetSpeed;
 
         public MovingEntity(Vector2D position, World world) : base(position, world)

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using VillagePeople.Entities;
 using VillagePeople.Entities.NPC;
+using VillagePeople.Entities.Structures;
 using VillagePeople.Util;
 
 namespace VillagePeople
@@ -11,6 +12,7 @@ namespace VillagePeople
     class World
     {
         private List<MovingEntity> _movingEntities = new List<MovingEntity>();
+        private List<StaticEntity> _staticEntities = new List<StaticEntity>();
         private Container _container;
         private Graph _graph;
 
@@ -20,7 +22,7 @@ namespace VillagePeople
         public int NodeSize = 50;
 
         public bool Debug = false;
-        public bool AutoUpdate = true;
+        public bool AutoUpdate = false;
 
         public World(int width, int height, Container container)
         {
@@ -38,6 +40,9 @@ namespace VillagePeople
         {
             Villager v = new Villager(new Vector2D(300, 300), this) { Color = Color.Red };
             _movingEntities.Add(v);
+
+            Tree t = new Tree(new Vector2D(200, 200), this);
+            _staticEntities.Add(t);
         }
 
         public void Update(float timeElapsed)
@@ -48,6 +53,11 @@ namespace VillagePeople
                 {
                     me.Update(timeElapsed);
                     _container.DebugInfo(DebugType.Velocity, me.Velocity.ToString());
+                }
+
+                foreach (StaticEntity se in _staticEntities)
+                {
+                    se.Update(timeElapsed);
                 }
             }
         }
@@ -132,6 +142,7 @@ namespace VillagePeople
                 _graph.Render(g);
 
             _movingEntities.ForEach(e => e.Render(g));
+            _staticEntities.ForEach(e => e.Render(g));
         }
 
         public void NextStep(float timeElapsed)

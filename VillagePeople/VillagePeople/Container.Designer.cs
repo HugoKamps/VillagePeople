@@ -24,9 +24,9 @@
         /// </summary>
         private void InitializeComponent() {
             this.GamePanel = new System.Windows.Forms.Panel();
+            this.lblVelocity = new System.Windows.Forms.Label();
             this.cbUpdate = new System.Windows.Forms.CheckBox();
             this.cbDebug = new System.Windows.Forms.CheckBox();
-            this.lblVelocity = new System.Windows.Forms.Label();
             this.GamePanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,11 +45,18 @@
             this.GamePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.GamePanel_Paint);
             this.GamePanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GamePanel_MouseClick);
             // 
+            // lblVelocity
+            // 
+            this.lblVelocity.AutoSize = true;
+            this.lblVelocity.Location = new System.Drawing.Point(12, 575);
+            this.lblVelocity.Name = "lblVelocity";
+            this.lblVelocity.Size = new System.Drawing.Size(28, 13);
+            this.lblVelocity.TabIndex = 2;
+            this.lblVelocity.Text = "(0,0)";
+            // 
             // cbUpdate
             // 
             this.cbUpdate.AutoSize = true;
-            this.cbUpdate.Checked = true;
-            this.cbUpdate.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbUpdate.Location = new System.Drawing.Point(478, 574);
             this.cbUpdate.Name = "cbUpdate";
             this.cbUpdate.Size = new System.Drawing.Size(86, 17);
@@ -68,15 +75,6 @@
             this.cbDebug.Text = "Debug Info";
             this.cbDebug.UseVisualStyleBackColor = true;
             this.cbDebug.CheckedChanged += new System.EventHandler(this.cbDebug_CheckedChanged);
-            // 
-            // lblVelocity
-            // 
-            this.lblVelocity.AutoSize = true;
-            this.lblVelocity.Location = new System.Drawing.Point(12, 575);
-            this.lblVelocity.Name = "lblVelocity";
-            this.lblVelocity.Size = new System.Drawing.Size(28, 13);
-            this.lblVelocity.TabIndex = 2;
-            this.lblVelocity.Text = "(0,0)";
             // 
             // Container
             // 

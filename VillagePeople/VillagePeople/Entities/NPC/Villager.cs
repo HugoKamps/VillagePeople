@@ -13,8 +13,27 @@ namespace VillagePeople.Entities.NPC
             Acceleration = new Vector2D(1, 1);
             targetSpeed = Velocity.Length();
             Scale = 20;
+            MaxInventorySpace = 10;
 
             Color = Color.Black;
+        }
+
+        public override Resource AddResource(Resource r)
+        {
+            int capacity = MaxInventorySpace - Resource.TotalResources();
+
+            if (capacity <=0)
+            {
+                return r;
+            }
+
+            if (capacity >= r.TotalResources())
+            {
+                return base.AddResource(r);
+            } else
+            {
+                return base.AddResource(r.Cap(capacity));
+            }
         }
 
         public override void Render(Graphics g)
