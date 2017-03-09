@@ -17,6 +17,9 @@ namespace VillagePeople
         public int Width { get; set; }
         public int Height { get; set; }
 
+        public Villager Target { get; set; }
+        public Villager Leader { get; set; }
+
         public int NodeSize = 50;
 
         public bool Debug = false;
@@ -36,8 +39,23 @@ namespace VillagePeople
 
         public void Init()
         {
-            Villager v = new Villager(new Vector2D(300, 300), this) { Color = Color.Red };
-            _movingEntities.Add(v);
+            Villager v1 = new Villager(new Vector2D(10, 10), this) { Color = Color.Red };
+            _movingEntities.Add(v1);
+            
+            Villager v2 = new Villager(new Vector2D(150, 150), this) { Color = Color.Blue };
+            _movingEntities.Add(v2);
+
+            Villager v3 = new Villager(new Vector2D(200, 290), this) { Color = Color.Brown };
+            _movingEntities.Add(v3);
+
+            Villager v4 = new Villager(new Vector2D(450, 450), this) { Color = Color.Yellow };
+            _movingEntities.Add(v4);
+
+            Target = new Villager(new Vector2D(300, 300), this)
+            {
+                Color = Color.DarkRed,
+                Position = new Vector2D(300, 300, 40)
+            };
         }
 
         public void Update(float timeElapsed)
@@ -54,7 +72,7 @@ namespace VillagePeople
 
         public bool IsValidWorldPosition(Vector2D v1)
         {
-            return (v1.X >= 0 && v1.X < Width && v1.Y >= 0 && v1.Y < Height);
+            return v1.X >= 0 && v1.X < Width && v1.Y >= 0 && v1.Y < Height;
         }
 
         public Graph GenerateGraph()
@@ -70,42 +88,55 @@ namespace VillagePeople
             {
                 var curr = notInspectedNodes.FirstOrDefault();
 
-                List<Vector2D> WorldPositions = new List<Vector2D>();
-
-                WorldPositions.Add(new Vector2D(curr.WorldPosition.X - NodeSize, curr.WorldPosition.Y - NodeSize)); // Top Left
-                WorldPositions.Add(new Vector2D(curr.WorldPosition.X, curr.WorldPosition.Y - NodeSize));            // Top Middle
-                WorldPositions.Add(new Vector2D(curr.WorldPosition.X + NodeSize, curr.WorldPosition.Y - NodeSize)); // Top Right
-
-                WorldPositions.Add(new Vector2D(curr.WorldPosition.X - NodeSize, curr.WorldPosition.Y));            // Middle Left
-                WorldPositions.Add(new Vector2D(curr.WorldPosition.X + NodeSize, curr.WorldPosition.Y));            // Middle Right
-
-                WorldPositions.Add(new Vector2D(curr.WorldPosition.X - NodeSize, curr.WorldPosition.Y + NodeSize)); // Bottom Left
-                WorldPositions.Add(new Vector2D(curr.WorldPosition.X, curr.WorldPosition.Y + NodeSize));            // Bottom Middle
-                WorldPositions.Add(new Vector2D(curr.WorldPosition.X + NodeSize, curr.WorldPosition.Y + NodeSize)); // Bottom Right
-
-                foreach (var worldPos in WorldPositions)
+                if (curr != null)
                 {
-                    if (!IsValidWorldPosition(worldPos))
-                        continue;
-
-                    var n1 = CheckIfWorldPosExists(notInspectedNodes, worldPos);
-                    var n2 = CheckIfWorldPosExists(inspectedNodes, worldPos);
-
-                    if (!curr.IsConnected(n2)) // If n2 is null it returns true
+                    List<Vector2D> worldPositions = new List<Vector2D>
                     {
-                        var cost = new Vector2D(Math.Abs(curr.WorldPosition.X - n2.WorldPosition.X), Math.Abs(curr.WorldPosition.Y - n2.WorldPosition.Y)).Length();
-                        curr.Connect(n2, (int)cost);
-                        continue;
-                    }
+                        new Vector2D(curr.WorldPosition.X - NodeSize, curr.WorldPosition.Y - NodeSize),
+                        new Vector2D(curr.WorldPosition.X, curr.WorldPosition.Y - NodeSize),
+                        new Vector2D(curr.WorldPosition.X + NodeSize, curr.WorldPosition.Y - NodeSize),
+                        new Vector2D(curr.WorldPosition.X - NodeSize, curr.WorldPosition.Y),
+                        new Vector2D(curr.WorldPosition.X + NodeSize, curr.WorldPosition.Y),
+                        new Vector2D(curr.WorldPosition.X - NodeSize, curr.WorldPosition.Y + NodeSize),
+                        new Vector2D(curr.WorldPosition.X, curr.WorldPosition.Y + NodeSize),
+                        new Vector2D(curr.WorldPosition.X + NodeSize, curr.WorldPosition.Y + NodeSize)
+                    };
 
-                    if (n1 == null) // WorldPos is not in the not inspected nodes nor is it in the inspected nodes
+                    // Top Left
+                    // Top Middle
+                    // Top Right
+
+                    // Middle Left
+                    // Middle Right
+
+                    // Bottom Left
+                    // Bottom Middle
+                    // Bottom Right
+
+                    foreach (var worldPos in worldPositions)
                     {
-                        var node = new Node() { WorldPosition = worldPos };
-                        notInspectedNodes.Add(node);
+                        if (!IsValidWorldPosition(worldPos))
+                            continue;
 
-                        var cost = new Vector2D(Math.Abs(curr.WorldPosition.X - worldPos.X), Math.Abs(curr.WorldPosition.Y - worldPos.Y)).Length();
+                        var n1 = CheckIfWorldPosExists(notInspectedNodes, worldPos);
+                        var n2 = CheckIfWorldPosExists(inspectedNodes, worldPos);
 
-                        curr.Connect(node, (int)cost);
+                        if (!curr.IsConnected(n2)) // If n2 is null it returns true
+                        {
+                            var cost = new Vector2D(Math.Abs(curr.WorldPosition.X - n2.WorldPosition.X), Math.Abs(curr.WorldPosition.Y - n2.WorldPosition.Y)).Length();
+                            curr.Connect(n2, (int)cost);
+                            continue;
+                        }
+
+                        if (n1 == null) // WorldPos is not in the not inspected nodes nor is it in the inspected nodes
+                        {
+                            var node = new Node() { WorldPosition = worldPos };
+                            notInspectedNodes.Add(node);
+
+                            var cost = new Vector2D(Math.Abs(curr.WorldPosition.X - worldPos.X), Math.Abs(curr.WorldPosition.Y - worldPos.Y)).Length();
+
+                            curr.Connect(node, (int)cost);
+                        }
                     }
                 }
 
@@ -132,6 +163,8 @@ namespace VillagePeople
                 _graph.Render(g);
 
             _movingEntities.ForEach(e => e.Render(g));
+            Target.Render(g);
+            //Leader.Render(g);
         }
 
         public void NextStep(float timeElapsed)

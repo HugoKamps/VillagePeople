@@ -11,8 +11,8 @@ namespace VillagePeople.Entities.NPC
         {
             Velocity = new Vector2D(1, 1);
             Acceleration = new Vector2D(1, 1);
-            targetSpeed = Velocity.Length();
-            Scale = 20;
+            TargetSpeed = Velocity.Length();
+            Scale = 5;
 
             Color = Color.Black;
         }
@@ -24,7 +24,7 @@ namespace VillagePeople.Entities.NPC
             double size = Scale * 2;
 
             var p = new Pen(Color, 2);
-            var b = new System.Drawing.SolidBrush(Color);
+            var b = new SolidBrush(Color);
 
             g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
             g.DrawLine(p, (int)Position.X, (int)Position.Y, (int)Position.X + (int)Velocity.X, (int)Position.Y + (int)Velocity.Y);

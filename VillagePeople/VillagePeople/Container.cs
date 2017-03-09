@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Reflection;
+using System.Timers;
 using System.Windows.Forms;
+using VillagePeople.Util;
+using Timer = System.Timers.Timer;
 
 namespace VillagePeople
 {
@@ -8,20 +11,17 @@ namespace VillagePeople
     {
         private World _world;
 
-        private System.Timers.Timer timer;
-        public const float delta = 0.8f;
+        public const float Delta = 0.8f;
 
         public Container()
         {
             InitializeComponent();
 
-            typeof(Panel).InvokeMember("DoubleBuffered",
-    BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
-    null, GamePanel, new object[] { true });
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, GamePanel, new object[] { true });
 
             _world = new World(GamePanel.Width, GamePanel.Height, this);
 
-            timer = new System.Timers.Timer();
+            var timer = new Timer();
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = 20;
             timer.Enabled = true;
@@ -33,18 +33,16 @@ namespace VillagePeople
             {
                 case DebugType.Velocity:
                     lblVelocity.Text = value;
-                    Console.WriteLine("---" + value);
+                    Console.WriteLine(@"---" + value);
                     break;
                 case DebugType.Position:
-                    break;
-                default:
                     break;
             }
         }
 
-        private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            _world.Update(delta);
+            _world.Update(Delta);
             GamePanel.Invalidate();
         }
 
@@ -55,7 +53,7 @@ namespace VillagePeople
 
         private void GamePanel_MouseClick(object sender, MouseEventArgs e)
         {
-            _world.NextStep(delta);
+            _world.Target.Position = new Vector2D(e.X, e.Y);
         }
 
         private void cbDebug_CheckedChanged(object sender, EventArgs e)

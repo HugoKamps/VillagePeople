@@ -49,6 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviours\ArriveBehaviour.cs" />
+    <Compile Include="Behaviours\SeekBehaviour.cs" />
+    <Compile Include="Behaviours\SteeringBehaviour.cs" />
+    <Compile Include="Behaviours\WanderBehaviour.cs" />
     <Compile Include="Container.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,9 +99,7 @@
   <ItemGroup>
     <None Include="Resources\spel.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Behaviours\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
