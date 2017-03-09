@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows.Forms;
 
-namespace VillagePeople {
+namespace VillagePeople
+{
     public partial class Container : Form
     {
         private World _world;
@@ -9,8 +11,13 @@ namespace VillagePeople {
         private System.Timers.Timer timer;
         public const float delta = 0.8f;
 
-        public Container() {
+        public Container()
+        {
             InitializeComponent();
+
+            typeof(Panel).InvokeMember("DoubleBuffered",
+    BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
+    null, GamePanel, new object[] { true });
 
             _world = new World(GamePanel.Width, GamePanel.Height, this);
 
@@ -25,7 +32,7 @@ namespace VillagePeople {
             switch (type)
             {
                 case DebugType.Velocity:
-                    //lblVelocity.Text = value;
+                    lblVelocity.Text = value;
                     Console.WriteLine("---" + value);
                     break;
                 case DebugType.Position:
@@ -50,11 +57,21 @@ namespace VillagePeople {
         {
             _world.NextStep(delta);
         }
+
+        private void cbDebug_CheckedChanged(object sender, EventArgs e)
+        {
+            _world.Debug = cbDebug.Checked;
+        }
+
+        private void cbUpdate_CheckedChanged(object sender, EventArgs e)
+        {
+            _world.AutoUpdate = cbUpdate.Checked;
+        }
     }
 
     public enum DebugType
     {
         Velocity,
-        Position        
+        Position
     }
 }

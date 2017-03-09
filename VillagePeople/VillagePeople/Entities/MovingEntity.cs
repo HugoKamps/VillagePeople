@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VillagePeople.Util;
+﻿using VillagePeople.Util;
 
 namespace VillagePeople.Entities
 {
@@ -54,7 +49,7 @@ namespace VillagePeople.Entities
 
         public void NextStep(float timeElapsed)
         {
-            
+            Update(timeElapsed);
         }
 
         public override string ToString()

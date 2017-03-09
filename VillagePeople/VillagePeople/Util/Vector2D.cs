@@ -102,7 +102,7 @@ namespace VillagePeople.Util
         }
 
         public Vector2D Clone() => new Vector2D(X, Y, W);
-        public override string ToString() => $"({X},{Y})";
+        public override string ToString() => String.Format("({0:000},{1:000})", X, Y);
     }
 
 
