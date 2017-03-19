@@ -18,10 +18,10 @@ namespace VillagePeople.Behaviours
         {
             var target = Target.Clone();
             var me = _self.Position.Clone();
-            var t1 = target.Sub(me);
-            var desiredVelocity = t1.Normalize().Multiply(_self.MaxSpeed);
+            var t1 = target - me;
+            var desiredVelocity = t1.Normalize() * _self.MaxSpeed;
 
-            return desiredVelocity.Sub(_self.Velocity);
+            return desiredVelocity - _self.Velocity;
         }
     }
 }

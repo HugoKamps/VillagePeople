@@ -5,23 +5,17 @@ namespace VillagePeople.Util
 
     public class Vector2D
     {
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double W { get; set; }
+        public float X;
+        public float Y;
+        public float W;
 
-        public Vector2D() : this(0, 0, 0)
-        {
-        }
-
-        public Vector2D(double x, double y, double w = 0, double targetLength = 0)
+        public Vector2D() : this(0, 0) { }
+        public Vector2D(float x, float y, float w = 1)
         {
             X = x;
             Y = y;
             W = w;
         }
-
-        public double Length() => Math.Sqrt(X * X + Y * Y);
-        public double LengthSquared() => X * X + Y * Y;
 
         public static Vector2D Scale(Vector2D v1, double target)
         {
@@ -45,43 +39,9 @@ namespace VillagePeople.Util
             return this * Matrix.Scale((float)diff);
         }
 
-        public Vector2D Add(Vector2D v)
-        {
-            X += v.X;
-            Y += v.Y;
-            W += v.W;
-            return this;
-        }
-
-        public Vector2D Sub(Vector2D v)
-        {
-            X -= v.X;
-            Y -= v.Y;
-            W -= v.W;
-            return this;
-        }
-
-        public Vector2D Multiply(Vector2D v)
-        {
-            X *= v.X;
-            Y *= v.Y;
-            W *= v.W;
-            return this;
-        }
-
-        public Vector2D Multiply(double value)
-        {
-            X *= value;
-            Y *= value;
-            W *= value;
-            return this;
-        }
-
-        public Vector2D Divide(double value) => Multiply(1.0 / value);
-
         public Vector2D Normalize()
         {
-            double length = Length();
+            float length = Length();
             if (length != 0)
             {
                 X /= length;
@@ -91,18 +51,30 @@ namespace VillagePeople.Util
             return this;
         }
 
-        public Vector2D Truncate(double maX)
+        public Vector2D Truncate(float maX)
         {
             if (Length() > maX)
             {
                 Normalize();
-                Multiply(maX);
+                return this * maX;
             }
             return this;
         }
-
+        public float Length() => (float)Math.Sqrt(X * X + Y * Y);
+        public float LengthSquared() => X * X + Y * Y;
         public Vector2D Clone() => new Vector2D(X, Y, W);
-        public override string ToString() => String.Format("({0:000},{1:000})", X, Y);
+
+        public static Vector2D operator +(Vector2D v1, Vector2D v2) => new Vector2D(v1.X + v2.X, v1.Y + v2.Y);
+        public static Vector2D operator -(Vector2D v1, Vector2D v2) => new Vector2D(v1.X - v2.X, v1.Y - v2.Y);
+        public static Vector2D operator *(Vector2D v1, Vector2D v2) => new Vector2D(v1.X * v2.X, v1.Y * v2.Y);
+        public static Vector2D operator /(Vector2D v1, Vector2D v2) => new Vector2D(v1.X / v2.X, v1.Y / v2.Y);
+
+        public static Vector2D operator *(Vector2D v, float f) => new Vector2D(v.X * f, v.Y * f);
+        public static Vector2D operator /(Vector2D v, float f) => new Vector2D(v.X / f, v.Y / f);
+        public static Vector2D operator *(float f, Vector2D v) => v * f;
+        public static Vector2D operator /(float f, Vector2D v) => v / f;
+
+        public override string ToString() => String.Format("({0}, {1})", X, Y);
     }
 
 
