@@ -66,6 +66,7 @@
     <Compile Include="Entities\Structures\Tree.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Terrain\GameTerrain.cs" />
     <Compile Include="Util\Edge.cs" />
     <Compile Include="Util\Graph.cs" />
     <Compile Include="Util\Matrix.cs" />

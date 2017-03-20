@@ -20,7 +20,8 @@ namespace VillagePeople.Behaviours
         public override Vector2D Calculate()
         {
             var vehicle = _self.Position;
-            var toTarget = Target - vehicle;
+            Target -= vehicle;
+            var toTarget = Target;
 
             var distance = toTarget.Length();
 
@@ -29,13 +30,15 @@ namespace VillagePeople.Behaviours
                 const float decelTweaker = 0.5f;
                 var speed = distance / ((float)_deceleration * decelTweaker);
 
-                var desiredVelocity = toTarget * speed / distance;
+                toTarget *= speed;
+                toTarget /= distance;
+                var desiredVelocity = toTarget;
 
-                return desiredVelocity - _self.Velocity;
+                desiredVelocity -= _self.Velocity;
+                return desiredVelocity;
             }
 
             return new Vector2D(0, 0);
-
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using VillagePeople.Entities;
 using VillagePeople.Entities.NPC;
 using VillagePeople.Entities.Structures;
+using VillagePeople.Terrain;
 using VillagePeople.Util;
 
 namespace VillagePeople
@@ -13,6 +14,7 @@ namespace VillagePeople
     {
         private List<MovingEntity> _movingEntities = new List<MovingEntity>();
         public List<StaticEntity> staticEntities = new List<StaticEntity>();
+        public List<GameTerrain> terrains = new List<GameTerrain>();
         private Container _container;
         private Graph _graph;
 
@@ -39,6 +41,13 @@ namespace VillagePeople
 
         public void Init()
         {
+            GameTerrain grass = new GameTerrain(new Vector2D(0, 0), TerrainType.Grass);
+            terrains.Add(grass);
+            GameTerrain water = new GameTerrain(new Vector2D(100, 0), TerrainType.Water); 
+            terrains.Add(water);
+            GameTerrain road = new GameTerrain(new Vector2D(0, 100), TerrainType.Road);
+            terrains.Add(road);
+
             Tree t1 = new Tree(new Vector2D(35, 35), this);
             staticEntities.Add(t1);
             Tree t2 = new Tree(new Vector2D(350, 310), this);
@@ -89,6 +98,8 @@ namespace VillagePeople
 
         public void Render(Graphics g)
         {
+            terrains.ForEach(e => e.Render(g));
+
             if (Debug)
                 _graph.Render(g);
 

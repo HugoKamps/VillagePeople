@@ -51,12 +51,15 @@ namespace VillagePeople.Entities
 
             var steering = new ArriveBehaviour(this, World.Target.Position).Calculate();
 
-            var acceleration = steering / Mass;
+            steering /= Mass;
+            var acceleration = steering;
 
-            Velocity += acceleration * timeElapsed;
+            acceleration *= timeElapsed;
+            Velocity += acceleration;
             Velocity.Truncate(MaxSpeed);
-            
-            Position += Velocity * timeElapsed;
+
+            Velocity *= timeElapsed;
+            Position += Velocity;
         }
 
         public void NextStep(float timeElapsed)

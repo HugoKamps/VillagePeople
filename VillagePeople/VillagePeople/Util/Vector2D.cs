@@ -42,7 +42,7 @@ namespace VillagePeople.Util
         public Vector2D Normalize()
         {
             float length = Length();
-            if (length != 0)
+            if (length != 0.0f)
             {
                 X /= length;
                 Y /= length;
