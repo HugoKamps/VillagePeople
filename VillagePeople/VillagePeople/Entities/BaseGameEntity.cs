@@ -8,6 +8,7 @@ namespace VillagePeople.Entities
         public Vector2D Position { get; set; }
         public float Scale { get; set; }
         public World World { get; set; }
+        public bool Tagged { get; set; }
 
         public BaseGameEntity(Vector2D position, World world)
         {
@@ -21,5 +22,8 @@ namespace VillagePeople.Entities
         {
             
         }
+
+        public void Tag() => Tagged = true;
+        public void UnTag() => Tagged = false;
     }
 }

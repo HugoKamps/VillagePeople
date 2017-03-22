@@ -54,7 +54,7 @@ namespace VillagePeople
             Target = new Villager(new Vector2D(300, 300), this)
             {
                 Color = Color.DarkRed,
-                Position = new Vector2D(300, 300, 40)
+                Position = new Vector2D(40, 60, 40)
             };
         }
 

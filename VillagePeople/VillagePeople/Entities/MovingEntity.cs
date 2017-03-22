@@ -9,14 +9,17 @@ namespace VillagePeople.Entities
         public Vector2D Location { get; set; }
         public Vector2D Velocity { get; set; }
         public Vector2D Acceleration { get; set; }
+        public Vector2D Heading { get; set; }
         public float Mass { get; set; }
         public float MaxSpeed { get; set; }
         public double TargetSpeed;
+        public double Radius;
 
         public MovingEntity(Vector2D position, World world) : base(position, world)
         {
             Mass = 150;
             MaxSpeed = 100;
+            Radius = 30;
             Velocity = new Vector2D();
             Acceleration = new Vector2D();
             TargetSpeed = Velocity.Length();
@@ -49,8 +52,8 @@ namespace VillagePeople.Entities
             }
 
             Velocity = targetVelocity.Scale(TargetSpeed);*/
-
-            var steering = new ArriveBehaviour(this, World.Target.Position).Calculate();
+            World.Target.Position = new Vector2D(40, 40);
+            var steering = new WanderBehaviour(this, World.Target.Position).Calculate();
 
             var acceleration = steering.Divide(Mass);
 
@@ -58,7 +61,6 @@ namespace VillagePeople.Entities
             Velocity.Truncate(MaxSpeed);
 
             Location.Add(Velocity.Multiply(timeElapsed));
-            
         }
 
         public void NextStep(float timeElapsed)
