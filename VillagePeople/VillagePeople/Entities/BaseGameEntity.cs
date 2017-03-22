@@ -9,6 +9,7 @@ namespace VillagePeople.Entities
         public float Scale { get; set; }
         public World World { get; set; }
         public bool Tagged { get; set; }
+        public Resource Resource = new Resource();
 
         public BaseGameEntity(Vector2D position, World world)
         {
@@ -16,11 +17,16 @@ namespace VillagePeople.Entities
             World = world;
         }
 
+        public virtual Resource AddResource(Resource r)
+        {
+            Resource += r;
+            return new Resource();
+        }
+
         public abstract void Update(float delta);
 
         public virtual void Render(Graphics g)
         {
-            
         }
 
         public void Tag() => Tagged = true;

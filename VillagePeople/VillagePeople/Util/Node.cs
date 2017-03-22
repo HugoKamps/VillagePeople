@@ -11,7 +11,7 @@ namespace VillagePeople.Util
         public Color Color = Color.Black;
         public int Size;
 
-        public Node(int size = 20)
+        public Node(int size = 10)
         {
             Size = size;
             Edges = new List<Edge>();

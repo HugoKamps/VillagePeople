@@ -21,7 +21,7 @@ namespace VillagePeople.Behaviours
             {
                 entity.UnTag();
 
-                Vector2D to = entity.Position.Sub(me.Position);
+                Vector2D to = entity.Position - me.Position;
 
                 double range = radius + entity.Radius;
 
@@ -52,15 +52,15 @@ namespace VillagePeople.Behaviours
             {
                 if (me != _self && me.Tagged)
                 {
-                    averageHeading = averageHeading.Add(me.Acceleration);
+                    averageHeading = averageHeading + me.Acceleration;
                     NeighborCount++;
                 }
             }
 
             if (NeighborCount > 0)
             {
-                averageHeading = averageHeading.Divide(NeighborCount);
-                averageHeading = averageHeading.Sub(_self.Acceleration);
+                averageHeading = averageHeading / NeighborCount;
+                averageHeading = averageHeading - _self.Acceleration;
             }
             return averageHeading;
         }
@@ -84,8 +84,8 @@ namespace VillagePeople.Behaviours
             {
                 if (me != _self && me.Tagged)
                 {
-                    Vector2D toAgent = _self.Position.Sub(me.Position);
-                    steeringForce = steeringForce.Add(toAgent.Normalize().Divide(toAgent.Length()));
+                    Vector2D toAgent = _self.Position - me.Position;
+                    steeringForce = steeringForce + toAgent.Normalize() / toAgent.Length();
                 }
             }
             return steeringForce;
@@ -113,14 +113,14 @@ namespace VillagePeople.Behaviours
             {
                 if (me != _self && me.Tagged)
                 {
-                    centerOfMass = centerOfMass.Add(me.Position);
+                    centerOfMass = centerOfMass + me.Position;
                     neighborCount++;
                 }
             }
 
             if (neighborCount > 0)
             {
-                centerOfMass = centerOfMass.Divide(neighborCount);
+                centerOfMass = centerOfMass / neighborCount;
                 steeringForce = new SeekBehaviour(_self, centerOfMass).Calculate();
             }
 

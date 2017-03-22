@@ -8,9 +8,9 @@ namespace VillagePeople.Behaviours
     class WanderBehaviour : SteeringBehaviour
     {
         private MovingEntity _self;
-        private double _wanderRadius;
-        private double _wanderDistance;
-        private double _wanderJitter;
+        private float _wanderRadius;
+        private float _wanderDistance;
+        private float _wanderJitter;
 
         public Vector2D Target { get; set; }
 
@@ -31,28 +31,28 @@ namespace VillagePeople.Behaviours
 
         public override Vector2D Calculate()
         {
-            var me = _self.Position.Clone();
-            var target = Target.Clone();
-            target.Add(new Vector2D(RandomClamped() * _wanderJitter, RandomClamped() * _wanderJitter));
+            Vector2D me = _self.Position.Clone();
+            Vector2D target = Target.Clone();
+            target += new Vector2D(RandomClamped() * _wanderJitter, RandomClamped() * _wanderJitter);
             target.Normalize();
-            target.Multiply(_wanderRadius);
+            target = target * _wanderRadius;
 
-            Vector2D targetLocal = target.Add(new Vector2D(_wanderDistance, 0));
+            Vector2D targetLocal = target + new Vector2D(_wanderDistance, 0);
             Vector2D targetWorld = PointToWorldSpace(targetLocal,
             _self.Velocity,
             _self.Velocity * Matrix.Identity().Rotate(90),
             me);
 
-            return targetWorld.Sub(me);
+            return targetWorld - me;
         }
 
         public Vector2D PointToWorldSpace(Vector2D targetLocal, Vector2D heading, Vector2D side, Vector2D position)
         {
-            var transformPoint = new Matrix(1, 1, (float)targetLocal.X, (float)targetLocal.Y, 1, 1, 1, 1, 1);
+            var transformPoint = new Matrix(1, 1, targetLocal.X, targetLocal.Y, 1, 1, 1, 1, 1);
 
-            var transformMatrix = new Matrix((float)heading.X, (float)heading.Y, 40,
-                                                    (float)side.X, (float)side.Y, 60,
-                                                    (float)position.X, (float)position.Y, 1);
+            var transformMatrix = new Matrix(heading.X, heading.Y, 40,
+                                                    side.X, side.Y, 60,
+                                                    position.X, position.Y, 1);
 
             transformPoint = transformPoint * transformMatrix;
 

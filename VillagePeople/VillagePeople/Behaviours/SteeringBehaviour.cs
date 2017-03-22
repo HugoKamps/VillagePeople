@@ -20,7 +20,7 @@ namespace VillagePeople.Behaviours
             Vector2D calculated = new Vector2D();
             foreach (var behaviour in sb)
             {
-                calculated.Add(behaviour.Calculate());
+                calculated += behaviour.Calculate();
             }
             return calculated;
         }
