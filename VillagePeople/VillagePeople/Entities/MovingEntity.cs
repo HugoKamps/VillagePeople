@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using VillagePeople.Behaviours;
 using VillagePeople.Util;
 
@@ -61,11 +62,11 @@ namespace VillagePeople.Entities
             SteeringBehaviours.Add(new ArriveBehaviour(this, World.Target.Position));
             SteeringBehaviours.Add(new SeekBehaviour(this, World.Target.Position));
 
-            Vector2D steering = new ArriveBehaviour(this, World.Target.Position).Calculate();
-
+            Vector2D steering = SteeringBehaviour.CalculateDithered(SteeringBehaviours);
+            steering.Truncate(MaxSpeed);
             steering /= Mass;
-            var acceleration = steering;
 
+            Vector2D acceleration = steering;
             acceleration *= timeElapsed;
             Velocity += acceleration;
             Velocity.Truncate(MaxSpeed);

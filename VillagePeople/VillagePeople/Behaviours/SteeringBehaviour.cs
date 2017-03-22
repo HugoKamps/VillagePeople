@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Forms;
 using VillagePeople.Entities;
 using VillagePeople.Util;
@@ -7,6 +9,15 @@ namespace VillagePeople.Behaviours
 {
     abstract class SteeringBehaviour
     {
+
+        private const float PrArrive = 0.9f;
+        private const float PrSeek = 0.9f;
+        private const float PrSeparation = 0.9f;
+        private const float PrAlignment = 0.9f;
+        private const float PrCohesion = 0.9f;
+        private const float PrWander = 0.9f;
+
+
         public MovingEntity M { get; set; }
         public abstract Vector2D Calculate();
 
@@ -20,11 +31,27 @@ namespace VillagePeople.Behaviours
             Vector2D calculated = new Vector2D();
             foreach (var behaviour in sb)
             {
-                calculated += behaviour.Calculate();
+                if (behaviour.GetType() == typeof(ArriveBehaviour))
+                    calculated += behaviour.Calculate() * PrArrive;
+
+                if (behaviour.GetType() == typeof(SeekBehaviour))
+                    calculated += behaviour.Calculate() * PrSeek;
+
+                if (behaviour.GetType() == typeof(Separation))
+                    calculated += behaviour.Calculate() * PrSeparation;
+
+                if (behaviour.GetType() == typeof(Alignment))
+                    calculated += behaviour.Calculate() * PrAlignment;
+
+                if (behaviour.GetType() == typeof(Cohesion))
+                    calculated += behaviour.Calculate() * PrCohesion;
+
+                if (behaviour.GetType() == typeof(WanderBehaviour))
+                    calculated += behaviour.Calculate() * PrWander;
             }
             return calculated;
         }
     }
 
-    
+
 }
