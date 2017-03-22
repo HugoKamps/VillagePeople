@@ -6,11 +6,11 @@ namespace VillagePeople.Entities
 {
     abstract class MovingEntity : BaseGameEntity
     {
-        public Vector2D Location { get; set; }
         public Vector2D Velocity { get; set; }
         public Vector2D Acceleration { get; set; }
         public float Mass { get; set; }
         public float MaxSpeed { get; set; }
+        public int MaxInventorySpace { get; set; }
         public double TargetSpeed;
 
         public MovingEntity(Vector2D position, World world) : base(position, world)
@@ -20,7 +20,6 @@ namespace VillagePeople.Entities
             Velocity = new Vector2D();
             Acceleration = new Vector2D();
             TargetSpeed = Velocity.Length();
-            Location = position;
         }
 
         public override void Update(float timeElapsed)
@@ -52,13 +51,15 @@ namespace VillagePeople.Entities
 
             var steering = new ArriveBehaviour(this, World.Target.Position).Calculate();
 
-            var acceleration = steering.Divide(Mass);
+            steering /= Mass;
+            var acceleration = steering;
 
-            Velocity.Add(acceleration.Multiply(timeElapsed));
+            acceleration *= timeElapsed;
+            Velocity += acceleration;
             Velocity.Truncate(MaxSpeed);
 
-            Location.Add(Velocity.Multiply(timeElapsed));
-            
+            Velocity *= timeElapsed;
+            Position += Velocity;
         }
 
         public void NextStep(float timeElapsed)

@@ -32,8 +32,8 @@ namespace VillagePeople
             switch (type)
             {
                 case DebugType.Velocity:
-                    lblVelocity.Text = value;
-                    Console.WriteLine(@"---" + value);
+                    //lblVelocity.Text = value;
+                    Console.WriteLine("---" + value);
                     break;
                 case DebugType.Position:
                     break;
