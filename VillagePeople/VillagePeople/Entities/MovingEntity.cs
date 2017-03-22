@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using VillagePeople.Behaviours;
 using VillagePeople.Util;
 
@@ -10,6 +11,9 @@ namespace VillagePeople.Entities
         public Vector2D Velocity { get; set; }
         public Vector2D Acceleration { get; set; }
         public Vector2D Heading { get; set; }
+
+        public List<SteeringBehaviour> SteeringBehaviours { get; set; }
+
         public float Mass { get; set; }
         public float MaxSpeed { get; set; }
         public double TargetSpeed;
@@ -52,8 +56,13 @@ namespace VillagePeople.Entities
             }
 
             Velocity = targetVelocity.Scale(TargetSpeed);*/
+
             World.Target.Position = new Vector2D(40, 40);
-            var steering = new WanderBehaviour(this, World.Target.Position).Calculate();
+
+            SteeringBehaviours.Add(new ArriveBehaviour(this, World.Target.Position));
+            SteeringBehaviours.Add(new SeekBehaviour(this, World.Target.Position));
+
+            Vector2D steering = SteeringBehaviour.CalculateDithered(SteeringBehaviours);
 
             var acceleration = steering.Divide(Mass);
 
