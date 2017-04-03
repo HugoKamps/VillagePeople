@@ -7,11 +7,11 @@ namespace VillagePeople.Util
         public Node Target;
         public Node Origin;
         public int Cost;
-        public Color color = Color.Black;
+        public Color Color = Color.Black;
 
         public void Render(Graphics g)
         {
-            Pen p = new Pen(color, 2);
+            Pen p = new Pen(Color, 2);
             g.DrawLine(
                 p, 
                 (int)Origin.WorldPosition.X, 
@@ -23,7 +23,7 @@ namespace VillagePeople.Util
 
         public override string ToString()
         {
-            return "f:" + Origin.ToString() + " - t:" + Target.ToString() + " c:" + Cost.ToString();
+            return "f:" + Origin + " - t:" + Target + " c:" + Cost;
         }
     }
 }

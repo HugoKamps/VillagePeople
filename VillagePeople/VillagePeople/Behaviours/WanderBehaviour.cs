@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration.Assemblies;
 using VillagePeople.Entities;
 using VillagePeople.Util;
 

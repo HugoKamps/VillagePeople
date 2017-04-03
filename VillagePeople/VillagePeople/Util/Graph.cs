@@ -9,7 +9,7 @@ namespace VillagePeople.Util
         public List<Node> Nodes = new List<Node>();
         public const int NodeSize = 50;
 
-        public Node getNodeByWorldPosition(Vector2D worldPos)
+        public Node GetNodeByWorldPosition(Vector2D worldPos)
         {
             foreach (var node in Nodes)
             {
@@ -21,12 +21,11 @@ namespace VillagePeople.Util
             return null;
         }
 
-        public static List<Node> Generate(World w, Node n, List<Node> nodes)
-        {
-            if (n != null && Graph.GetNodeAtWorldPosition(nodes, n.WorldPosition) == null)
+        public static List<Node> Generate(World w, Node n, List<Node> nodes) {
+            if (n != null && GetNodeAtWorldPosition(nodes, n.WorldPosition) == null)
             {
                 var Nodes = new List<Node>();
-                getNeighborWorldPositions(n).ForEach(e => getValidWorldPositions(w, e, Nodes));
+                GetNeighborWorldPositions(n).ForEach(e => GetValidWorldPositions(w, e, Nodes));
                 nodes.Add(n);
                 foreach (var node in Nodes)
                 {
@@ -34,7 +33,7 @@ namespace VillagePeople.Util
                     var smallest = new Vector2D(Math.Min(n.WorldPosition.X ,node.WorldPosition.X), Math.Min(n.WorldPosition.Y, node.WorldPosition.Y));
                     var center = smallest + (diff / 2);
 
-                    if (isValidWorldPosition(w, center))
+                    if (IsValidWorldPosition(w, center))
                     {
                         n.Connect(node);
                     }
@@ -42,31 +41,31 @@ namespace VillagePeople.Util
                 }
                 return nodes;
             }
-            else return null;
+            return null;
         }
 
-        public static bool isValidWorldPosition(World w, Vector2D v1)
+        public static bool IsValidWorldPosition(World w, Vector2D v1)
         {
             if (!(v1.X >= 0 && v1.X < w.Width && v1.Y >= 0 && v1.Y < w.Height))
                 return false;
 
-            foreach (var se in w.staticEntities)
+            foreach (var se in w.StaticEntities)
                 if (se.IsWalkable(v1) == false)
                     return false;
 
             return true;
         }
 
-        public static void getValidWorldPositions(World w, Vector2D worldPos, List<Node> Nodes)
+        public static void GetValidWorldPositions(World w, Vector2D worldPos, List<Node> nodes)
         {
-            if (!isValidWorldPosition(w, worldPos))
+            if (!IsValidWorldPosition(w, worldPos))
                 return;
 
-            if (Graph.GetNodeAtWorldPosition(Nodes, worldPos) == null) // Node at world position does not yet exist 
-                Nodes.Add(new Node() { WorldPosition = worldPos });
+            if (GetNodeAtWorldPosition(nodes, worldPos) == null) // Node at world position does not yet exist 
+                nodes.Add(new Node { WorldPosition = worldPos });
         }
 
-        public static List<Vector2D> getNeighborWorldPositions(Node n)
+        public static List<Vector2D> GetNeighborWorldPositions(Node n)
         {
             return new List<Vector2D>
                 {
@@ -96,7 +95,7 @@ namespace VillagePeople.Util
             Nodes.ForEach(e => e.Render(g));
         }
 
-        public List<Vector2D> FindPath(Vector2D startWorldPos, Vector2D endWorldPos) { return FindPath(getNodeByWorldPosition(startWorldPos), getNodeByWorldPosition(endWorldPos)); }
+        public List<Vector2D> FindPath(Vector2D startWorldPos, Vector2D endWorldPos) { return FindPath(GetNodeByWorldPosition(startWorldPos), GetNodeByWorldPosition(endWorldPos)); }
         public List<Vector2D> FindPath(Node start, Node end)
         {
             throw new NotImplementedException();
