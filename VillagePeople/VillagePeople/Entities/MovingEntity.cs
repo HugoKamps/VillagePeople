@@ -25,6 +25,7 @@ namespace VillagePeople.Entities
 
         public StateMachine<MovingEntity> StateMachine;
 
+        private int _elapsedTicks;
 
         public MovingEntity(Vector2D position, World world) : base(position, world)
         {
@@ -39,9 +40,9 @@ namespace VillagePeople.Entities
             TargetSpeed = Velocity.Length();
         }
 
-        public override void Update(float timeElapsed)
-        {
-            StateMachine.Update();
+        public override void Update(float timeElapsed) {
+            _elapsedTicks += 1;
+            if(_elapsedTicks % 50 == 0) StateMachine.Update();
             /*Position.Add(Velocity);
 
             if (Position.X < 0 || Position.X > World.Width || Position.Y < 0 || Position.Y > World.Height)
@@ -70,17 +71,14 @@ namespace VillagePeople.Entities
             FlockingBehaviour.TagNeighbors(this, World.MovingEntities, 5);
             Neighbours = World.MovingEntities.FindAll(m => m.Tagged);
 
-            //SteeringBehaviours = new List<SteeringBehaviour> {
-            //    new ArriveBehaviour(this, World.Target.Position),
-            //    new SeekBehaviour(this, World.Target.Position),
-            //    new Alignment(this, Neighbours),
-            //    new Cohesion(this, Neighbours),
-            //    new Separation(this, Neighbours)
-            //};
-
             SteeringBehaviours = new List<SteeringBehaviour> {
-                new ExploreBehaviour(this, 5.0f)
+                new ArriveBehaviour(this, World.Target.Position),
+                new SeekBehaviour(this, World.Target.Position),
+                new Alignment(this, Neighbours),
+                new Cohesion(this, Neighbours),
+                new Separation(this, Neighbours)
             };
+
 
             Vector2D steering = SteeringBehaviour.CalculateDithered(SteeringBehaviours);
             //steering.Truncate(MaxSpeed);

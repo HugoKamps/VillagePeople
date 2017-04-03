@@ -14,6 +14,7 @@ namespace VillagePeople
         private World _world;
 
         public const float Delta = 0.8f;
+        public float TimeElapsed = 0;
 
         public Container()
         {
@@ -42,8 +43,7 @@ namespace VillagePeople
             }
         }
 
-        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e) {
             _world.Update(Delta);
             GamePanel.Invalidate();
         }
