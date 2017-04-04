@@ -63,6 +63,8 @@
     <Compile Include="Entities\MovingEntity.cs" />
     <Compile Include="Entities\NPC\Villager.cs" />
     <Compile Include="Entities\StaticEntity.cs" />
+    <Compile Include="Entities\Structures\GoldMine.cs" />
+    <Compile Include="Entities\Structures\StoneMine.cs" />
     <Compile Include="Entities\Structures\Tree.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

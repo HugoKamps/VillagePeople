@@ -1,16 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using VillagePeople.Util;
 
 namespace VillagePeople.Entities.Structures
 {
-    class Tree : StaticEntity
+    class GoldMine : StaticEntity
     {
-        public Tree(Vector2D position, World world) : base(position, world)
+        public GoldMine(Vector2D position, World world) : base(position, world)
         {
             Scale = 20;
-            Resource.Wood = 200;
-            GatherRate = new Resource() { Wood = 2 };
+            Resource.Gold = 200;
+            GatherRate = new Resource() { Gold = 2 };
             UnwalkableSpace = new List<Vector2D>()
             {
                 new Vector2D(position.X - Scale / 2, position.Y - Scale / 2), // Top Left
@@ -18,47 +19,47 @@ namespace VillagePeople.Entities.Structures
             };
         }
 
-        public override void Update(float delta)
-        {
-            if (Resource.Wood == 0)
-                Walkable = false;
-            else
-                Resource -= GatherRate;
-        }
-
         public void Gather(BaseGameEntity e)
         {
-            if (Resource.Wood > GatherRate.Wood)
+            if (Resource.Gold > GatherRate.Gold)
                 Resource += e.AddResource(GatherRate);
             else
                 Resource += e.AddResource(Resource);
         }
 
+        public override void Update(float delta)
+        {
+            if (Resource.Gold == 0)
+                Walkable = false;
+            else
+                Resource -= GatherRate;
+        }
+
         public override void Render(Graphics g)
         {
-            var b = new System.Drawing.SolidBrush(Color.Brown);
+            var b = new System.Drawing.SolidBrush(Color.Gold);
 
-            if (Resource.Wood > 100) // Normal tree
+            if (Resource.Gold > 100)
             {
                 double size = Scale;
                 double leftCorner = Position.X - size / 2;
                 double rightCorner = Position.Y - size / 2;
-                g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
+                g.FillRectangle(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
             }
-            else if (Resource.Wood > 0) // Half cutdown tree
+            else if (Resource.Gold > 0)
             {
                 double size = Scale / 2;
                 double leftCorner = Position.X - size / 2;
                 double rightCorner = Position.Y - size / 2;
-                g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
+                g.FillRectangle(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
             }
-            else // Tree stump
+            else
             {
                 b = new System.Drawing.SolidBrush(Color.Black);
                 double size = Scale / 4;
                 double leftCorner = Position.X - 5;
                 double rightCorner = Position.Y - 5;
-                g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)10, (int)10));
+                g.FillRectangle(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)10, (int)10));
             }
         }
     }
