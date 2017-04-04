@@ -6,7 +6,7 @@ using VillagePeople.Util;
 
 namespace VillagePeople.Entities
 {
-    abstract class MovingEntity : BaseGameEntity
+    public abstract class MovingEntity : BaseGameEntity
     {
         public Vector2D Velocity { get; set; }
         public Vector2D Acceleration { get; set; }
@@ -23,11 +23,12 @@ namespace VillagePeople.Entities
         public MovingEntity(Vector2D position, World world) : base(position, world)
         {
             Mass = 150;
-            MaxSpeed = 100;
+            MaxSpeed = 500;
             Radius = 30;
             Velocity = new Vector2D();
             Acceleration = new Vector2D();
             TargetSpeed = Velocity.Length();
+            SteeringBehaviours = new List<SteeringBehaviour>();
         }
 
         public override void Update(float timeElapsed)

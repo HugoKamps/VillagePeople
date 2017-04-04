@@ -3,7 +3,7 @@ using VillagePeople.Util;
 
 namespace VillagePeople.Entities
 {
-    abstract class BaseGameEntity
+    public abstract class BaseGameEntity
     {
         public Vector2D Position { get; set; }
         public float Scale { get; set; }

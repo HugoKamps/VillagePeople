@@ -3,7 +3,7 @@ using VillagePeople.Util;
 
 namespace VillagePeople.Entities.NPC
 {
-    class Villager : MovingEntity
+    public class Villager : MovingEntity
     {
         public Color Color;
 

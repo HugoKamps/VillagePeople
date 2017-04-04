@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace VillagePeople.Util
 {
-    class Graph
+    public class Graph
     {
         public List<Node> Nodes = new List<Node>();
+        public List<Node> path;
         public const int NodeSize = 50;
 
         public Node getNodeByWorldPosition(Vector2D worldPos)
@@ -18,7 +20,19 @@ namespace VillagePeople.Util
                     return node;
                 }
             }
-            return null;
+            return GetClosestNode(worldPos);
+        }
+
+        public Node GetClosestNode(Vector2D worldPos)
+        {
+            return Nodes.Select(x => x).OrderBy(x => GetDistance(x.WorldPosition.X, x.WorldPosition.Y, worldPos.X, worldPos.Y)).First();
+        }
+
+        float GetDistance(float oX, float oY, float tX, float tY)
+        {
+            double xSqr = Math.Pow(Math.Abs(oX - tX), 2);
+            double ySqr = Math.Pow(Math.Abs(oY - tY), 2);
+            return (int)Math.Sqrt(xSqr + ySqr);
         }
 
         public static List<Node> Generate(World w, Node n, List<Node> nodes)

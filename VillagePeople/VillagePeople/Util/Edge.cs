@@ -2,7 +2,7 @@
 
 namespace VillagePeople.Util
 {
-    class Edge
+    public class Edge
     {
         public Node Target;
         public Node Origin;

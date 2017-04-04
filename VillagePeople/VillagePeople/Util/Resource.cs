@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VillagePeople.Util
 {
-    class Resource
+    public class Resource
     {
         public int Wood;
         public int Food;

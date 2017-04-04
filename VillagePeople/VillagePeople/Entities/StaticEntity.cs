@@ -7,7 +7,7 @@ using VillagePeople.Util;
 
 namespace VillagePeople.Entities
 {
-    abstract class StaticEntity : BaseGameEntity
+    public abstract class StaticEntity : BaseGameEntity
     {
         public bool Walkable = false;
         public Resource GatherRate;

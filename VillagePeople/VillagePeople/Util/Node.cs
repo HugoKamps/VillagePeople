@@ -3,13 +3,25 @@ using System.Drawing;
 
 namespace VillagePeople.Util
 {
-    class Node
+    public class Node
     {
         public List<Edge> Edges;
         public Vector2D WorldPosition;
-        
+
         public Color Color = Color.Black;
         public int Size;
+
+        public Node parent;
+
+        public int gCost = -1;
+        public int hCost;
+        public int fCost
+        {
+            get
+            {
+                return gCost + hCost;
+            }
+        }
 
         public Node(int size = 10)
         {
@@ -31,7 +43,8 @@ namespace VillagePeople.Util
 
         public void Connect(Node n1, int cost = 1)
         {
-            Edges.Add(new Edge() { Origin = this, Target = n1, Cost = cost});
+            var edge = new Edge() { Origin = this, Target = n1, Cost = cost };
+            Edges.Add(edge);
         }
 
         public bool IsConnected(Node n1)

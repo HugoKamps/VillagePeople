@@ -73,6 +73,7 @@
     <Compile Include="Util\Graph.cs" />
     <Compile Include="Util\Matrix.cs" />
     <Compile Include="Util\Node.cs" />
+    <Compile Include="Util\PathFinder.cs" />
     <Compile Include="Util\Resource.cs" />
     <Compile Include="Util\Vector2D.cs" />
     <Compile Include="World.cs" />
