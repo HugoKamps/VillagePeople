@@ -35,8 +35,7 @@ namespace VillagePeople.Entities.Structures
 
         public override void Render(Graphics g)
         {
-            var p = new Pen(Color.Brown, 2);
-            var b = new SolidBrush(Color.Brown);
+            var b = new System.Drawing.SolidBrush(Color.Brown);
 
             if (Resource.Wood > 100) // Normal tree
             {
@@ -54,10 +53,11 @@ namespace VillagePeople.Entities.Structures
             }
             else // Tree stump
             {
+                b = new System.Drawing.SolidBrush(Color.Black);
                 double size = Scale / 4;
-                double leftCorner = Position.X - size / 2;
-                double rightCorner = Position.Y - size / 2;
-                g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, 10, 10));
+                double leftCorner = Position.X - 5;
+                double rightCorner = Position.Y - 5;
+                g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)10, (int)10));
             }
         }
     }
