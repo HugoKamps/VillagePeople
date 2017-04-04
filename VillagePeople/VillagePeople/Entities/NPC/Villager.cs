@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Runtime.InteropServices;
 using VillagePeople.StateMachine;
 using VillagePeople.StateMachine.States;
 using VillagePeople.Util;
@@ -49,8 +48,18 @@ namespace VillagePeople.Entities.NPC
             var p = new Pen(Color, 4);
             var b = new SolidBrush(Color);
 
+            var fontFamily = new FontFamily("Arial");
+            var font = new Font(fontFamily, 10, FontStyle.Regular, GraphicsUnit.Pixel);
+
+            string text = "Current state: " + StateMachine.CurrentState.GetType().Name + "\n" +
+                          "Wood:" + Resource.Wood + "\n" +
+                          "Stone: " + Resource.Stone + "\n" + 
+                          "Gold: " + Resource.Gold + "\n" +
+                          "Food: " + Resource.Food;
+
             g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
             g.DrawLine(p, (int)Position.X, (int)Position.Y, (int)Position.X + (int)Velocity.X, (int)Position.Y + (int)Velocity.Y);
+            g.DrawString(text, font, new SolidBrush(Color.Black), Position.X, Position.Y);
         }
     }
 }

@@ -20,7 +20,6 @@ namespace VillagePeople
         public int Height { get; set; }
 
         public Villager Target { get; set; }
-        public Villager Leader { get; set; }
 
         public Resource Resources { get; set; }
 
@@ -34,7 +33,6 @@ namespace VillagePeople
 
             _container = container;
             Resources = new Resource { Food = 0, Gold = 0, Stone = 0, Wood = 0 };
-            Target = new Villager(new Vector2D(Width/2, Height/2), this);
             Init();
 
             _graph = GenerateGraph();
@@ -42,7 +40,7 @@ namespace VillagePeople
 
         public void Init()
         {
-            GameTerrain grass = new GameTerrain(new Vector2D(0, 0), TerrainType.Grass);
+            GameTerrain grass = new GameTerrain(new Vector2D(0, 0));
             Terrains.Add(grass);
             GameTerrain water = new GameTerrain(new Vector2D(100, 0), TerrainType.Water);
             Terrains.Add(water);
@@ -70,12 +68,6 @@ namespace VillagePeople
 
             Sheep s1 = new Sheep(new Vector2D(700, 300), this) { Color = Color.Gray };
             MovingEntities.Add(s1);
-
-            Target = new Villager(new Vector2D(300, 300), this)
-            {
-                Color = Color.DarkRed,
-                Position = new Vector2D(40, 60, 40)
-            };
         }
 
         public void Update(float timeElapsed)
@@ -111,8 +103,8 @@ namespace VillagePeople
 
             MovingEntities.ForEach(e => e.Render(g));
             StaticEntities.ForEach(e => e.Render(g));
-            Target.Render(g);
-            //Leader.Render(g);
+
+            g.DrawRectangle(new Pen(Color.Green), Width/2, Height/2, 30, 30);
         }
 
         public void NextStep(float timeElapsed)

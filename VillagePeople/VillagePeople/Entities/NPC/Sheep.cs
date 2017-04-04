@@ -1,8 +1,5 @@
 ﻿using System.Drawing;
-using System.Runtime.InteropServices;
 using VillagePeople.Behaviours;
-using VillagePeople.StateMachine;
-using VillagePeople.StateMachine.States;
 using VillagePeople.Util;
 
 namespace VillagePeople.Entities.NPC

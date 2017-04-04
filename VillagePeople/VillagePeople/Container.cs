@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Timers;
 using System.Windows.Forms;
-using VillagePeople.Entities;
 using VillagePeople.Util;
 using Timer = System.Timers.Timer;
 
