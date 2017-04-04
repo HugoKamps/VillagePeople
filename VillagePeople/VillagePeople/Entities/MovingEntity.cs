@@ -29,8 +29,6 @@ namespace VillagePeople.Entities
 
         public MovingEntity(Vector2D position, World world) : base(position, world)
         {
-            StateMachine = new StateMachine<MovingEntity>(this);
-            StateMachine.ChangeState(new ReturningResources());
 
             Mass = 150;
             MaxSpeed = 100;
@@ -71,13 +69,13 @@ namespace VillagePeople.Entities
             FlockingBehaviour.TagNeighbors(this, World.MovingEntities, 5);
             Neighbours = World.MovingEntities.FindAll(m => m.Tagged);
 
-            SteeringBehaviours = new List<SteeringBehaviour> {
+            /*SteeringBehaviours = new List<SteeringBehaviour> {
                 new ArriveBehaviour(this, World.Target.Position),
                 new SeekBehaviour(this, World.Target.Position),
                 new Alignment(this, Neighbours),
                 new Cohesion(this, Neighbours),
                 new Separation(this, Neighbours)
-            };
+            };*/
 
 
             Vector2D steering = SteeringBehaviour.CalculateDithered(SteeringBehaviours);

@@ -63,6 +63,7 @@
     </Compile>
     <Compile Include="Entities\BaseGameEntity.cs" />
     <Compile Include="Entities\MovingEntity.cs" />
+    <Compile Include="Entities\NPC\Sheep.cs" />
     <Compile Include="Entities\NPC\Villager.cs" />
     <Compile Include="Entities\StaticEntity.cs" />
     <Compile Include="Entities\Structures\Tree.cs" />

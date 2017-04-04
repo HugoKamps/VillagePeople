@@ -34,7 +34,7 @@ namespace VillagePeople
 
             _container = container;
             Resources = new Resource { Food = 0, Gold = 0, Stone = 0, Wood = 0 };
-
+            Target = new Villager(new Vector2D(Width/2, Height/2), this);
             Init();
 
             _graph = GenerateGraph();
@@ -89,6 +89,8 @@ namespace VillagePeople
                 {
                     se.Update(timeElapsed);
                 }
+
+                _container.UpdateResourcesLabel();
             }
         }
 
