@@ -51,9 +51,9 @@ namespace VillagePeople
 
             Tree t1 = new Tree(new Vector2D(35, 35), this);
             StaticEntities.Add(t1);
-            Tree t2 = new Tree(new Vector2D(350, 310), this);
+            StoneMine t2 = new StoneMine(new Vector2D(350, 310), this);
             StaticEntities.Add(t2);
-            Tree t3 = new Tree(new Vector2D(128, 280), this);
+            GoldMine t3 = new GoldMine(new Vector2D(128, 280), this);
             StaticEntities.Add(t3);
 
             Villager v1 = new Villager(new Vector2D(10, 10), this) { Color = Color.Red };

@@ -25,3 +25,4 @@ C:\Users\Hugo\Dropbox\Windesheim\Jaar 3\Periode 3\AAI\Opdrachten\Final Assignmen
 C:\Users\Hugo\Dropbox\Windesheim\Jaar 3\Periode 3\AAI\Opdrachten\Final Assignment\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.Container.resources
 C:\Users\Hugo\Dropbox\Windesheim\Jaar 3\Periode 3\AAI\Opdrachten\Final Assignment\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.Properties.Resources.resources
 C:\Users\Hugo\Dropbox\Windesheim\Jaar 3\Periode 3\AAI\Opdrachten\Final Assignment\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.csproj.GenerateResource.Cache
+D:\GitHub\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.csprojResolveAssemblyReference.cache
