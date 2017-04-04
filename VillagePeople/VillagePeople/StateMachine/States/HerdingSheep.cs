@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using VillagePeople.Behaviours;
 using VillagePeople.Entities;
+using VillagePeople.Entities.NPC;
 
 namespace VillagePeople.StateMachine.States
 {
@@ -10,13 +11,14 @@ namespace VillagePeople.StateMachine.States
         public override void Enter(MovingEntity me)
         {
             // Move to sheep
-            me.SteeringBehaviours = new List<SteeringBehaviour> { new SeekBehaviour(me, me.World.StaticEntities[0].Position) };
+            me.SteeringBehaviours = new List<SteeringBehaviour> { new SeekBehaviour(me, me.World.MovingEntities.Find(m => m.GetType() == typeof(Sheep)).Position) };
             Console.WriteLine("Herding sheep");
 
         }
 
         public override void Execute(MovingEntity me) {
-            if (me.Position.X - me.World.StaticEntities[0].Position.X < 5) {
+            if (me.CloseEnough(me.Position, me.World.MovingEntities.Find(m => m.GetType() == typeof(Sheep)).Position))
+            {
                 Console.WriteLine("Food: " + me.Resource.Food);
 
                 if (me.Resource.TotalResources() < me.MaxInventorySpace) {

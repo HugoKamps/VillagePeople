@@ -68,6 +68,9 @@ namespace VillagePeople
             Villager v4 = new Villager(new Vector2D(450, 450), this) { Color = Color.Yellow };
             MovingEntities.Add(v4);
 
+            Sheep s1 = new Sheep(new Vector2D(700, 300), this) { Color = Color.Gray };
+            MovingEntities.Add(s1);
+
             Target = new Villager(new Vector2D(300, 300), this)
             {
                 Color = Color.DarkRed,
@@ -81,7 +84,7 @@ namespace VillagePeople
             {
                 foreach (MovingEntity me in MovingEntities)
                 {
-                    me.Update(timeElapsed);
+                    if(me.GetType() == typeof(Villager)) me.Update(timeElapsed);
                     //_container.DebugInfo(DebugType.Velocity, me.Velocity.ToString());
                 }
 

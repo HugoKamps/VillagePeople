@@ -31,5 +31,19 @@ namespace VillagePeople.Entities
 
         public void Tag() => Tagged = true;
         public void UnTag() => Tagged = false;
+
+        public bool CloseEnough(Vector2D from, Vector2D to)
+        {
+            float x;
+            float y;
+
+            if (from.X < to.X) x = to.X - from.X;
+            else x = from.X - to.X;
+
+            if (from.Y < to.Y) y = to.Y - from.Y;
+            else y = from.Y - to.Y;
+
+            return x < 5 && y < 5;
+        }
     }
 }

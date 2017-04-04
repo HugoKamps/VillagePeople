@@ -29,7 +29,6 @@ namespace VillagePeople.Entities
 
         public MovingEntity(Vector2D position, World world) : base(position, world)
         {
-
             Mass = 150;
             MaxSpeed = 100;
             Radius = 30;
@@ -40,31 +39,7 @@ namespace VillagePeople.Entities
 
         public override void Update(float timeElapsed) {
             _elapsedTicks += 1;
-            if(_elapsedTicks % 50 == 0) StateMachine.Update();
-            /*Position.Add(Velocity);
-
-            if (Position.X < 0 || Position.X > World.Width || Position.Y < 0 || Position.Y > World.Height)
-            {
-                Position = new Vector2D(300, 300);
-                Velocity = new Vector2D(1, 1);
-                Acceleration = new Vector2D(1, 1);
-            }
-
-            var rotationMatrix = Matrix.Identity().Rotate(30);
-            Vector2D targetVelocity;
-
-            TargetSpeed += Acceleration.Length();
-            if (TargetSpeed > MaxSpeed)
-            {
-                targetVelocity = Velocity * rotationMatrix;
-                TargetSpeed = MaxSpeed;
-            }
-            else
-            {
-                targetVelocity = Velocity.Add(Acceleration) * rotationMatrix;
-            }
-
-            Velocity = targetVelocity.Scale(TargetSpeed);*/
+            if (_elapsedTicks % 50 == 0) StateMachine.Update();
 
             FlockingBehaviour.TagNeighbors(this, World.MovingEntities, 5);
             Neighbours = World.MovingEntities.FindAll(m => m.Tagged);
@@ -76,7 +51,6 @@ namespace VillagePeople.Entities
                 new Cohesion(this, Neighbours),
                 new Separation(this, Neighbours)
             };*/
-
 
             Vector2D steering = SteeringBehaviour.CalculateDithered(SteeringBehaviours);
             //steering.Truncate(MaxSpeed);

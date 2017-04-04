@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using VillagePeople.Behaviours;
 using VillagePeople.Entities;
 using VillagePeople.Util;
@@ -18,7 +17,8 @@ namespace VillagePeople.StateMachine.States
         }
 
         public override void Execute(MovingEntity me) {
-            if ((float)me.World.Width / 2 - me.Position.X < 5) {
+            if (me.CloseEnough(me.Position, new Vector2D((float)me.World.Width / 2, (float)me.World.Height / 2)))
+            {
                 me.World.Resources.Wood += me.Resource.Wood;
                 me.Resource.Wood = 0;
 

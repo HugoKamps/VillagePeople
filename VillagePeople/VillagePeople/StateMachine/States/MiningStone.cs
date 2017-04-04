@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using VillagePeople.Behaviours;
 using VillagePeople.Entities;
+using VillagePeople.Entities.Structures;
 
 namespace VillagePeople.StateMachine.States
 {
@@ -10,19 +11,21 @@ namespace VillagePeople.StateMachine.States
         public override void Enter(MovingEntity me)
         {
             // Move to stone
-            me.SteeringBehaviours = new List<SteeringBehaviour> { new SeekBehaviour(me, me.World.StaticEntities[0].Position) };
+            me.SteeringBehaviours = new List<SteeringBehaviour> { new SeekBehaviour(me, me.World.StaticEntities.Find(m => m.GetType() == typeof(StoneMine)).Position) };
             Console.WriteLine("Mining gold");
         }
 
         public override void Execute(MovingEntity me)
         {
-            if (me.Position.X - me.World.StaticEntities[0].Position.X < 5) {
+            if (me.CloseEnough(me.Position, me.World.StaticEntities.Find(m => m.GetType() == typeof(StoneMine)).Position))
+            {
                 Console.WriteLine("Stone: " + me.Resource.Stone);
 
-                if (me.Resource.TotalResources() < me.MaxInventorySpace) {
+                if (me.Resource.TotalResources() < me.MaxInventorySpace)
+                {
                     me.Resource.Stone += 1;
-                }
-                else {
+                } else
+                {
                     me.StateMachine.ChangeState(new ReturningResources());
                 }
             }
