@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Timers;
 using System.Windows.Forms;
+using VillagePeople.Entities;
 using VillagePeople.Util;
 using Timer = System.Timers.Timer;
 
@@ -12,6 +14,7 @@ namespace VillagePeople
         private World _world;
 
         public const float Delta = 0.8f;
+        public float TimeElapsed = 0;
 
         public Container()
         {
@@ -40,8 +43,7 @@ namespace VillagePeople
             }
         }
 
-        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e) {
             _world.Update(Delta);
             GamePanel.Invalidate();
         }
@@ -70,6 +72,7 @@ namespace VillagePeople
     public enum DebugType
     {
         Velocity,
-        Position
+        Position,
+        Neighbours
     }
 }

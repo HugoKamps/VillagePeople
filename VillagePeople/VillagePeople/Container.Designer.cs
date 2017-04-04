@@ -1,9 +1,12 @@
-﻿namespace VillagePeople {
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace VillagePeople {
     partial class Container {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -90,10 +93,10 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel GamePanel;
-        private System.Windows.Forms.CheckBox cbDebug;
-        private System.Windows.Forms.CheckBox cbUpdate;
-        private System.Windows.Forms.Label lblVelocity;
+        private Panel GamePanel;
+        private CheckBox cbDebug;
+        private CheckBox cbUpdate;
+        private Label lblVelocity;
     }
 }
 

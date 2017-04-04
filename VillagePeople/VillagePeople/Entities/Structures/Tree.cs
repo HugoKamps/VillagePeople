@@ -10,11 +10,10 @@ namespace VillagePeople.Entities.Structures
         {
             Scale = 20;
             Resource.Wood = 200;
-            GatherRate = new Resource() { Wood = 2 };
-            UnwalkableSpace = new List<Vector2D>()
-            {
+            GatherRate = new Resource { Wood = 2 };
+            UnwalkableSpace = new List<Vector2D> {
                 new Vector2D(position.X - Scale / 2, position.Y - Scale / 2), // Top Left
-                new Vector2D(position.X + Scale / 2, position.Y + Scale / 2), // Bottom Right
+                new Vector2D(position.X + Scale / 2, position.Y + Scale / 2) // Bottom Right
             };
         }
 

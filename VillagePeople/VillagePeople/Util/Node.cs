@@ -31,7 +31,7 @@ namespace VillagePeople.Util
 
         public void Connect(Node n1, int cost = 1)
         {
-            Edges.Add(new Edge() { Origin = this, Target = n1, Cost = cost});
+            Edges.Add(new Edge { Origin = this, Target = n1, Cost = cost});
         }
 
         public bool IsConnected(Node n1)
