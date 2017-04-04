@@ -11,7 +11,7 @@ namespace VillagePeople.Entities.Structures
         {
             Scale = 20;
             Resource.Gold = 200;
-            GatherRate = new Resource() { Gold = 2 };
+            GatherRate = new Resource() { Gold = 1 };
             UnwalkableSpace = new List<Vector2D>()
             {
                 new Vector2D(position.X - Scale / 2, position.Y - Scale / 2), // Top Left
@@ -29,10 +29,10 @@ namespace VillagePeople.Entities.Structures
 
         public override void Update(float delta)
         {
-            if (Resource.Gold == 0)
-                Walkable = false;
-            else
-                Resource -= GatherRate;
+            //if (Resource.Gold == 0)
+            //    Walkable = false;
+            //else
+            //    Resource -= GatherRate;
         }
 
         public override void Render(Graphics g)
@@ -61,6 +61,8 @@ namespace VillagePeople.Entities.Structures
                 double rightCorner = Position.Y - 5;
                 g.FillRectangle(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)10, (int)10));
             }
+
+            g.DrawString(Resource.Gold.ToString(), new System.Drawing.Font("Arial", 9), new SolidBrush(Color.Black), Position.X, Position.Y);
         }
     }
 }

@@ -17,11 +17,13 @@ namespace VillagePeople.StateMachine.States
 
         public override void Execute(MovingEntity me)
         {
-            if (me.CloseEnough(me.Position, me.World.StaticEntities.Find(m => m.GetType() == typeof(GoldMine)).Position)) {
+            var gold = (GoldMine)me.World.StaticEntities.Find(m => m.GetType() == typeof(GoldMine));
+            if (me.CloseEnough(me.Position, gold.Position)) {
                 Console.WriteLine("Gold: " + me.Resource.Gold);
 
                 if (me.Resource.TotalResources() < me.MaxInventorySpace) {
-                    me.Resource.Gold += 1;
+                    //me.Resource.Gold += 1;
+                    gold.Gather(me);
                 }
                 else {
                     me.StateMachine.ChangeState(new ReturningResources());

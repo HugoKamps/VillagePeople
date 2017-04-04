@@ -20,7 +20,7 @@ namespace VillagePeople.Entities
         public virtual Resource AddResource(Resource r)
         {
             Resource += r;
-            return new Resource();
+            return new Resource() - r;
         }
 
         public abstract void Update(float delta);

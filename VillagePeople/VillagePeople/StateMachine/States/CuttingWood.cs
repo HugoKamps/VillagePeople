@@ -17,12 +17,18 @@ namespace VillagePeople.StateMachine.States
 
         public override void Execute(MovingEntity me)
         {
-            if (me.CloseEnough(me.Position, me.World.StaticEntities.Find(m => m.GetType() == typeof(Tree)).Position))
+            var tree = (Tree)me.World.StaticEntities.Find(m => m.GetType() == typeof(Tree));
+
+            if (tree == null)
+                me.StateMachine.ChangeState(new ReturningResources());
+
+            if (me.CloseEnough(me.Position, tree.Position))
             {
                 Console.WriteLine("Wood: " + me.Resource.Wood);
 
                 if (me.Resource.TotalResources() < me.MaxInventorySpace) {
-                    me.Resource.Wood += 1;
+                    //me.Resource.Wood += 1;
+                    tree.Gather(me);
                 }
                 else {
                     me.StateMachine.ChangeState(new ReturningResources());

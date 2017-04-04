@@ -19,10 +19,10 @@ namespace VillagePeople.Entities.Structures
 
         public override void Update(float delta)
         {
-            if (Resource.Wood == 0)
-                Walkable = false;
-            else
-                Resource -= GatherRate;
+            //if (Resource.Wood == 0)
+            //    Walkable = false;
+            //else
+            //    Resource -= GatherRate;
         }
 
         public void Gather(BaseGameEntity e)
@@ -59,6 +59,8 @@ namespace VillagePeople.Entities.Structures
                 double rightCorner = Position.Y - 5;
                 g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)10, (int)10));
             }
+
+            g.DrawString(Resource.Wood.ToString(), new System.Drawing.Font("Arial", 9), new SolidBrush(Color.Black), Position.X, Position.Y);
         }
     }
 }

@@ -17,13 +17,15 @@ namespace VillagePeople.StateMachine.States
 
         public override void Execute(MovingEntity me)
         {
-            if (me.CloseEnough(me.Position, me.World.StaticEntities.Find(m => m.GetType() == typeof(StoneMine)).Position))
+            var stone = (StoneMine)me.World.StaticEntities.Find(m => m.GetType() == typeof(StoneMine));
+            if (me.CloseEnough(me.Position, stone.Position))
             {
                 Console.WriteLine("Stone: " + me.Resource.Stone);
 
                 if (me.Resource.TotalResources() < me.MaxInventorySpace)
                 {
-                    me.Resource.Stone += 1;
+                    //me.Resource.Stone += 1;
+                    stone.Gather(me);
                 } else
                 {
                     me.StateMachine.ChangeState(new ReturningResources());

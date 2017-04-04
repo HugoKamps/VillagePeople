@@ -28,9 +28,9 @@ namespace VillagePeople.Entities.NPC
             var p = new Pen(Color, 4);
             var b = new SolidBrush(Color);
 
-            g.DrawImage(new Bitmap(@"C:\Users\Hugo\Downloads\trump.png"), new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
+            g.DrawImage(new Bitmap(@"..\..\Resources\spel.png"), new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
 
-            g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
+            //g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
             g.DrawLine(p, (int)Position.X, (int)Position.Y, (int)Position.X + (int)Velocity.X, (int)Position.Y + (int)Velocity.Y);
         }
 
