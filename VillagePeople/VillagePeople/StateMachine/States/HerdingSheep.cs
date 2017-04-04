@@ -6,22 +6,23 @@ using VillagePeople.Entities.NPC;
 
 namespace VillagePeople.StateMachine.States
 {
-    class HerdingSheep : State<MovingEntity>
-    {
+    class HerdingSheep : State<MovingEntity> {
+        private MovingEntity target;
         public override void Enter(MovingEntity me)
         {
             // Move to sheep
-            me.SteeringBehaviours = new List<SteeringBehaviour> { new SeekBehaviour(me, me.World.MovingEntities.Find(m => m.GetType() == typeof(Sheep)).Position) };
+            target = me.World.MovingEntities.Find(m => m.GetType() == typeof(Sheep));
+            me.SteeringBehaviours = new List<SteeringBehaviour> { new SeekBehaviour(me, target.Position) };
             Console.WriteLine("Herding sheep");
 
         }
 
         public override void Execute(MovingEntity me) {
-            if (me.CloseEnough(me.Position, me.World.MovingEntities.Find(m => m.GetType() == typeof(Sheep)).Position))
+            if (me.CloseEnough(me.Position, target.Position))
             {
                 Console.WriteLine("Food: " + me.Resource.Food);
 
-                if (me.Resource.TotalResources() < me.MaxInventorySpace) {
+                if (me.Resource.TotalResources() < me.MaxInventorySpace && target.Resource.Food > 0) {
                     me.Resource.Food += 1;
                 }
                 else {

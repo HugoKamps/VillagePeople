@@ -23,7 +23,8 @@ namespace VillagePeople
 
         public Resource Resources { get; set; }
 
-        public bool Debug = false;
+        public bool DebugGraph = false;
+        public bool DebugText = false;
         public bool AutoUpdate = false;
 
         public World(int width, int height, Container container)
@@ -98,7 +99,7 @@ namespace VillagePeople
         {
             Terrains.ForEach(e => e.Render(g));
 
-            if (Debug)
+            if (DebugGraph)
                 _graph.Render(g);
 
             MovingEntities.ForEach(e => e.Render(g));

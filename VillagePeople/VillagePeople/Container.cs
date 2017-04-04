@@ -58,7 +58,7 @@ namespace VillagePeople
 
         private void cbDebug_CheckedChanged(object sender, EventArgs e)
         {
-            _world.Debug = cbDebug.Checked;
+            _world.DebugGraph = cbDebug.Checked;
         }
 
         private void cbUpdate_CheckedChanged(object sender, EventArgs e)
@@ -69,6 +69,12 @@ namespace VillagePeople
         public void UpdateResourcesLabel() {
             resourcesLabel.Text = "Wood: " + _world.Resources.Wood + " - " + "Stone: " + _world.Resources.Stone + " - " +
                                   "Gold: " + _world.Resources.Gold + " - " + "Food: " + _world.Resources.Food;
+        }
+
+        private void cbDebugText_CheckedChanged(object sender, EventArgs e)
+        {
+            _world.DebugText = cbDebugText.Checked;
+
         }
     }
 

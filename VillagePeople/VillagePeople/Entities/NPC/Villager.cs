@@ -59,7 +59,7 @@ namespace VillagePeople.Entities.NPC
 
             g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
             g.DrawLine(p, (int)Position.X, (int)Position.Y, (int)Position.X + (int)Velocity.X, (int)Position.Y + (int)Velocity.Y);
-            g.DrawString(text, font, new SolidBrush(Color.Black), Position.X, Position.Y);
+            if(World.DebugText) g.DrawString(text, font, new SolidBrush(Color.Black), Position.X, Position.Y);
         }
     }
 }
