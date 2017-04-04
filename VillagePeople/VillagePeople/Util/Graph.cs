@@ -20,7 +20,7 @@ namespace VillagePeople.Util
                     return node;
                 }
             }
-            return GetClosestNode(worldPos);
+            return null;//GetClosestNode(worldPos);
         }
 
         public Node GetClosestNode(Vector2D worldPos)
