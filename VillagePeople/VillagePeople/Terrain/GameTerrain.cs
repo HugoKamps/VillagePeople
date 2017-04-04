@@ -9,13 +9,7 @@ namespace VillagePeople.Terrain
         public TerrainType Type;
         public Vector2D Position;
 
-        public bool Walkable
-        {
-            get
-            {
-                return Speed > 0.0f;
-            }
-        }
+        public bool Walkable => Speed > 0.0f;
 
         public GameTerrain(Vector2D position, TerrainType t = TerrainType.Grass)
         {

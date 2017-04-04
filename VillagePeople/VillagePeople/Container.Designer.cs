@@ -30,6 +30,7 @@ namespace VillagePeople {
             this.lblVelocity = new System.Windows.Forms.Label();
             this.cbUpdate = new System.Windows.Forms.CheckBox();
             this.cbDebug = new System.Windows.Forms.CheckBox();
+            this.resourcesLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // GamePanel
@@ -74,11 +75,21 @@ namespace VillagePeople {
             this.cbDebug.UseVisualStyleBackColor = true;
             this.cbDebug.CheckedChanged += new System.EventHandler(this.cbDebug_CheckedChanged);
             // 
+            // resourcesLabel
+            // 
+            this.resourcesLabel.AutoSize = true;
+            this.resourcesLabel.Location = new System.Drawing.Point(421, 3);
+            this.resourcesLabel.Name = "resourcesLabel";
+            this.resourcesLabel.Size = new System.Drawing.Size(58, 13);
+            this.resourcesLabel.TabIndex = 3;
+            this.resourcesLabel.Text = "Resources";
+            // 
             // Container
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1120, 639);
+            this.Controls.Add(this.resourcesLabel);
             this.Controls.Add(this.cbDebug);
             this.Controls.Add(this.cbUpdate);
             this.Controls.Add(this.lblVelocity);
@@ -97,6 +108,7 @@ namespace VillagePeople {
         private CheckBox cbDebug;
         private CheckBox cbUpdate;
         private Label lblVelocity;
+        private Label resourcesLabel;
     }
 }
 

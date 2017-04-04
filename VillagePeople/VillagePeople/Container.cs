@@ -67,6 +67,11 @@ namespace VillagePeople
         {
             _world.AutoUpdate = cbUpdate.Checked;
         }
+
+        public void UpdateResourcesLabel() {
+            resourcesLabel.Text = "Wood: " + _world.Resources.Wood + " - " + "Stone: " + _world.Resources.Stone + " - " +
+                                  "Gold: " + _world.Resources.Gold + " - " + "Food: " + _world.Resources.Food;
+        }
     }
 
     public enum DebugType
