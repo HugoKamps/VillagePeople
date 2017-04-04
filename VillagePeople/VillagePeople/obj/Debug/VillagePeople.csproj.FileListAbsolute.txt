@@ -16,3 +16,4 @@ D:\GitHub\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.Prop
 D:\GitHub\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.csproj.GenerateResource.Cache
 D:\GitHub\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.exe
 D:\GitHub\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.pdb
+D:\GitHub\VillagePeople\VillagePeople\VillagePeople\obj\Debug\VillagePeople.csprojResolveAssemblyReference.cache

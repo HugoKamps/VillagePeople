@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VillagePeople.Util
+﻿namespace VillagePeople.Util
 {
     public class Resource
     {
@@ -54,13 +48,12 @@ namespace VillagePeople.Util
                 { s += Stone; cap -= Stone; }
             }
 
-            return new Resource() { Wood = w, Food = f, Gold = g, Stone = s };
+            return new Resource { Wood = w, Food = f, Gold = g, Stone = s };
         }
 
         public static Resource operator +(Resource r1, Resource r2)
         {
-            return new Resource()
-            {
+            return new Resource {
                 Wood = r1.Wood + r2.Wood,
                 Food = r1.Food + r2.Food,
                 Gold = r1.Gold + r2.Gold,
@@ -70,8 +63,7 @@ namespace VillagePeople.Util
 
         public static Resource operator -(Resource r1, Resource r2)
         {
-            return new Resource()
-            {
+            return new Resource {
                 Wood = r1.Wood - r2.Wood,
                 Food = r1.Food - r2.Food,
                 Gold = r1.Gold - r2.Gold,

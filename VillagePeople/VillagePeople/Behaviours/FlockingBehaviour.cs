@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using VillagePeople.Entities;
 using VillagePeople.Util;
 
@@ -12,10 +13,10 @@ namespace VillagePeople.Behaviours
 
         public override Vector2D Calculate()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public void TagNeighbors(MovingEntity me, List<MovingEntity> entities, double radius)
+        public static void TagNeighbors(MovingEntity me, List<MovingEntity> entities, double radius)
         {
             foreach (var entity in entities)
             {
@@ -46,20 +47,20 @@ namespace VillagePeople.Behaviours
         public override Vector2D Calculate()
         {
             Vector2D averageHeading = new Vector2D();
-            int NeighborCount = 0;
+            int neighborCount = 0;
 
             foreach (MovingEntity me in _neighbors)
             {
                 if (me != _self && me.Tagged)
                 {
                     averageHeading = averageHeading + me.Acceleration;
-                    NeighborCount++;
+                    neighborCount++;
                 }
             }
 
-            if (NeighborCount > 0)
+            if (neighborCount > 0)
             {
-                averageHeading = averageHeading / NeighborCount;
+                averageHeading = averageHeading / neighborCount;
                 averageHeading = averageHeading - _self.Acceleration;
             }
             return averageHeading;

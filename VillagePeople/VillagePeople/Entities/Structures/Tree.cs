@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VillagePeople.Util;
 
 namespace VillagePeople.Entities.Structures
@@ -14,20 +10,19 @@ namespace VillagePeople.Entities.Structures
         {
             Scale = 20;
             Resource.Wood = 200;
-            GatherRate = new Resource() { Wood = 2 };
-            UnwalkableSpace = new List<Vector2D>()
-            {
+            GatherRate = new Resource { Wood = 2 };
+            UnwalkableSpace = new List<Vector2D> {
                 new Vector2D(position.X - Scale / 2, position.Y - Scale / 2), // Top Left
-                new Vector2D(position.X + Scale / 2, position.Y + Scale / 2), // Bottom Right
+                new Vector2D(position.X + Scale / 2, position.Y + Scale / 2) // Bottom Right
             };
         }
 
         public override void Update(float delta)
         {
-            if (Resource.Wood == 0)
-                Walkable = false;
-            else
-                Resource -= GatherRate;
+            //if (Resource.Wood == 0)
+            //    Walkable = false;
+            //else
+            //    Resource -= GatherRate;
         }
 
         public void Gather(BaseGameEntity e)
@@ -40,7 +35,6 @@ namespace VillagePeople.Entities.Structures
 
         public override void Render(Graphics g)
         {
-            var p = new Pen(Color.Brown, 2);
             var b = new System.Drawing.SolidBrush(Color.Brown);
 
             if (Resource.Wood > 100) // Normal tree
@@ -59,11 +53,14 @@ namespace VillagePeople.Entities.Structures
             }
             else // Tree stump
             {
+                b = new System.Drawing.SolidBrush(Color.Black);
                 double size = Scale / 4;
-                double leftCorner = Position.X - size / 2;
-                double rightCorner = Position.Y - size / 2;
+                double leftCorner = Position.X - 5;
+                double rightCorner = Position.Y - 5;
                 g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)10, (int)10));
             }
+
+            g.DrawString(Resource.Wood.ToString(), new System.Drawing.Font("Arial", 9), new SolidBrush(Color.Black), Position.X, Position.Y);
         }
     }
 }

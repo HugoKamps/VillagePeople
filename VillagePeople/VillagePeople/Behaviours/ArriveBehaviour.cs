@@ -3,7 +3,7 @@ using VillagePeople.Util;
 
 namespace VillagePeople.Behaviours
 {
-    public enum Decelerations { slow = 3, normal = 2, fast = 1 }
+    public enum Decelerations { Slow = 3, Normal = 2, Fast = 1 }
     class ArriveBehaviour : SteeringBehaviour
     {
         public Vector2D Target { get; set; }
@@ -14,7 +14,7 @@ namespace VillagePeople.Behaviours
         {
             Target = target.Clone();
             _self = me;
-            _deceleration = Decelerations.normal;
+            _deceleration = Decelerations.Normal;
         }
 
         public override Vector2D Calculate()
@@ -22,7 +22,6 @@ namespace VillagePeople.Behaviours
             var vehicle = _self.Position;
             Target -= vehicle;
             var toTarget = Target;
-
             var distance = toTarget.Length();
 
             if (distance > 0)

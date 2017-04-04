@@ -1,4 +1,7 @@
 ﻿using System.Drawing;
+using System.Runtime.InteropServices;
+using VillagePeople.StateMachine;
+using VillagePeople.StateMachine.States;
 using VillagePeople.Util;
 
 namespace VillagePeople.Entities.NPC
@@ -9,6 +12,9 @@ namespace VillagePeople.Entities.NPC
 
         public Villager(Vector2D position, World world) : base(position, world)
         {
+            StateMachine = new StateMachine<MovingEntity>(this);
+            StateMachine.ChangeState(new ReturningResources());
+
             Velocity = new Vector2D(1, 1);
             Acceleration = new Vector2D(1, 1);
             TargetSpeed = Velocity.Length();
@@ -30,19 +36,17 @@ namespace VillagePeople.Entities.NPC
             if (capacity >= r.TotalResources())
             {
                 return base.AddResource(r);
-            } else
-            {
-                return base.AddResource(r.Cap(capacity));
             }
+            return base.AddResource(r.Cap(capacity));
         }
 
         public override void Render(Graphics g)
         {
             double leftCorner = Position.X - Scale;
             double rightCorner = Position.Y - Scale;
-            double size = Scale * 2;
+            double size = Scale;
 
-            var p = new Pen(Color, 2);
+            var p = new Pen(Color, 4);
             var b = new SolidBrush(Color);
 
             g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));

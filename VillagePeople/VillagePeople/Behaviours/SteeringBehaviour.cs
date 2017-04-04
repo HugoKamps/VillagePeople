@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Windows.Forms;
+﻿using System.Collections.Generic;
 using VillagePeople.Entities;
 using VillagePeople.Util;
 
@@ -10,14 +7,13 @@ namespace VillagePeople.Behaviours
     public abstract class SteeringBehaviour
     {
 
-        private const float PrArrive = 0.9f;
-        private const float PrSeek = 0.9f;
+        private const float PrArrive = 0.7f;
+        private const float PrSeek = 0.7f;
         private const float PrSeparation = 0.9f;
-        private const float PrAlignment = 0.9f;
-        private const float PrCohesion = 0.9f;
-        private const float PrWander = 0.9f;
-
-
+        private const float PrAlignment = 0.6f;
+        private const float PrCohesion = 0.5f;
+        private const float PrWander = 1.0f;
+        
         public MovingEntity M { get; set; }
         public abstract Vector2D Calculate();
 

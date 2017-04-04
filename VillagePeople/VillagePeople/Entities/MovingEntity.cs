@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using VillagePeople.Behaviours;
+using VillagePeople.Entities.NPC;
+using VillagePeople.StateMachine;
+using VillagePeople.StateMachine.States;
 using VillagePeople.Util;
 
 namespace VillagePeople.Entities
@@ -19,6 +21,11 @@ namespace VillagePeople.Entities
         public int MaxInventorySpace { get; set; }
         public double TargetSpeed;
         public double Radius;
+        public List<MovingEntity> Neighbours { get; set; }
+
+        public StateMachine<MovingEntity> StateMachine;
+
+        private int _elapsedTicks;
 
         public MovingEntity(Vector2D position, World world) : base(position, world)
         {
@@ -31,46 +38,29 @@ namespace VillagePeople.Entities
             SteeringBehaviours = new List<SteeringBehaviour>();
         }
 
-        public override void Update(float timeElapsed)
-        {
-            /*Position.Add(Velocity);
+        public override void Update(float timeElapsed) {
+            _elapsedTicks += 1;
+            if (_elapsedTicks % 50 == 0) StateMachine.Update();
 
-            if (Position.X < 0 || Position.X > World.Width || Position.Y < 0 || Position.Y > World.Height)
-            {
-                Position = new Vector2D(300, 300);
-                Velocity = new Vector2D(1, 1);
-                Acceleration = new Vector2D(1, 1);
-            }
+            FlockingBehaviour.TagNeighbors(this, World.MovingEntities, 5);
+            Neighbours = World.MovingEntities.FindAll(m => m.Tagged);
 
-            var rotationMatrix = Matrix.Identity().Rotate(30);
-            Vector2D targetVelocity;
-
-            TargetSpeed += Acceleration.Length();
-            if (TargetSpeed > MaxSpeed)
-            {
-                targetVelocity = Velocity * rotationMatrix;
-                TargetSpeed = MaxSpeed;
-            }
-            else
-            {
-                targetVelocity = Velocity.Add(Acceleration) * rotationMatrix;
-            }
-
-            Velocity = targetVelocity.Scale(TargetSpeed);*/
-
-            World.Target.Position = new Vector2D(40, 40);
-
-            SteeringBehaviours.Add(new ArriveBehaviour(this, World.Target.Position));
-            SteeringBehaviours.Add(new SeekBehaviour(this, World.Target.Position));
+            /*SteeringBehaviours = new List<SteeringBehaviour> {
+                new ArriveBehaviour(this, World.Target.Position),
+                new SeekBehaviour(this, World.Target.Position),
+                new Alignment(this, Neighbours),
+                new Cohesion(this, Neighbours),
+                new Separation(this, Neighbours)
+            };*/
 
             Vector2D steering = SteeringBehaviour.CalculateDithered(SteeringBehaviours);
-            steering.Truncate(MaxSpeed);
+            //steering.Truncate(MaxSpeed);
             steering /= Mass;
 
             Vector2D acceleration = steering;
             acceleration *= timeElapsed;
             Velocity += acceleration;
-            Velocity.Truncate(MaxSpeed);
+            //Velocity.Truncate(MaxSpeed);
 
             Velocity *= timeElapsed;
             Position += Velocity;

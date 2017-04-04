@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using VillagePeople.Util;
 
 namespace VillagePeople.Terrain
@@ -14,13 +9,7 @@ namespace VillagePeople.Terrain
         public TerrainType Type;
         public Vector2D Position;
 
-        public bool Walkable
-        {
-            get
-            {
-                return Speed > 0.0f;
-            }
-        }
+        public bool Walkable => Speed > 0.0f;
 
         public GameTerrain(Vector2D position, TerrainType t = TerrainType.Grass)
         {
@@ -29,13 +18,13 @@ namespace VillagePeople.Terrain
             switch (Type)
             {
                 case TerrainType.Grass:
-                    Speed = 0.7f;
+                    Speed = 1.0f;
                     break;
                 case TerrainType.Water:
-                    Speed = 0.0f;
+                    Speed = 0.2f;
                     break;
                 case TerrainType.Road:
-                    Speed = 1.0f;
+                    Speed = 1.2f;
                     break;
             }
         }

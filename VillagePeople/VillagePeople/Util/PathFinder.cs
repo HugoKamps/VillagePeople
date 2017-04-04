@@ -27,7 +27,7 @@ namespace VillagePeople.Util
 
             while (openSet.Count > 0)
             {
-                Node currentNode = grid.getNodeByWorldPosition(openSet[0].Value.WorldPosition);
+                Node currentNode = grid.GetClosestNode(openSet[0].Value.WorldPosition);
                 for (int i = 1; i < openSet.Count; i++)
                 {
                     if (openSet[i].Value.fCost < currentNode.fCost || openSet[i].Value.fCost == currentNode.fCost && openSet[i].Value.hCost < currentNode.hCost)

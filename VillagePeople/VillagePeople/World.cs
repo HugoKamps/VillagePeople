@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using VillagePeople.Entities;
 using VillagePeople.Entities.NPC;
 using VillagePeople.Entities.Structures;
@@ -12,9 +10,9 @@ namespace VillagePeople
 {
     public class World
     {
-        private List<MovingEntity> _movingEntities = new List<MovingEntity>();
-        public List<StaticEntity> staticEntities = new List<StaticEntity>();
-        public List<GameTerrain> terrains = new List<GameTerrain>();
+        public List<MovingEntity> MovingEntities = new List<MovingEntity>();
+        public List<StaticEntity> StaticEntities = new List<StaticEntity>();
+        public List<GameTerrain> Terrains = new List<GameTerrain>();
         private Container _container;
         private Graph _graph;
 
@@ -26,6 +24,8 @@ namespace VillagePeople
         public Villager Target { get; set; }
         public Villager Leader { get; set; }
 
+        public Resource Resources { get; set; }
+
         public bool Debug = false;
         public bool AutoUpdate = false;
 
@@ -35,6 +35,8 @@ namespace VillagePeople
             Height = height;
 
             _container = container;
+            Resources = new Resource { Food = 0, Gold = 0, Stone = 0, Wood = 0 };
+            Target = new Villager(new Vector2D(Width/2, Height/2), this);
 
             _graph = GenerateGraph();
             pf = new Pathfinder();
@@ -45,25 +47,34 @@ namespace VillagePeople
 
         public void Init()
         {
-            //GameTerrain grass = new GameTerrain(new Vector2D(0, 0), TerrainType.Grass);
-            //terrains.Add(grass);
-            //GameTerrain water = new GameTerrain(new Vector2D(100, 0), TerrainType.Water); 
-            //terrains.Add(water);
-            //GameTerrain road = new GameTerrain(new Vector2D(0, 100), TerrainType.Road);
-            //terrains.Add(road);
+            GameTerrain grass = new GameTerrain(new Vector2D(0, 0), TerrainType.Grass);
+            Terrains.Add(grass);
+            GameTerrain water = new GameTerrain(new Vector2D(100, 0), TerrainType.Water);
+            Terrains.Add(water);
+            GameTerrain road = new GameTerrain(new Vector2D(0, 100), TerrainType.Road);
+            Terrains.Add(road);
 
-            //Tree t1 = new Tree(new Vector2D(35, 35), this);
-            //staticEntities.Add(t1);
-            //Tree t2 = new Tree(new Vector2D(350, 310), this);
-            //staticEntities.Add(t2);
-            //Tree t3 = new Tree(new Vector2D(128, 280), this);
-            //staticEntities.Add(t3);
+            Tree t1 = new Tree(new Vector2D(35, 35), this);
+            StaticEntities.Add(t1);
+            StoneMine t2 = new StoneMine(new Vector2D(350, 310), this);
+            StaticEntities.Add(t2);
+            GoldMine t3 = new GoldMine(new Vector2D(128, 280), this);
+            StaticEntities.Add(t3);
 
-            //Villager v1 = new Villager(new Vector2D(200, 100), this) { Color = Color.Red };
-            //_movingEntities.Add(v1);
+            Villager v1 = new Villager(new Vector2D(10, 10), this) { Color = Color.Red };
+            MovingEntities.Add(v1);
 
-            //Villager v2 = new Villager(new Vector2D(150, 150), this) { Color = Color.Blue };
-            //_movingEntities.Add(v2);
+            Villager v2 = new Villager(new Vector2D(150, 150), this) { Color = Color.Blue };
+            MovingEntities.Add(v2);
+
+            Villager v3 = new Villager(new Vector2D(200, 290), this) { Color = Color.Brown };
+            MovingEntities.Add(v3);
+
+            Villager v4 = new Villager(new Vector2D(450, 450), this) { Color = Color.Yellow };
+            MovingEntities.Add(v4);
+
+            Sheep s1 = new Sheep(new Vector2D(700, 300), this) { Color = Color.Gray };
+            MovingEntities.Add(s1);
 
             //Villager v3 = new Villager(new Vector2D(200, 200), this) { Color = Color.Brown };
             //_movingEntities.Add(v3);
@@ -77,13 +88,6 @@ namespace VillagePeople
             //    Position = new Vector2D(40, 60, 40)
             //};
 
-
-            Villager v1 = new Villager(new Vector2D(10, 10), this) { Color = Color.Yellow };
-            _movingEntities.Add(v1);
-
-            Villager v2 = new Villager(new Vector2D(170, 130), this) { Color = Color.Purple };
-            _movingEntities.Add(v2);
-
             pf.seeker = v1;
             pf.target = v2;
             pf.Update();
@@ -93,40 +97,43 @@ namespace VillagePeople
         {
             if (AutoUpdate)
             {
-                foreach (MovingEntity me in _movingEntities)
+                foreach (MovingEntity me in MovingEntities)
                 {
-                    me.Update(timeElapsed);
-                    _container.DebugInfo(DebugType.Velocity, me.Velocity.ToString());
+                    if(me.GetType() == typeof(Villager)) me.Update(timeElapsed);
+                    //_container.DebugInfo(DebugType.Velocity, me.Velocity.ToString());
                 }
 
-                foreach (StaticEntity se in staticEntities)
+                foreach (StaticEntity se in StaticEntities)
                 {
                     se.Update(timeElapsed);
                 }
+
+                _container.UpdateResourcesLabel();
             }
         }
 
         public Graph GenerateGraph()
         {
-            return new Graph() { Nodes = Graph.Generate(this, new Node() { WorldPosition = new Vector2D(120, 120) }, new List<Node>()) };
+            return new Graph { Nodes = Graph.Generate(this, new Node { WorldPosition = new Vector2D(120, 120) }, new List<Node>()) };
         }
 
         public void Render(Graphics g)
         {
-            terrains.ForEach(e => e.Render(g));
+            Terrains.ForEach(e => e.Render(g));
 
             if (Debug)
                 _graph.Render(g);
-
-            _movingEntities.ForEach(e => e.Render(g));
-            staticEntities.ForEach(e => e.Render(g));
+            
             //Target.Render(g);
+            MovingEntities.ForEach(e => e.Render(g));
+            StaticEntities.ForEach(e => e.Render(g));
+            Target.Render(g);
             //Leader.Render(g);
         }
 
         public void NextStep(float timeElapsed)
         {
-            foreach (MovingEntity me in _movingEntities)
+            foreach (MovingEntity me in MovingEntities)
             {
                 me.NextStep(timeElapsed);
                 _container.DebugInfo(DebugType.Velocity, me.Velocity.ToString());

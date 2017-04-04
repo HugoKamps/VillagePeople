@@ -1,9 +1,12 @@
-﻿namespace VillagePeople {
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace VillagePeople {
     partial class Container {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -27,6 +30,7 @@
             this.lblVelocity = new System.Windows.Forms.Label();
             this.cbUpdate = new System.Windows.Forms.CheckBox();
             this.cbDebug = new System.Windows.Forms.CheckBox();
+            this.resourcesLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // GamePanel
@@ -35,7 +39,7 @@
             this.GamePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.GamePanel.Location = new System.Drawing.Point(12, 22);
             this.GamePanel.Name = "GamePanel";
-            this.GamePanel.Size = new System.Drawing.Size(208, 195);
+            this.GamePanel.Size = new System.Drawing.Size(1096, 605);
             this.GamePanel.TabIndex = 0;
             this.GamePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.GamePanel_Paint);
             this.GamePanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GamePanel_MouseClick);
@@ -71,11 +75,21 @@
             this.cbDebug.UseVisualStyleBackColor = true;
             this.cbDebug.CheckedChanged += new System.EventHandler(this.cbDebug_CheckedChanged);
             // 
+            // resourcesLabel
+            // 
+            this.resourcesLabel.AutoSize = true;
+            this.resourcesLabel.Location = new System.Drawing.Point(421, 3);
+            this.resourcesLabel.Name = "resourcesLabel";
+            this.resourcesLabel.Size = new System.Drawing.Size(58, 13);
+            this.resourcesLabel.TabIndex = 3;
+            this.resourcesLabel.Text = "Resources";
+            // 
             // Container
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1120, 639);
+            this.Controls.Add(this.resourcesLabel);
             this.Controls.Add(this.cbDebug);
             this.Controls.Add(this.cbUpdate);
             this.Controls.Add(this.lblVelocity);
@@ -90,10 +104,11 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel GamePanel;
-        private System.Windows.Forms.CheckBox cbDebug;
-        private System.Windows.Forms.CheckBox cbUpdate;
-        private System.Windows.Forms.Label lblVelocity;
+        private Panel GamePanel;
+        private CheckBox cbDebug;
+        private CheckBox cbUpdate;
+        private Label lblVelocity;
+        private Label resourcesLabel;
     }
 }
 
