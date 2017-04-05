@@ -37,9 +37,15 @@ namespace VillagePeople.Util
 
             Pen p = new Pen(Color, 2);
             g.DrawEllipse(p, new Rectangle((int)leftCorner, (int)rightCorner, Size, Size));
+        }
 
-            Edges.ForEach(e => e.Color = this.Color);
-            Edges.ForEach(e => e.Render(g));
+        public void RenderEdges(Graphics g)
+        {
+            foreach (var e in Edges)
+            {
+                e.Render(g);
+                e.Color = Color.Black;
+            }
         }
 
         public void Connect(Node n1, int cost = 1)

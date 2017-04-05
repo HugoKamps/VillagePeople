@@ -8,7 +8,7 @@ namespace VillagePeople.Util
     public class Graph
     {
         public List<Node> Nodes = new List<Node>();
-        public List<Node> path;
+        public List<Node> path = new List<Node>();
         public const int NodeSize = 50;
 
         public Node GetNodeByWorldPosition(Vector2D worldPos)
@@ -35,7 +35,8 @@ namespace VillagePeople.Util
             return (int)Math.Sqrt(xSqr + ySqr);
         }
 
-        public static List<Node> Generate(World w, Node n, List<Node> nodes) {
+        public static List<Node> Generate(World w, Node n, List<Node> nodes)
+        {
             if (n != null && GetNodeAtWorldPosition(nodes, n.WorldPosition) == null)
             {
                 var Nodes = new List<Node>();
@@ -44,7 +45,7 @@ namespace VillagePeople.Util
                 foreach (var node in Nodes)
                 {
                     var diff = new Vector2D(Math.Abs(n.WorldPosition.X - node.WorldPosition.X), Math.Abs(n.WorldPosition.Y - node.WorldPosition.Y));
-                    var smallest = new Vector2D(Math.Min(n.WorldPosition.X ,node.WorldPosition.X), Math.Min(n.WorldPosition.Y, node.WorldPosition.Y));
+                    var smallest = new Vector2D(Math.Min(n.WorldPosition.X, node.WorldPosition.X), Math.Min(n.WorldPosition.Y, node.WorldPosition.Y));
                     var center = smallest + (diff / 2);
 
                     if (IsValidWorldPosition(w, center))
@@ -108,12 +109,26 @@ namespace VillagePeople.Util
         {
             foreach (var n in Nodes)
             {
-                if (path.FirstOrDefault(e => e.WorldPosition == n.WorldPosition) != null)
-                {
-                    n.Color = Color.Red;
-                }
-
                 n.Render(g);
+                n.RenderEdges(g);
+            }
+
+            foreach (var n in path)
+            {
+                n.Color = Color.Red;
+                n.Render(g);
+                foreach (var e in n.Edges)
+                {
+                    bool pathContainsTarget = path.Contains(path.FirstOrDefault(i => i.WorldPosition == e.Target.WorldPosition));
+                    bool pathContainsOrigin = path.Contains(path.FirstOrDefault(i => i.WorldPosition == e.Origin.WorldPosition));
+                    if (pathContainsOrigin && pathContainsTarget)
+                    {
+                        e.Color = Color.Red;
+                        e.Render(g);
+                        e.Color = Color.Black;
+                    }
+                }
+                n.Color = Color.Black;
             }
         }
 

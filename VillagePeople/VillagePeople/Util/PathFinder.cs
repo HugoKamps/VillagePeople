@@ -9,6 +9,7 @@ namespace VillagePeople.Util
     {
         public Vector2D seeker, target;
         public Graph grid;
+        public List<Node> path = new List<Node>();
 
         public void Update()
         {
@@ -46,12 +47,11 @@ namespace VillagePeople.Util
                 }
                 foreach (Edge edge in currentNode.Edges)
                 {
-                    bool origin = true;
-                    Node neighbor = edge.Origin;
-                    if (edge.Target != currentNode)
+                    Node neighbor = grid.GetClosestNode(edge.Origin.WorldPosition);
+                    Node temp = grid.GetClosestNode(edge.Target.WorldPosition);
+                    if (temp != currentNode)
                     {
-                        neighbor = edge.Target;
-                        origin = false;
+                        neighbor = temp;
                     }
 
                     if (closedSet.Contains(neighbor))
@@ -84,24 +84,21 @@ namespace VillagePeople.Util
 
         public void RetracePath(Node startNode, Node targetNode)
         {
-            List<Node> path = new List<Node>();
+            path = new List<Node>();
             Node currentNode = grid.GetClosestNode(targetNode.WorldPosition);
             startNode = grid.GetClosestNode(startNode.WorldPosition);
 
             while (currentNode != startNode)
             {
                 if (currentNode == null)
-                {
-                    return;
-                }
+                    break;
+
                 currentNode = grid.GetClosestNode(currentNode.WorldPosition);
                 path.Add(currentNode);
-                currentNode = currentNode.parent;
+                currentNode = grid.GetClosestNode(currentNode.parent.WorldPosition);
             }
-            //path.Add(startNode);
+            path.Add(startNode);
             path.Reverse();
-
-            grid.path = path;
         }
 
         int GetDistance(Node nodeA, Node nodeB)

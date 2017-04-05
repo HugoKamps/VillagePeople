@@ -57,6 +57,8 @@ namespace VillagePeople
         private void GamePanel_MouseClick(object sender, MouseEventArgs e)
         {
             _world.Target.Position = new Vector2D(e.X, e.Y);
+
+            _world.UpdatePath();
         }
 
         private void cbDebug_CheckedChanged(object sender, EventArgs e)
