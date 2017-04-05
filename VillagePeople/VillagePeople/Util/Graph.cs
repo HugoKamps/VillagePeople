@@ -8,8 +8,8 @@ namespace VillagePeople.Util
     public class Graph
     {
         public List<Node> Nodes = new List<Node>();
-        public List<Node> path = new List<Node>();
-        public const int NodeSize = 60;
+        public List<List<Node>> path = new List<List<Node>>();
+        public const int NodeSize = 50;
 
         public Node GetNodeByWorldPosition(Vector2D worldPos)
         {
@@ -23,17 +23,12 @@ namespace VillagePeople.Util
             return null;
         }
 
-        public Node GetClosestNode(Vector2D worldPos)
-        {
-            return Nodes.Select(x => x).OrderBy(x => GetDistance(x.WorldPosition.X, x.WorldPosition.Y, worldPos.X, worldPos.Y)).First();
-        }
+        public Node GetClosestNode(Vector2D worldPos) => Nodes.Select(x => x).OrderBy(x => GetDistance(x.WorldPosition, worldPos)).First();
 
-        float GetDistance(float oX, float oY, float tX, float tY)
-        {
-            double xSqr = Math.Pow(Math.Abs(oX - tX), 2);
-            double ySqr = Math.Pow(Math.Abs(oY - tY), 2);
-            return (int)Math.Sqrt(xSqr + ySqr);
-        }
+        // Pythagorean Theorem
+        float GetDistance(float a, float b) => (int)Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
+        float GetDistance(float oX, float oY, float tX, float tY) => GetDistance(Math.Abs(oX - tX), Math.Abs(oY - tY));
+        float GetDistance(Vector2D v1, Vector2D v2) => GetDistance(v1.X, v1.Y, v2.X, v2.Y);
 
         public static List<Node> Generate(World w, Node n, List<Node> nodes)
         {
@@ -49,9 +44,8 @@ namespace VillagePeople.Util
                     var center = smallest + (diff / 2);
 
                     if (IsValidWorldPosition(w, center))
-                    {
                         n.Connect(node);
-                    }
+
                     Generate(w, node, nodes);
                 }
                 return nodes;
@@ -107,28 +101,36 @@ namespace VillagePeople.Util
 
         public void Render(Graphics g)
         {
+            var _path = path;
             foreach (var n in Nodes)
             {
                 n.Render(g);
                 n.RenderEdges(g);
             }
 
-            foreach (var n in path)
+            for (int i = 0; i <= _path.Count - 1; i++)
             {
-                n.Color = Color.Red;
-                n.Render(g);
-                foreach (var e in n.Edges)
+                var p = _path[i];
+                for (int j = 0; j <= p.Count - 1; j++)
                 {
-                    bool pathContainsTarget = path.Contains(path.FirstOrDefault(i => i.WorldPosition == e.Target.WorldPosition));
-                    bool pathContainsOrigin = path.Contains(path.FirstOrDefault(i => i.WorldPosition == e.Origin.WorldPosition));
-                    if (pathContainsOrigin && pathContainsTarget)
+                    var n = p[j];
+                    n.Color = Color.Red;
+                    n.Render(g);
+                    for (int k = 0; k <= n.Edges.Count - 1; k++)
                     {
-                        e.Color = Color.Red;
-                        e.Render(g);
-                        e.Color = Color.Black;
+                        var e = n.Edges[k];
+
+                        bool pathContainsTarget = p.Contains(p.FirstOrDefault(l => l.WorldPosition == e.Target.WorldPosition));
+                        bool pathContainsOrigin = p.Contains(p.FirstOrDefault(l => l.WorldPosition == e.Origin.WorldPosition));
+                        if (pathContainsOrigin && pathContainsTarget)
+                        {
+                            e.Color = Color.Red;
+                            e.Render(g);
+                            e.Color = Color.Black;
+                        }
                     }
+                    n.Color = Color.Black;
                 }
-                n.Color = Color.Black;
             }
         }
     }

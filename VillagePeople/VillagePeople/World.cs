@@ -16,14 +16,13 @@ namespace VillagePeople
         public List<GameTerrain> Terrains = new List<GameTerrain>();
 
         public Graph Graph;
-        public Pathfinder PathFinder;
 
         private Container _container;
 
         public int Width { get; set; }
         public int Height { get; set; }
 
-        public Villager Target { get; set; }
+        public List<Villager> Target { get; set; }
         public Villager Leader { get; set; }
 
         public Resource Resources { get; set; }
@@ -38,21 +37,17 @@ namespace VillagePeople
 
             _container = container;
             Resources = new Resource { Food = 0, Gold = 0, Stone = 0, Wood = 0 };
-            Target = new Villager(new Vector2D(Width/2, Height/2), this);
+            //Target = new Villager(new Vector2D(Width / 2, Height / 2), this);
 
             Init();
 
             Graph = GenerateGraph();
-            PathFinder = new Pathfinder();
-            PathFinder.grid = Graph;
-            PathFinder.seeker = MovingEntities[0].Position;
-            PathFinder.target = Target.Position;
-            PathFinder.Update();
-            Graph.path = PathFinder.path;
         }
 
         public void Init()
         {
+            Target = new List<Villager>();
+
             //GameTerrain grass = new GameTerrain(new Vector2D(0, 0), TerrainType.Grass);
             //Terrains.Add(grass);
             //GameTerrain water = new GameTerrain(new Vector2D(100, 0), TerrainType.Water);
@@ -67,20 +62,27 @@ namespace VillagePeople
             GoldMine t3 = new GoldMine(new Vector2D(128, 280), this);
             StaticEntities.Add(t3);
 
-            Villager v1 = new Villager(new Vector2D(150, 100), this) { Color = Color.Red };
+            Villager v1 = new Villager(new Vector2D(150, 100), this) {
+                Color = Color.Red,
+                MaxInventorySpace = 12
+            };
             MovingEntities.Add(v1);
 
-            //Villager v2 = new Villager(new Vector2D(200, 90), this) { Color = Color.Blue };
-            //MovingEntities.Add(v2);
+            Villager v2 = new Villager(new Vector2D(200, 90), this) {
+                Color = Color.Blue,
+                MaxSpeed = 1200,
+                MaxInventorySpace = 8
+            };
+            MovingEntities.Add(v2);
 
-            //Villager v3 = new Villager(new Vector2D(200, 290), this) { Color = Color.Brown };
-            //MovingEntities.Add(v3);
+            Villager v3 = new Villager(new Vector2D(200, 290), this) { Color = Color.Brown };
+            MovingEntities.Add(v3);
 
-            //Villager v4 = new Villager(new Vector2D(450, 450), this) { Color = Color.Yellow };
-            //MovingEntities.Add(v4);
+            Villager v4 = new Villager(new Vector2D(450, 450), this) { Color = Color.Yellow };
+            MovingEntities.Add(v4);
 
-            //Sheep s1 = new Sheep(new Vector2D(700, 300), this) { Color = Color.Gray };
-            //MovingEntities.Add(s1);
+            Sheep s1 = new Sheep(new Vector2D(700, 300), this) { Color = Color.Gray };
+            MovingEntities.Add(s1);
 
             //Villager v3 = new Villager(new Vector2D(200, 200), this) { Color = Color.Brown };
             //_movingEntities.Add(v3);
@@ -88,28 +90,48 @@ namespace VillagePeople
             //Villager v4 = new Villager(new Vector2D(30, 30), this) { Color = Color.Yellow };
             //_movingEntities.Add(v4);
 
-            Target = new Villager(new Vector2D(300, 300), this)
+            Villager Target1 = new Villager(new Vector2D(300, 300), this)
             {
                 Color = Color.DarkRed,
                 Position = new Vector2D(40, 60, 40)
             };
+
+            Villager Target2 = new Villager(new Vector2D(300, 300), this)
+            {
+                Color = Color.DarkRed,
+                Position = new Vector2D(40, 60, 40)
+            };
+            Target.Add(Target1);
+            Target.Add(Target2);
         }
 
         public void UpdatePath()
         {
-            PathFinder.seeker = MovingEntities[0].Position;
-            PathFinder.target = Target.Position;
-            PathFinder.Update();
-            Graph.path = PathFinder.path;
+            int i = 0;
+            foreach (MovingEntity me in MovingEntities)
+            {
+                if (me.GetType() == typeof(Villager))
+                    Graph.path.Add(me.PathPlanning(Graph, Target[i % 2].Position)); i++;
+            }
         }
 
         public void Update(float timeElapsed)
         {
             if (AutoUpdate)
             {
+                if (timeElapsed % 20 == 0)
+                    Graph.path = new List<List<Node>>();
+
+                int i = 0;
                 foreach (MovingEntity me in MovingEntities)
                 {
-                    if(me.GetType() == typeof(Villager)) me.Update(timeElapsed);
+                    if (me.GetType() == typeof(Villager))
+                    {
+                        me.Update(timeElapsed);
+                        if (timeElapsed % 20 == 0)
+                            Graph.path.Add(me.PathPlanning(Graph, Target[i % 2].Position)); i++;
+                    }
+
                     //_container.DebugInfo(DebugType.Velocity, me.Velocity.ToString());
                 }
 
@@ -117,8 +139,6 @@ namespace VillagePeople
                 {
                     se.Update(timeElapsed);
                 }
-
-                UpdatePath();
 
                 _container.UpdateResourcesLabel();
             }
@@ -135,10 +155,10 @@ namespace VillagePeople
 
             if (Debug)
                 Graph.Render(g);
-            
+
             MovingEntities.ForEach(e => e.Render(g));
             StaticEntities.ForEach(e => e.Render(g));
-            Target.Render(g);
+            Target.ForEach(e => e.Render(g));
             //Leader.Render(g);
         }
 

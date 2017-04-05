@@ -14,6 +14,8 @@ namespace VillagePeople.Entities
         public Vector2D Acceleration { get; set; }
         public Vector2D Heading { get; set; }
 
+        public Pathfinder PathFinder;
+
         public List<SteeringBehaviour> SteeringBehaviours { get; set; }
 
         public float Mass { get; set; }
@@ -30,7 +32,7 @@ namespace VillagePeople.Entities
         public MovingEntity(Vector2D position, World world) : base(position, world)
         {
             Mass = 150;
-            MaxSpeed = 500;
+            MaxSpeed = 900;
             Radius = 30;
             Velocity = new Vector2D();
             Acceleration = new Vector2D();
@@ -58,12 +60,22 @@ namespace VillagePeople.Entities
             steering /= Mass;
 
             Vector2D acceleration = steering;
-            acceleration *= timeElapsed;
+            acceleration *= 0.8f;
             Velocity += acceleration;
             //Velocity.Truncate(MaxSpeed);
 
-            Velocity *= timeElapsed;
+            Velocity *= 0.8f;
             Position += Velocity;
+        }
+        
+        public List<Node> PathPlanning(Graph Graph, Vector2D Target)
+        {
+            PathFinder = new Pathfinder();
+            PathFinder.grid = Graph;
+            PathFinder.seeker = Position;
+            PathFinder.target = Target;
+            PathFinder.Update();
+            return PathFinder.path;
         }
 
         public void NextStep(float timeElapsed)
