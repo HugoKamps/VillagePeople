@@ -14,10 +14,11 @@ namespace VillagePeople
         public List<MovingEntity> MovingEntities = new List<MovingEntity>();
         public List<StaticEntity> StaticEntities = new List<StaticEntity>();
         public List<GameTerrain> Terrains = new List<GameTerrain>();
-        private Container _container;
-        public Graph _graph;
 
-        public Pathfinder pf;
+        public Graph Graph;
+        public Pathfinder PathFinder;
+
+        private Container _container;
 
         public int Width { get; set; }
         public int Height { get; set; }
@@ -41,13 +42,13 @@ namespace VillagePeople
 
             Init();
 
-            _graph = GenerateGraph();
-            pf = new Pathfinder();
-            pf.grid = _graph;
-            pf.seeker = MovingEntities[0].Position;
-            pf.target = Target.Position;
-            pf.Update();
-            _graph.path = pf.path;
+            Graph = GenerateGraph();
+            PathFinder = new Pathfinder();
+            PathFinder.grid = Graph;
+            PathFinder.seeker = MovingEntities[0].Position;
+            PathFinder.target = Target.Position;
+            PathFinder.Update();
+            Graph.path = PathFinder.path;
         }
 
         public void Init()
@@ -66,7 +67,7 @@ namespace VillagePeople
             GoldMine t3 = new GoldMine(new Vector2D(128, 280), this);
             StaticEntities.Add(t3);
 
-            Villager v1 = new Villager(new Vector2D(20, 20), this) { Color = Color.Red };
+            Villager v1 = new Villager(new Vector2D(150, 100), this) { Color = Color.Red };
             MovingEntities.Add(v1);
 
             //Villager v2 = new Villager(new Vector2D(200, 90), this) { Color = Color.Blue };
@@ -78,8 +79,8 @@ namespace VillagePeople
             //Villager v4 = new Villager(new Vector2D(450, 450), this) { Color = Color.Yellow };
             //MovingEntities.Add(v4);
 
-            Sheep s1 = new Sheep(new Vector2D(700, 300), this) { Color = Color.Gray };
-            MovingEntities.Add(s1);
+            //Sheep s1 = new Sheep(new Vector2D(700, 300), this) { Color = Color.Gray };
+            //MovingEntities.Add(s1);
 
             //Villager v3 = new Villager(new Vector2D(200, 200), this) { Color = Color.Brown };
             //_movingEntities.Add(v3);
@@ -96,9 +97,10 @@ namespace VillagePeople
 
         public void UpdatePath()
         {
-            pf.target = Target.Position;
-            pf.Update();
-            _graph.path = pf.path;
+            PathFinder.seeker = MovingEntities[0].Position;
+            PathFinder.target = Target.Position;
+            PathFinder.Update();
+            Graph.path = PathFinder.path;
         }
 
         public void Update(float timeElapsed)
@@ -116,6 +118,8 @@ namespace VillagePeople
                     se.Update(timeElapsed);
                 }
 
+                UpdatePath();
+
                 _container.UpdateResourcesLabel();
             }
         }
@@ -130,7 +134,7 @@ namespace VillagePeople
             Terrains.ForEach(e => e.Render(g));
 
             if (Debug)
-                _graph.Render(g);
+                Graph.Render(g);
             
             MovingEntities.ForEach(e => e.Render(g));
             StaticEntities.ForEach(e => e.Render(g));

@@ -9,7 +9,7 @@ namespace VillagePeople.Util
     {
         public List<Node> Nodes = new List<Node>();
         public List<Node> path = new List<Node>();
-        public const int NodeSize = 50;
+        public const int NodeSize = 60;
 
         public Node GetNodeByWorldPosition(Vector2D worldPos)
         {
@@ -20,7 +20,7 @@ namespace VillagePeople.Util
                     return node;
                 }
             }
-            return null;//GetClosestNode(worldPos);
+            return null;
         }
 
         public Node GetClosestNode(Vector2D worldPos)
@@ -130,12 +130,6 @@ namespace VillagePeople.Util
                 }
                 n.Color = Color.Black;
             }
-        }
-
-        public List<Vector2D> FindPath(Vector2D startWorldPos, Vector2D endWorldPos) { return FindPath(GetNodeByWorldPosition(startWorldPos), GetNodeByWorldPosition(endWorldPos)); }
-        public List<Vector2D> FindPath(Node start, Node end)
-        {
-            throw new NotImplementedException();
         }
     }
 }

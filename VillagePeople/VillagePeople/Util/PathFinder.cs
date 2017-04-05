@@ -20,6 +20,7 @@ namespace VillagePeople.Util
         {
             Node startNode = grid.GetClosestNode(startPos);
             Node targetNode = grid.GetClosestNode(targetPos);
+            path = new List<Node>();
 
             List<KeyValuePair<string, Node>> openSet = new List<KeyValuePair<string, Node>>();
             HashSet<Node> closedSet = new HashSet<Node>();
@@ -84,7 +85,6 @@ namespace VillagePeople.Util
 
         public void RetracePath(Node startNode, Node targetNode)
         {
-            path = new List<Node>();
             Node currentNode = grid.GetClosestNode(targetNode.WorldPosition);
             startNode = grid.GetClosestNode(startNode.WorldPosition);
 
