@@ -38,40 +38,44 @@ namespace VillagePeople
             Resources = new Resource { Food = 0, Gold = 0, Stone = 0, Wood = 0 };
             Target = new Villager(new Vector2D(Width/2, Height/2), this);
 
+            Init();
+
             _graph = GenerateGraph();
             pf = new Pathfinder();
             pf.grid = _graph;
-
-            Init();
+            pf.seeker = MovingEntities[0].Position;
+            pf.target = new Vector2D(50, 150);
+            pf.Update();
+            _graph = pf.grid;
         }
 
         public void Init()
         {
-            GameTerrain grass = new GameTerrain(new Vector2D(0, 0), TerrainType.Grass);
-            Terrains.Add(grass);
-            GameTerrain water = new GameTerrain(new Vector2D(100, 0), TerrainType.Water);
-            Terrains.Add(water);
-            GameTerrain road = new GameTerrain(new Vector2D(0, 100), TerrainType.Road);
-            Terrains.Add(road);
+            //GameTerrain grass = new GameTerrain(new Vector2D(0, 0), TerrainType.Grass);
+            //Terrains.Add(grass);
+            //GameTerrain water = new GameTerrain(new Vector2D(100, 0), TerrainType.Water);
+            //Terrains.Add(water);
+            //GameTerrain road = new GameTerrain(new Vector2D(0, 100), TerrainType.Road);
+            //Terrains.Add(road);
 
-            Tree t1 = new Tree(new Vector2D(35, 35), this);
-            StaticEntities.Add(t1);
-            StoneMine t2 = new StoneMine(new Vector2D(350, 310), this);
-            StaticEntities.Add(t2);
-            GoldMine t3 = new GoldMine(new Vector2D(128, 280), this);
-            StaticEntities.Add(t3);
+            //Tree t1 = new Tree(new Vector2D(40, 40), this);
+            //StaticEntities.Add(t1);
+            //StoneMine t2 = new StoneMine(new Vector2D(345, 320), this);
+            //StaticEntities.Add(t2);
+            //GoldMine t3 = new GoldMine(new Vector2D(128, 280), this);
+            //StaticEntities.Add(t3);
 
-            Villager v1 = new Villager(new Vector2D(10, 10), this) { Color = Color.Red };
+            Villager v1 = new Villager(new Vector2D(20, 20), this) { Color = Color.Red };
             MovingEntities.Add(v1);
 
             Villager v2 = new Villager(new Vector2D(150, 150), this) { Color = Color.Blue };
             MovingEntities.Add(v2);
 
-            Villager v3 = new Villager(new Vector2D(200, 290), this) { Color = Color.Brown };
-            MovingEntities.Add(v3);
+            //Villager v3 = new Villager(new Vector2D(200, 290), this) { Color = Color.Brown };
+            //MovingEntities.Add(v3);
 
-            Villager v4 = new Villager(new Vector2D(450, 450), this) { Color = Color.Yellow };
-            MovingEntities.Add(v4);
+            //Villager v4 = new Villager(new Vector2D(450, 450), this) { Color = Color.Yellow };
+            //MovingEntities.Add(v4);
 
             Sheep s1 = new Sheep(new Vector2D(700, 300), this) { Color = Color.Gray };
             MovingEntities.Add(s1);
@@ -87,10 +91,6 @@ namespace VillagePeople
             //    Color = Color.DarkRed,
             //    Position = new Vector2D(40, 60, 40)
             //};
-
-            pf.seeker = v1;
-            pf.target = v2;
-            pf.Update();
         }
 
         public void Update(float timeElapsed)
@@ -127,7 +127,7 @@ namespace VillagePeople
             //Target.Render(g);
             MovingEntities.ForEach(e => e.Render(g));
             StaticEntities.ForEach(e => e.Render(g));
-            Target.Render(g);
+            //Target.Render(g);
             //Leader.Render(g);
         }
 

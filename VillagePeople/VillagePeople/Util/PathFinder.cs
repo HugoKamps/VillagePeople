@@ -7,12 +7,12 @@ namespace VillagePeople.Util
 {
     public class Pathfinder
     {
-        public Villager seeker, target;
+        public Vector2D seeker, target;
         public Graph grid;
 
         public void Update()
         {
-            FindPath(seeker.Position, target.Position);
+            FindPath(seeker, target);
         }
 
         public void FindPath(Vector2D startPos, Vector2D targetPos)
@@ -60,32 +60,23 @@ namespace VillagePeople.Util
                     }
 
                     int newMovementCostToNeighbor = currentNode.gCost + GetDistance(currentNode, neighbor);
-                    
-                    if (newMovementCostToNeighbor < neighbor.gCost || neighbor.gCost < 0)
+
+                    bool containsNeighbor = true;
+                    if (openSet.Count != 0)
+                    {
+                        containsNeighbor = !openSet.Contains(openSet.FirstOrDefault(item => item.Key.Equals(neighbor.WorldPosition.ToString())));
+                    }
+
+                    if (newMovementCostToNeighbor < neighbor.gCost || containsNeighbor)
                     {
                         neighbor.gCost = newMovementCostToNeighbor;
                         neighbor.hCost = GetDistance(neighbor, targetNode);
                         neighbor.parent = currentNode;
-
-                        bool check = true;
-                        if (openSet.Count != 0)
-                        {
-                            check = !openSet.Contains(openSet.FirstOrDefault(item => item.Key.Equals(neighbor.WorldPosition.ToString())));
-                        }
-
-                        if (check)
+                        
+                        if (containsNeighbor)
                         {
                             openSet.Add(new KeyValuePair<string, Node>(neighbor.WorldPosition.ToString(), neighbor));
                         }
-                    }
-
-                    if (origin)
-                    {
-                        edge.Origin = neighbor;
-                    }
-                    else
-                    {
-                        edge.Target = neighbor;
                     }
                 }
             }
@@ -94,13 +85,20 @@ namespace VillagePeople.Util
         public void RetracePath(Node startNode, Node targetNode)
         {
             List<Node> path = new List<Node>();
-            Node currentNode = targetNode;
+            Node currentNode = grid.GetClosestNode(targetNode.WorldPosition);
+            startNode = grid.GetClosestNode(startNode.WorldPosition);
 
-            while (currentNode != null)
+            while (currentNode != startNode)
             {
+                if (currentNode == null)
+                {
+                    return;
+                }
+                currentNode = grid.GetClosestNode(currentNode.WorldPosition);
                 path.Add(currentNode);
                 currentNode = currentNode.parent;
             }
+            //path.Add(startNode);
             path.Reverse();
 
             grid.path = path;
@@ -108,12 +106,9 @@ namespace VillagePeople.Util
 
         int GetDistance(Node nodeA, Node nodeB)
         {
-            int dX = (int)Math.Abs(nodeA.WorldPosition.X - nodeB.WorldPosition.X);
-            int dY = (int)Math.Abs(nodeA.WorldPosition.Y - nodeB.WorldPosition.Y);
-
-            if (dX > dY)
-                return 14 * dY + 10 * (dX - dY);
-            return 14 * dX + 10 * (dY - dX);
+            double xSqr = Math.Pow(Math.Abs(nodeA.WorldPosition.X - nodeB.WorldPosition.X), 2);
+            double ySqr = Math.Pow(Math.Abs(nodeA.WorldPosition.Y - nodeB.WorldPosition.Y), 2);
+            return (int)Math.Sqrt(xSqr + ySqr);
         }
     }
 }

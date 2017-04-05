@@ -13,7 +13,7 @@ namespace VillagePeople.Util
 
         public Node parent;
 
-        public int gCost = -1;
+        public int gCost;
         public int hCost;
         public int fCost
         {
@@ -38,6 +38,7 @@ namespace VillagePeople.Util
             Pen p = new Pen(Color, 2);
             g.DrawEllipse(p, new Rectangle((int)leftCorner, (int)rightCorner, Size, Size));
 
+            Edges.ForEach(e => e.Color = this.Color);
             Edges.ForEach(e => e.Render(g));
         }
 
@@ -45,6 +46,7 @@ namespace VillagePeople.Util
         {
             var edge = new Edge() { Origin = this, Target = n1, Cost = cost };
             Edges.Add(edge);
+            n1.Edges.Add(edge);
         }
 
         public bool IsConnected(Node n1)

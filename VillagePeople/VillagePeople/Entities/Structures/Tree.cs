@@ -12,8 +12,8 @@ namespace VillagePeople.Entities.Structures
             Resource.Wood = 200;
             GatherRate = new Resource { Wood = 2 };
             UnwalkableSpace = new List<Vector2D> {
-                new Vector2D(position.X - Scale / 2, position.Y - Scale / 2), // Top Left
-                new Vector2D(position.X + Scale / 2, position.Y + Scale / 2) // Bottom Right
+                new Vector2D(position.X - Scale / 2 - 5, position.Y - Scale / 2 - 5), // Top Left
+                new Vector2D(position.X + Scale / 2 + 5, position.Y + Scale / 2 + 5), // Bottom Right
             };
         }
 
@@ -57,7 +57,7 @@ namespace VillagePeople.Entities.Structures
                 double size = Scale / 4;
                 double leftCorner = Position.X - 5;
                 double rightCorner = Position.Y - 5;
-                g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)10, (int)10));
+                g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, 10, 10));
             }
 
             g.DrawString(Resource.Wood.ToString(), new System.Drawing.Font("Arial", 9), new SolidBrush(Color.Black), Position.X, Position.Y);

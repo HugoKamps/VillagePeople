@@ -45,5 +45,10 @@ namespace VillagePeople.Entities
 
             return x < 5 && y < 5;
         }
+
+        public override string ToString()
+        {
+            return Position.ToString();
+        }
     }
 }

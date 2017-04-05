@@ -14,8 +14,8 @@ namespace VillagePeople.Entities.Structures
             GatherRate = new Resource() { Stone = 1 };
             UnwalkableSpace = new List<Vector2D>()
             {
-                new Vector2D(position.X - Scale / 2, position.Y - Scale / 2), // Top Left
-                new Vector2D(position.X + Scale / 2, position.Y + Scale / 2), // Bottom Right
+                new Vector2D(position.X - Scale / 2 - 5, position.Y - Scale / 2 - 5), // Top Left
+                new Vector2D(position.X + Scale / 2 + 5, position.Y + Scale / 2 + 5), // Bottom Right
             };
         }
 

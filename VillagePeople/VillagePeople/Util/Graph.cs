@@ -106,7 +106,15 @@ namespace VillagePeople.Util
 
         public void Render(Graphics g)
         {
-            Nodes.ForEach(e => e.Render(g));
+            foreach (var n in Nodes)
+            {
+                if (path.FirstOrDefault(e => e.WorldPosition == n.WorldPosition) != null)
+                {
+                    n.Color = Color.Red;
+                }
+
+                n.Render(g);
+            }
         }
 
         public List<Vector2D> FindPath(Vector2D startWorldPos, Vector2D endWorldPos) { return FindPath(GetNodeByWorldPosition(startWorldPos), GetNodeByWorldPosition(endWorldPos)); }
