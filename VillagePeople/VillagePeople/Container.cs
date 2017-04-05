@@ -59,9 +59,9 @@ namespace VillagePeople
         private void GamePanel_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-                _world.Target[0].Position = new Vector2D(e.X, e.Y);
+                _world.TrySelectEntity(new Vector2D(e.X, e.Y));
             else
-                _world.Target[1].Position = new Vector2D(e.X, e.Y);
+                _world.Target[0].Position = new Vector2D(e.X, e.Y);
         }
 
         private void cbDebug_CheckedChanged(object sender, EventArgs e)

@@ -9,8 +9,6 @@ namespace VillagePeople.Entities.NPC
 {
     public class Villager : MovingEntity
     {
-        public Color Color;
-
         public Villager(Vector2D position, World world) : base(position, world)
         {
             StateMachine = new StateMachine<MovingEntity>(this);
@@ -51,6 +49,7 @@ namespace VillagePeople.Entities.NPC
             var b = new SolidBrush(Color);
 
             g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
+            g.DrawEllipse(new Pen(Color.Black, 1), new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
             g.DrawLine(p, (int)Position.X, (int)Position.Y, (int)Position.X + (int)Velocity.X, (int)Position.Y + (int)Velocity.Y);
         }
     }

@@ -32,7 +32,7 @@ namespace VillagePeople.Entities
         public void Tag() => Tagged = true;
         public void UnTag() => Tagged = false;
 
-        public bool CloseEnough(Vector2D from, Vector2D to)
+        public bool CloseEnough(Vector2D from, Vector2D to, int range = 5)
         {
             float x;
             float y;
@@ -43,7 +43,7 @@ namespace VillagePeople.Entities
             if (from.Y < to.Y) y = to.Y - from.Y;
             else y = from.Y - to.Y;
 
-            return x < 5 && y < 5;
+            return x < range && y < range;
         }
 
         public override string ToString()

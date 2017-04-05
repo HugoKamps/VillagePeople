@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using VillagePeople.Behaviours;
 using VillagePeople.Entities.NPC;
 using VillagePeople.StateMachine;
@@ -10,6 +11,9 @@ namespace VillagePeople.Entities
 {
     public abstract class MovingEntity : BaseGameEntity
     {
+        public Color Color;
+        public bool Possessed = false;
+
         public Vector2D Velocity { get; set; }
         public Vector2D Acceleration { get; set; }
         public Vector2D Heading { get; set; }
@@ -41,28 +45,28 @@ namespace VillagePeople.Entities
         }
 
         public override void Update(float timeElapsed) {
-            _elapsedTicks += 1;
-            if (_elapsedTicks % 50 == 0) StateMachine.Update();
+            if (!Possessed)
+            {
+                _elapsedTicks += 1;
+                if (_elapsedTicks % 50 == 0) StateMachine.Update();
 
-            FlockingBehaviour.TagNeighbors(this, World.MovingEntities, 5);
-            Neighbours = World.MovingEntities.FindAll(m => m.Tagged);
+                FlockingBehaviour.TagNeighbors(this, World.MovingEntities, 5);
+                Neighbours = World.MovingEntities.FindAll(m => m.Tagged);
 
-            /*SteeringBehaviours = new List<SteeringBehaviour> {
-                new ArriveBehaviour(this, World.Target.Position),
-                new SeekBehaviour(this, World.Target.Position),
-                new Alignment(this, Neighbours),
-                new Cohesion(this, Neighbours),
-                new Separation(this, Neighbours)
-            };*/
-
+                /*SteeringBehaviours = new List<SteeringBehaviour> {
+                    new ArriveBehaviour(this, World.Target.Position),
+                    new SeekBehaviour(this, World.Target.Position),
+                    new Alignment(this, Neighbours),
+                    new Cohesion(this, Neighbours),
+                    new Separation(this, Neighbours)
+                };*/
+            }
             Vector2D steering = SteeringBehaviour.CalculateDithered(SteeringBehaviours);
-            //steering.Truncate(MaxSpeed);
             steering /= Mass;
 
             Vector2D acceleration = steering;
             acceleration *= 0.8f;
             Velocity += acceleration;
-            //Velocity.Truncate(MaxSpeed);
 
             Velocity *= 0.8f;
             Position += Velocity;
