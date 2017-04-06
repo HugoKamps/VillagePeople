@@ -8,7 +8,7 @@ namespace VillagePeople.Util
     public class Graph
     {
         public List<Node> Nodes = new List<Node>();
-        public List<List<Node>> path = new List<List<Node>>();
+        public List<Node> path = new List<Node>();
         public const int NodeSize = 50;
 
         public Node GetNodeByWorldPosition(Vector2D worldPos)
@@ -110,27 +110,23 @@ namespace VillagePeople.Util
 
             for (int i = 0; i <= _path.Count - 1; i++)
             {
-                var p = _path[i];
-                for (int j = 0; j <= p.Count - 1; j++)
+                var n = _path[i];
+                n.Color = Color.Red;
+                n.Render(g);
+                for (int k = 0; k <= n.Edges.Count - 1; k++)
                 {
-                    var n = p[j];
-                    n.Color = Color.Red;
-                    n.Render(g);
-                    for (int k = 0; k <= n.Edges.Count - 1; k++)
-                    {
-                        var e = n.Edges[k];
+                    var e = n.Edges[k];
 
-                        bool pathContainsTarget = p.Contains(p.FirstOrDefault(l => l.WorldPosition == e.Target.WorldPosition));
-                        bool pathContainsOrigin = p.Contains(p.FirstOrDefault(l => l.WorldPosition == e.Origin.WorldPosition));
-                        if (pathContainsOrigin && pathContainsTarget)
-                        {
-                            e.Color = Color.Red;
-                            e.Render(g);
-                            e.Color = Color.Black;
-                        }
+                    bool pathContainsTarget = _path.Contains(_path.FirstOrDefault(l => l.WorldPosition == e.Target.WorldPosition));
+                    bool pathContainsOrigin = _path.Contains(_path.FirstOrDefault(l => l.WorldPosition == e.Origin.WorldPosition));
+                    if (pathContainsOrigin && pathContainsTarget)
+                    {
+                        e.Color = Color.Red;
+                        e.Render(g);
+                        e.Color = Color.Black;
                     }
-                    n.Color = Color.Black;
                 }
+                n.Color = Color.Black;
             }
         }
     }

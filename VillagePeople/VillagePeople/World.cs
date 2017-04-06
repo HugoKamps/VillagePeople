@@ -71,19 +71,19 @@ namespace VillagePeople
             };
             MovingEntities.Add(v1);
 
-            Villager v2 = new Villager(new Vector2D(200, 90), this)
-            {
-                Color = Color.CadetBlue,
-                MaxSpeed = 1200,
-                MaxInventorySpace = 8
-            };
-            MovingEntities.Add(v2);
+            //Villager v2 = new Villager(new Vector2D(200, 90), this)
+            //{
+            //    Color = Color.CadetBlue,
+            //    MaxSpeed = 1200,
+            //    MaxInventorySpace = 8
+            //};
+            //MovingEntities.Add(v2);
 
-            Villager v3 = new Villager(new Vector2D(200, 290), this) { Color = Color.CadetBlue };
-            MovingEntities.Add(v3);
+            //Villager v3 = new Villager(new Vector2D(200, 290), this) { Color = Color.CadetBlue };
+            //MovingEntities.Add(v3);
 
-            Villager v4 = new Villager(new Vector2D(450, 450), this) { Color = Color.CadetBlue };
-            MovingEntities.Add(v4);
+            //Villager v4 = new Villager(new Vector2D(450, 450), this) { Color = Color.CadetBlue };
+            //MovingEntities.Add(v4);
 
             Sheep s1 = new Sheep(new Vector2D(700, 300), this) { Color = Color.CadetBlue };
             MovingEntities.Add(s1);
@@ -94,7 +94,7 @@ namespace VillagePeople
             //Villager v4 = new Villager(new Vector2D(30, 30), this) { Color = Color.Yellow };
             //_movingEntities.Add(v4);
 
-            Villager Target1 = new Villager(new Vector2D(300, 300), this)
+            Villager Target1 = new Villager(new Vector2D(), this)
             {
                 Color = Color.DarkRed,
                 Position = new Vector2D(40, 60, 40)
@@ -116,19 +116,21 @@ namespace VillagePeople
                 if (MovingEntities[i].CloseEnough(MovingEntities[i].Position, v, 20))
                 {
                     SelectedEntityIndex = i;
+                    Graph.path = MovingEntities[i].EnterPossession(Graph, Target[0].Position);
                     return;
                 }
             }
+            if (SelectedEntityIndex != -1)
+                MovingEntities[SelectedEntityIndex].ExitPossession();
+
             SelectedEntityIndex = -1;
         }
 
         public void UpdatePath()
         {
-            int i = 0;
-            foreach (MovingEntity me in MovingEntities)
+            if (SelectedEntityIndex != -1)
             {
-                if (me.GetType() == typeof(Villager))
-                    Graph.path.Add(me.PathPlanning(Graph, Target[0].Position)); i++;
+                Graph.path = MovingEntities[SelectedEntityIndex].UpdatePath(Target[0].Position);
             }
         }
 
@@ -137,19 +139,14 @@ namespace VillagePeople
             if (AutoUpdate)
             {
                 if (timeElapsed % 20 == 0)
-                    Graph.path = new List<List<Node>>();
+                {
+                    Graph.path = new List<Node>();
+                    UpdatePath();
+                }
 
-                int i = 0;
-                int j = 0;
                 foreach (MovingEntity me in MovingEntities)
                 {
-                    if (me.GetType() == typeof(Villager))
-                    {
-                        me.Update(timeElapsed);
-                        if (timeElapsed % 20 == 0 && j == SelectedEntityIndex && SelectedEntityIndex >= 0)
-                            Graph.path.Add(me.PathPlanning(Graph, Target[0].Position)); i++;
-                    }
-                    j++;
+                    me.Update(timeElapsed);
                     //_container.DebugInfo(DebugType.Velocity, me.Velocity.ToString());
                 }
 
@@ -184,7 +181,9 @@ namespace VillagePeople
                 MovingEntities[i].Render(g);
             }
             StaticEntities.ForEach(e => e.Render(g));
-            Target.ForEach(e => e.Render(g));
+            if (SelectedEntityIndex != -1)
+                Target.ForEach(e => e.Render(g));
+
             //Leader.Render(g);
         }
 

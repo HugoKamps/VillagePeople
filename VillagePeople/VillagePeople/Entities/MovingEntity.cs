@@ -12,13 +12,11 @@ namespace VillagePeople.Entities
     public abstract class MovingEntity : BaseGameEntity
     {
         public Color Color;
-        public bool Possessed = false;
 
         public Vector2D Velocity { get; set; }
         public Vector2D Acceleration { get; set; }
         public Vector2D Heading { get; set; }
 
-        public Pathfinder PathFinder;
 
         public List<SteeringBehaviour> SteeringBehaviours { get; set; }
 
@@ -31,7 +29,10 @@ namespace VillagePeople.Entities
 
         public StateMachine<MovingEntity> StateMachine;
 
-        private int _elapsedTicks;
+        private Pathfinder _pathFinder;
+        private List<Node> _path = new List<Node>();
+        private bool _possessed = false;
+        private int _currentNodeInPath = -1;
 
         public MovingEntity(Vector2D position, World world) : base(position, world)
         {
@@ -45,10 +46,9 @@ namespace VillagePeople.Entities
         }
 
         public override void Update(float timeElapsed) {
-            if (!Possessed)
+            if (!_possessed)
             {
-                _elapsedTicks += 1;
-                if (_elapsedTicks % 50 == 0) StateMachine.Update();
+                if (timeElapsed % 50 == 0) StateMachine.Update();
 
                 FlockingBehaviour.TagNeighbors(this, World.MovingEntities, 5);
                 Neighbours = World.MovingEntities.FindAll(m => m.Tagged);
@@ -60,26 +60,64 @@ namespace VillagePeople.Entities
                     new Cohesion(this, Neighbours),
                     new Separation(this, Neighbours)
                 };*/
+                Vector2D steering = SteeringBehaviour.CalculateDithered(SteeringBehaviours);
+                steering /= Mass;
+
+                Vector2D acceleration = steering;
+                acceleration *= 0.8f;
+                Velocity += acceleration;
+
+                Velocity *= 0.8f;
+                Position += Velocity;
             }
-            Vector2D steering = SteeringBehaviour.CalculateDithered(SteeringBehaviours);
-            steering /= Mass;
+            else if(_path.Count > 0 && _currentNodeInPath != _path.Count && _currentNodeInPath != -1)
+            {
+                Console.WriteLine("Now moving towards: " + _path[_currentNodeInPath].WorldPosition.ToString());
+                var diff = _path[_currentNodeInPath].WorldPosition - Position;
+                Position += diff.Scale(10f);
+                if (CloseEnough(Position, _path[_currentNodeInPath].WorldPosition, 10))
+                {
+                    _currentNodeInPath++;
+                }
+                // move towards target
+            }
+        }
 
-            Vector2D acceleration = steering;
-            acceleration *= 0.8f;
-            Velocity += acceleration;
+        public List<Node> EnterPossession(Graph g, Vector2D target)
+        {
+            _pathFinder = new Pathfinder();
+            _possessed = true;
+            _pathFinder.grid = g;
+            UpdatePath(target);
+            return _path;
+        }
 
-            Velocity *= 0.8f;
-            Position += Velocity;
+        public List<Node> UpdatePath(Vector2D target)
+        {
+            _pathFinder.seeker = Position;
+            _pathFinder.target = target;
+            _pathFinder.Update();
+            _path = _pathFinder.path;
+            _currentNodeInPath = 0;
+
+            return _path;
+        }
+
+        public void ExitPossession()
+        {
+            _possessed = false;
+            _pathFinder = null;
+            _currentNodeInPath = -1;
         }
         
         public List<Node> PathPlanning(Graph Graph, Vector2D Target)
         {
-            PathFinder = new Pathfinder();
-            PathFinder.grid = Graph;
-            PathFinder.seeker = Position;
-            PathFinder.target = Target;
-            PathFinder.Update();
-            return PathFinder.path;
+            _pathFinder = new Pathfinder();
+            _pathFinder.grid = Graph;
+            _pathFinder.seeker = Position;
+            _pathFinder.target = Target;
+            _pathFinder.Update();
+            return _pathFinder.path;
         }
 
         public void NextStep(float timeElapsed)

@@ -11,16 +11,13 @@ namespace VillagePeople.Util
         public Color Color = Color.Black;
         public int Size;
 
-        public Node parent;
+        public Node parent; // Used for path planning => points to the previous node in path
 
-        public int gCost;
-        public int hCost;
-        public int fCost
+        public int gCost; // Travel cost
+        public int hCost; // Heuristic cost
+        public int fCost  // Actual cost
         {
-            get
-            {
-                return gCost + hCost;
-            }
+            get { return gCost + hCost; }
         }
 
         public Node(int size = 10)

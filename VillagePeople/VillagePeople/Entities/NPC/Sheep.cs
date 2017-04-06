@@ -35,18 +35,18 @@ namespace VillagePeople.Entities.NPC
         }
 
         public override void Update(float timeElapsed) {
-            SteeringBehaviours.Add(new WanderBehaviour(this, new Vector2D(500, 500)));
-            Vector2D steering = SteeringBehaviour.CalculateDithered(SteeringBehaviours);
-            //steering.Truncate(MaxSpeed);
-            steering /= Mass;
+            //SteeringBehaviours.Add(new WanderBehaviour(this, new Vector2D(500, 500)));
+            //Vector2D steering = SteeringBehaviour.CalculateDithered(SteeringBehaviours);
+            ////steering.Truncate(MaxSpeed);
+            //steering /= Mass;
 
-            Vector2D acceleration = steering;
-            acceleration *= timeElapsed;
-            Velocity += acceleration;
-            //Velocity.Truncate(MaxSpeed);
+            //Vector2D acceleration = steering;
+            //acceleration *= timeElapsed;
+            //Velocity += acceleration;
+            ////Velocity.Truncate(MaxSpeed);
 
-            Velocity *= timeElapsed;
-            Position += Velocity;
+            //Velocity *= timeElapsed;
+            //Position += Velocity;
         }
     }
 }
