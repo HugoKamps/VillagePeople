@@ -72,14 +72,12 @@ namespace VillagePeople.Entities
             }
             else if(_path.Count > 0 && _currentNodeInPath != _path.Count && _currentNodeInPath != -1)
             {
-                Console.WriteLine("Now moving towards: " + _path[_currentNodeInPath].WorldPosition.ToString());
                 var diff = _path[_currentNodeInPath].WorldPosition - Position;
                 Position += diff.Scale(10f);
                 if (CloseEnough(Position, _path[_currentNodeInPath].WorldPosition, 10))
                 {
                     _currentNodeInPath++;
                 }
-                // move towards target
             }
         }
 
@@ -108,16 +106,6 @@ namespace VillagePeople.Entities
             _possessed = false;
             _pathFinder = null;
             _currentNodeInPath = -1;
-        }
-        
-        public List<Node> PathPlanning(Graph Graph, Vector2D Target)
-        {
-            _pathFinder = new Pathfinder();
-            _pathFinder.grid = Graph;
-            _pathFinder.seeker = Position;
-            _pathFinder.target = Target;
-            _pathFinder.Update();
-            return _pathFinder.path;
         }
 
         public void NextStep(float timeElapsed)
