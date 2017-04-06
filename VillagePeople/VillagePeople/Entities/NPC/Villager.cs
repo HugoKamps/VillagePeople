@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
+using VillagePeople.Behaviours;
 using VillagePeople.StateMachine;
 using VillagePeople.StateMachine.States;
 using VillagePeople.Util;

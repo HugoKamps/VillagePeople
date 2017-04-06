@@ -6,13 +6,12 @@ namespace VillagePeople.Behaviours
 {
     abstract class SteeringBehaviour
     {
-
-        private const float PrArrive = 0.7f;
-        private const float PrSeek = 0.7f;
-        private const float PrSeparation = 0.9f;
-        private const float PrAlignment = 0.6f;
-        private const float PrCohesion = 0.5f;
-        private const float PrWander = 1.0f;
+        private const float DArrive = 0.7f;
+        private const float DSeek = 0.7f;
+        private const float DSeparation = 0.9f;
+        private const float DAlignment = 0.6f;
+        private const float DCohesion = 0.5f;
+        private const float DWander = 1.0f;
         
         public MovingEntity M { get; set; }
         public abstract Vector2D Calculate();
@@ -22,30 +21,46 @@ namespace VillagePeople.Behaviours
             M = m;
         }
 
-        public static Vector2D CalculateDithered(List<SteeringBehaviour> sb)
+        public static Vector2D CalculateWTS(List<SteeringBehaviour> sb, float maxSpeed)
         {
             Vector2D calculated = new Vector2D();
             foreach (var behaviour in sb)
             {
                 if (behaviour.GetType() == typeof(ArriveBehaviour))
-                    calculated += behaviour.Calculate() * PrArrive;
+                    calculated += behaviour.Calculate() * DArrive;
 
                 if (behaviour.GetType() == typeof(SeekBehaviour))
-                    calculated += behaviour.Calculate() * PrSeek;
+                    calculated += behaviour.Calculate() * DSeek;
 
                 if (behaviour.GetType() == typeof(Separation))
-                    calculated += behaviour.Calculate() * PrSeparation;
+                    calculated += behaviour.Calculate() * DSeparation;
 
                 if (behaviour.GetType() == typeof(Alignment))
-                    calculated += behaviour.Calculate() * PrAlignment;
+                    calculated += behaviour.Calculate() * DAlignment;
 
                 if (behaviour.GetType() == typeof(Cohesion))
-                    calculated += behaviour.Calculate() * PrCohesion;
+                    calculated += behaviour.Calculate() * DCohesion;
 
                 if (behaviour.GetType() == typeof(WanderBehaviour))
-                    calculated += behaviour.Calculate() * PrWander;
+                    calculated += behaviour.Calculate() * DWander;
             }
-            return calculated;
+            return calculated.Truncate(maxSpeed);
+        }
+
+        public static void TagNeighbors(MovingEntity me, List<MovingEntity> entities, double radius)
+        {
+            foreach (var entity in entities)
+            {
+                entity.UnTag();
+
+                Vector2D to = entity.Position - me.Position;
+
+                double range = radius + entity.Radius;
+
+                if (entity != me && to.LengthSquared() < range * range)
+                    entity.Tag();
+
+            }
         }
     }
 

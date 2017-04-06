@@ -1,38 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using VillagePeople.Entities;
 using VillagePeople.Util;
 
 namespace VillagePeople.Behaviours
 {
-    class FlockingBehaviour : SteeringBehaviour
-    {
-        public FlockingBehaviour(MovingEntity m) : base(m)
-        {
-        }
-
-        public override Vector2D Calculate()
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void TagNeighbors(MovingEntity me, List<MovingEntity> entities, double radius)
-        {
-            foreach (var entity in entities)
-            {
-                entity.UnTag();
-
-                Vector2D to = entity.Position - me.Position;
-
-                double range = radius + entity.Radius;
-
-                if (entity != me && to.LengthSquared() < range * range)
-                    entity.Tag();
-
-            }
-        }
-    }
-
     class Alignment : SteeringBehaviour
     {
         private MovingEntity _self;

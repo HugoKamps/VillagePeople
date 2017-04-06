@@ -41,28 +41,29 @@ namespace VillagePeople.Entities
             _elapsedTicks += 1;
             if (_elapsedTicks % 50 == 0) StateMachine.Update();
 
-            FlockingBehaviour.TagNeighbors(this, World.MovingEntities, 5);
+            Neighbours = new List<MovingEntity>();
+            SteeringBehaviour.TagNeighbors(this, World.MovingEntities, 5);
             Neighbours = World.MovingEntities.FindAll(m => m.Tagged);
 
-            /*SteeringBehaviours = new List<SteeringBehaviour> {
-                new ArriveBehaviour(this, World.Target.Position),
-                new SeekBehaviour(this, World.Target.Position),
-                new Alignment(this, Neighbours),
-                new Cohesion(this, Neighbours),
-                new Separation(this, Neighbours)
-            };*/
-
-            Vector2D steering = SteeringBehaviour.CalculateDithered(SteeringBehaviours);
-            //steering.Truncate(MaxSpeed);
+            Vector2D steering = SteeringBehaviour.CalculateWTS(SteeringBehaviours, MaxSpeed);
             steering /= Mass;
 
             Vector2D acceleration = steering;
             acceleration *= timeElapsed;
             Velocity += acceleration;
-            //Velocity.Truncate(MaxSpeed);
 
             Velocity *= timeElapsed;
             Position += Velocity;
+        }
+
+        public void SetSteeringBehaviours(Vector2D from, Vector2D to)
+        {
+            SteeringBehaviours = new List<SteeringBehaviour> {
+                new SeekBehaviour(this, to),
+                new Alignment(this, Neighbours),
+                new Cohesion(this, Neighbours),
+                new Separation(this, Neighbours)
+            };
         }
 
         public void NextStep(float timeElapsed)

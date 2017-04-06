@@ -41,7 +41,8 @@ namespace VillagePeople
             }
         }
 
-        private void Timer_Elapsed(object sender, ElapsedEventArgs e) {
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
             _world.Update(Delta);
             GamePanel.Invalidate();
         }
@@ -53,7 +54,7 @@ namespace VillagePeople
 
         private void GamePanel_MouseClick(object sender, MouseEventArgs e)
         {
-            _world.Target.Position = new Vector2D(e.X, e.Y);
+            //_world.Target.Position = new Vector2D(e.X, e.Y);
         }
 
         private void cbDebug_CheckedChanged(object sender, EventArgs e)
@@ -66,9 +67,18 @@ namespace VillagePeople
             _world.AutoUpdate = cbUpdate.Checked;
         }
 
-        public void UpdateResourcesLabel() {
-            resourcesLabel.Text = "Wood: " + _world.Resources.Wood + " - " + "Stone: " + _world.Resources.Stone + " - " +
+        public void UpdateResourcesLabel()
+        {
+            var txt = "Wood: " + _world.Resources.Wood + " - " + "Stone: " + _world.Resources.Stone + " - " +
                                   "Gold: " + _world.Resources.Gold + " - " + "Food: " + _world.Resources.Food;
+            if (this.resourcesLabel.InvokeRequired)
+            {
+                this.resourcesLabel.BeginInvoke((MethodInvoker)delegate () { this.resourcesLabel.Text = txt; });
+            }
+            else
+            {
+                this.resourcesLabel.Text = txt;
+            }
         }
 
         private void cbDebugText_CheckedChanged(object sender, EventArgs e)

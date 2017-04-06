@@ -51,7 +51,7 @@
   <ItemGroup>
     <Compile Include="Behaviours\ArriveBehaviour.cs" />
     <Compile Include="Behaviours\ExploreBehaviour.cs" />
-    <Compile Include="Behaviours\FlockingBehaviour.cs" />
+    <Compile Include="Behaviours\Flocking.cs" />
     <Compile Include="Behaviours\SeekBehaviour.cs" />
     <Compile Include="Behaviours\SteeringBehaviour.cs" />
     <Compile Include="Behaviours\WanderBehaviour.cs" />
