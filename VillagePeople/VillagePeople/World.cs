@@ -71,28 +71,22 @@ namespace VillagePeople
             };
             MovingEntities.Add(v1);
 
-            //Villager v2 = new Villager(new Vector2D(200, 90), this)
-            //{
-            //    Color = Color.CadetBlue,
-            //    MaxSpeed = 1200,
-            //    MaxInventorySpace = 8
-            //};
-            //MovingEntities.Add(v2);
+            Villager v2 = new Villager(new Vector2D(200, 90), this)
+            {
+                Color = Color.CadetBlue,
+                MaxSpeed = 1200,
+                MaxInventorySpace = 8
+            };
+            MovingEntities.Add(v2);
 
-            //Villager v3 = new Villager(new Vector2D(200, 290), this) { Color = Color.CadetBlue };
-            //MovingEntities.Add(v3);
+            Villager v3 = new Villager(new Vector2D(200, 290), this) { Color = Color.CadetBlue };
+            MovingEntities.Add(v3);
 
-            //Villager v4 = new Villager(new Vector2D(450, 450), this) { Color = Color.CadetBlue };
-            //MovingEntities.Add(v4);
+            Villager v4 = new Villager(new Vector2D(450, 450), this) { Color = Color.CadetBlue };
+            MovingEntities.Add(v4);
 
             Sheep s1 = new Sheep(new Vector2D(700, 300), this) { Color = Color.CadetBlue };
             MovingEntities.Add(s1);
-
-            //Villager v3 = new Villager(new Vector2D(200, 200), this) { Color = Color.Brown };
-            //_movingEntities.Add(v3);
-
-            //Villager v4 = new Villager(new Vector2D(30, 30), this) { Color = Color.Yellow };
-            //_movingEntities.Add(v4);
 
             Villager Target1 = new Villager(new Vector2D(), this)
             {
@@ -115,6 +109,8 @@ namespace VillagePeople
             {
                 if (MovingEntities[i].CloseEnough(MovingEntities[i].Position, v, 20))
                 {
+                    if (SelectedEntityIndex != -1)
+                        MovingEntities[SelectedEntityIndex].ExitPossession();
                     SelectedEntityIndex = i;
                     Graph.path = MovingEntities[i].EnterPossession(Graph, Target[0].Position);
                     return;

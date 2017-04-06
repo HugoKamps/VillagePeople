@@ -123,10 +123,10 @@ namespace VillagePeople.Util
                     {
                         e.Color = Color.Red;
                         e.Render(g);
-                        e.Color = Color.Black;
+                        e.Color = Color.Gray;
                     }
                 }
-                n.Color = Color.Black;
+                n.Color = Color.Gray;
             }
         }
     }

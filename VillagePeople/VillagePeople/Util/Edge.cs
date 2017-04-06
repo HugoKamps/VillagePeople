@@ -7,7 +7,7 @@ namespace VillagePeople.Util
         public Node Target;
         public Node Origin;
         public int Cost;
-        public Color Color = Color.Black;
+        public Color Color = Color.Gray;
 
         public void Render(Graphics g)
         {

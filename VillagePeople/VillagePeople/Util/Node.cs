@@ -8,7 +8,7 @@ namespace VillagePeople.Util
         public List<Edge> Edges;
         public Vector2D WorldPosition;
 
-        public Color Color = Color.Black;
+        public Color Color = Color.Gray;
         public int Size;
 
         public Node parent; // Used for path planning => points to the previous node in path
@@ -41,7 +41,7 @@ namespace VillagePeople.Util
             foreach (var e in Edges)
             {
                 e.Render(g);
-                e.Color = Color.Black;
+                e.Color = Color.Gray;
             }
         }
 
