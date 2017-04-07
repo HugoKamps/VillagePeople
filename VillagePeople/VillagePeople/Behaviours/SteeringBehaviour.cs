@@ -7,11 +7,12 @@ namespace VillagePeople.Behaviours
     abstract class SteeringBehaviour
     {
         private const float DArrive = 0.7f;
-        private const float DSeek = 0.7f;
-        private const float DSeparation = 0.9f;
-        private const float DAlignment = 0.6f;
-        private const float DCohesion = 0.5f;
+        private const float DSeek = 1.0f;
+        private const float DSeparation = 0.0f;
+        private const float DAlignment = 1.0f;
+        private const float DCohesion = 0.7f;
         private const float DWander = 1.0f;
+        private const float DExplore = 1.0f;
         
         public MovingEntity M { get; set; }
         public abstract Vector2D Calculate();
@@ -43,6 +44,9 @@ namespace VillagePeople.Behaviours
 
                 if (behaviour.GetType() == typeof(WanderBehaviour))
                     calculated += behaviour.Calculate() * DWander;
+
+                if (behaviour.GetType() == typeof(ExploreBehaviour))
+                    calculated += behaviour.Calculate() * DExplore;
             }
             return calculated.Truncate(maxSpeed);
         }
@@ -54,12 +58,10 @@ namespace VillagePeople.Behaviours
                 entity.UnTag();
 
                 Vector2D to = entity.Position - me.Position;
-
                 double range = radius + entity.Radius;
 
                 if (entity != me && to.LengthSquared() < range * range)
                     entity.Tag();
-
             }
         }
     }

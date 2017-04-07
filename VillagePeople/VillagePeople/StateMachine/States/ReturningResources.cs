@@ -12,15 +12,11 @@ namespace VillagePeople.StateMachine.States
 
         public override void Enter(MovingEntity me)
         {
-            // Move to townhall
-            //me.SteeringBehaviours = new List<SteeringBehaviour> {new SeekBehaviour(me, new Vector2D((float)me.World.Width/2, (float)me.World.Height/2))};
-            me.SetSteeringBehaviours(me.Position, new Vector2D((float)me.World.Width / 2, (float)me.World.Height / 2));
-
-            Console.WriteLine("Return resources");
+            me.SetNewTarget(me.Position, new Vector2D((float)me.World.Width / 2, (float)me.World.Height / 2));
         }
 
         public override void Execute(MovingEntity me) {
-            if (me.CloseEnough(me.Position, new Vector2D((float)me.World.Width / 2, (float)me.World.Height / 2)))
+            if (me.CloseEnough(me.Position, new Vector2D((float)me.World.Width / 2, (float)me.World.Height / 2), 5))
             {
                 Resource.DepositResources(me);
 
@@ -50,8 +46,6 @@ namespace VillagePeople.StateMachine.States
             }
         }
 
-        public override void Exit(MovingEntity me) {
-            Console.WriteLine("Go to resource");
-        }
+        public override void Exit(MovingEntity me) { }
     }
 }

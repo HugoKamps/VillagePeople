@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Windows.Forms.VisualStyles;
 using VillagePeople.Behaviours;
-using VillagePeople.Entities.NPC;
 using VillagePeople.StateMachine;
-using VillagePeople.StateMachine.States;
 using VillagePeople.Util;
 
 namespace VillagePeople.Entities
@@ -43,7 +41,6 @@ namespace VillagePeople.Entities
 
             Neighbours = new List<MovingEntity>();
             SteeringBehaviour.TagNeighbors(this, World.MovingEntities, 5);
-            Neighbours = World.MovingEntities.FindAll(m => m.Tagged);
 
             Vector2D steering = SteeringBehaviour.CalculateWTS(SteeringBehaviours, MaxSpeed);
             steering /= Mass;
@@ -51,19 +48,32 @@ namespace VillagePeople.Entities
             Vector2D acceleration = steering;
             acceleration *= timeElapsed;
             Velocity += acceleration;
-
+            
             Velocity *= timeElapsed;
             Position += Velocity;
         }
 
-        public void SetSteeringBehaviours(Vector2D from, Vector2D to)
+        public void SetNewTarget(Vector2D from, Vector2D to)
         {
             SteeringBehaviours = new List<SteeringBehaviour> {
-                new SeekBehaviour(this, to),
-                new Alignment(this, Neighbours),
-                new Cohesion(this, Neighbours),
-                new Separation(this, Neighbours)
+                new ArriveBehaviour(this, to)
             };
+        }
+
+        public void SetWander()
+        {
+            SteeringBehaviours = new List<SteeringBehaviour> {
+                new WanderBehaviour(this, _elapsedTicks),
+                new Alignment(this, World.MovingEntities),
+                new Cohesion(this, World.MovingEntities),
+                new Separation(this, World.MovingEntities)
+            };
+        }
+
+        public void UpdateFlocking() {
+            SteeringBehaviours[1] = new Alignment(this, World.MovingEntities);
+            SteeringBehaviours[2] = new Cohesion(this, World.MovingEntities);
+            SteeringBehaviours[3] = new Separation(this, World.MovingEntities);
         }
 
         public void NextStep(float timeElapsed)
@@ -71,9 +81,6 @@ namespace VillagePeople.Entities
             Update(timeElapsed);
         }
 
-        public override string ToString()
-        {
-            return $"{Velocity}";
-        }
+        public override string ToString() => $"{Velocity}";
     }
 }

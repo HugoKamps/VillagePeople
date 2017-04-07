@@ -10,17 +10,13 @@ namespace VillagePeople.StateMachine.States
         private GoldMine _gold;
         public override void Enter(MovingEntity me)
         {
-            // Move to gold
             _gold = (GoldMine)me.World.StaticEntities.Find(m => m.GetType() == typeof(GoldMine) && m.Resource.Gold > 0);
-            me.SetSteeringBehaviours(me.Position, _gold.Position);
-            Console.WriteLine("Mining gold");
+            me.SetNewTarget(me.Position, _gold.Position);
         }
 
         public override void Execute(MovingEntity me)
         {
-            if (me.CloseEnough(me.Position, _gold.Position)) {
-                Console.WriteLine("Gold: " + me.Resource.Gold);
-
+            if (me.CloseEnough(me.Position, _gold.Position, 5)) {
                 if (me.Resource.TotalResources() < me.MaxInventorySpace && _gold.Resource.Gold > 0) {
                     _gold.Gather(me);
                 }
@@ -30,10 +26,6 @@ namespace VillagePeople.StateMachine.States
             }
         }
 
-        public override void Exit(MovingEntity me)
-        {
-            Console.WriteLine("Stop mining gold");
-            // Stop mining gold
-        }
+        public override void Exit(MovingEntity me) { }
     }
 }

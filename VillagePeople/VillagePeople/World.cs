@@ -49,11 +49,18 @@ namespace VillagePeople
             Terrains.Add(road);
 
             Tree t1 = new Tree(new Vector2D(35, 35), this);
-            StaticEntities.Add(t1);
-            StoneMine t2 = new StoneMine(new Vector2D(350, 310), this);
-            StaticEntities.Add(t2);
-            GoldMine t3 = new GoldMine(new Vector2D(128, 280), this);
-            StaticEntities.Add(t3);
+            Tree t2 = new Tree(new Vector2D(55, 35), this);
+            Tree t3 = new Tree(new Vector2D(75, 35), this);
+
+            StoneMine sm1 = new StoneMine(new Vector2D(350, 310), this);
+            StoneMine sm2 = new StoneMine(new Vector2D(390, 310), this);
+            StoneMine sm3 = new StoneMine(new Vector2D(430, 310), this);
+
+            GoldMine gm1 = new GoldMine(new Vector2D(128, 280), this);
+            GoldMine gm2 = new GoldMine(new Vector2D(168, 280), this);
+            GoldMine gm3 = new GoldMine(new Vector2D(208, 280), this);
+
+            StaticEntities = new List<StaticEntity> {t1, t2, t3, sm1, sm2, sm3, gm1, gm2, gm3};
 
             Villager v1 = new Villager(new Vector2D(10, 10), this) { Color = Color.Red };
             MovingEntities.Add(v1);
@@ -69,6 +76,15 @@ namespace VillagePeople
 
             Sheep s1 = new Sheep(new Vector2D(700, 300), this) { Color = Color.Gray };
             MovingEntities.Add(s1);
+
+            Sheep s2 = new Sheep(new Vector2D(800, 200), this) { Color = Color.Gray };
+            MovingEntities.Add(s2);
+
+            Sheep s3 = new Sheep(new Vector2D(900, 700), this) { Color = Color.Gray };
+            MovingEntities.Add(s3);
+
+            Sheep s4 = new Sheep(new Vector2D(600, 400), this) { Color = Color.Gray };
+            MovingEntities.Add(s4);
         }
 
         public void Update(float timeElapsed)
@@ -77,7 +93,7 @@ namespace VillagePeople
             {
                 foreach (MovingEntity me in MovingEntities)
                 {
-                    if(me.GetType() == typeof(Villager)) me.Update(timeElapsed);
+                    me.Update(timeElapsed);
                     //_container.DebugInfo(DebugType.Velocity, me.Velocity.ToString());
                 }
 

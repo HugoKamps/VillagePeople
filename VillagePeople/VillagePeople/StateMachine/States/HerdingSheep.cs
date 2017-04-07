@@ -6,34 +6,31 @@ using VillagePeople.Entities.NPC;
 
 namespace VillagePeople.StateMachine.States
 {
-    class HerdingSheep : State<MovingEntity> {
+    class HerdingSheep : State<MovingEntity>
+    {
         private Sheep _sheep;
         public override void Enter(MovingEntity me)
         {
-            // Move to sheep
             _sheep = (Sheep)me.World.MovingEntities.Find(m => m.GetType() == typeof(Sheep) && m.Resource.Food > 0);
-            me.SetSteeringBehaviours(me.Position, _sheep.Position);
-            Console.WriteLine("Herding sheep");
-
+            me.SetNewTarget(me.Position, _sheep.Position);
         }
 
-        public override void Execute(MovingEntity me) {
-            if (me.CloseEnough(me.Position, _sheep.Position))
-            {
-                Console.WriteLine("Food: " + me.Resource.Food);
+        public override void Execute(MovingEntity me)
+        {
+            _sheep = (Sheep)me.World.MovingEntities.Find(m => m.GetType() == typeof(Sheep) && m.Resource.Food > 0);
+            me.SetNewTarget(me.Position, _sheep.Position);
 
+            if (me.CloseEnough(me.Position, _sheep.Position, 5) && _sheep != null)
+            {
                 if (me.Resource.TotalResources() < me.MaxInventorySpace && _sheep.Resource.Food > 0) {
-                    me.Resource.Food += 1;
-                }
-                else {
+                    _sheep.Gather(me);
+                } else
+                {
                     me.StateMachine.ChangeState(new ReturningResources());
                 }
             }
         }
 
-        public override void Exit(MovingEntity me) {
-            // Stop herding sheep
-            Console.WriteLine("Stop herding sheep");
-        }
+        public override void Exit(MovingEntity me) { }
     }
 }

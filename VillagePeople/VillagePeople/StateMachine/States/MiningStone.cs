@@ -8,21 +8,16 @@ namespace VillagePeople.StateMachine.States
         private StoneMine _stone;
         public override void Enter(MovingEntity me)
         {
-            // Move to stone
             _stone = (StoneMine)me.World.StaticEntities.Find(m => m.GetType() == typeof(StoneMine) && m.Resource.Stone > 0);
-            me.SetSteeringBehaviours(me.Position, _stone.Position);
-            Console.WriteLine("Mining gold");
+            me.SetNewTarget(me.Position, _stone.Position);
         }
 
         public override void Execute(MovingEntity me)
         {
-            if (me.CloseEnough(me.Position, _stone.Position))
+            if (me.CloseEnough(me.Position, _stone.Position, 5))
             {
-                Console.WriteLine("Stone: " + me.Resource.Stone);
-
                 if (me.Resource.TotalResources() < me.MaxInventorySpace && _stone.Resource.Stone > 0)
                 {
-                    //me.Resource.Stone += 1;
                     _stone.Gather(me);
                 } else
                 {
@@ -31,10 +26,6 @@ namespace VillagePeople.StateMachine.States
             }
         }
 
-        public override void Exit(MovingEntity me)
-        {
-            // Stop mining stone
-            Console.WriteLine("Stop mining stone");
-        }
+        public override void Exit(MovingEntity me) { }
     }
 }
