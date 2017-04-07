@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace VillagePeople.Util
@@ -6,6 +7,7 @@ namespace VillagePeople.Util
     public class Node
     {
         public List<Edge> Edges;
+        public List<Edge> SmoothEdges;
         public Vector2D WorldPosition;
 
         public Color Color = Color.Gray;
@@ -24,6 +26,7 @@ namespace VillagePeople.Util
         {
             Size = size;
             Edges = new List<Edge>();
+            SmoothEdges = new List<Edge>();
             WorldPosition = new Vector2D();
         }
 
@@ -39,6 +42,12 @@ namespace VillagePeople.Util
         public void RenderEdges(Graphics g)
         {
             foreach (var e in Edges)
+            {
+                e.Render(g);
+                e.Color = Color.Gray;
+            }
+
+            foreach (var e in SmoothEdges)
             {
                 e.Render(g);
                 e.Color = Color.Gray;
@@ -60,12 +69,23 @@ namespace VillagePeople.Util
                 if ((edge.Origin == this && edge.Target == n1) || (edge.Origin == n1 && edge.Target == this))
                     return true;
 
+            foreach (var edge in SmoothEdges)
+                if ((edge.Origin == this && edge.Target == n1) || (edge.Origin == n1 && edge.Target == this))
+                    return true;
+
             return false;
         }
 
         public override string ToString()
         {
             return "(" + WorldPosition.X + ", " + WorldPosition.Y + ")";
+        }
+
+        internal void ConnectSmoothEdge(Node n1, int cost = 1)
+        {
+            var edge = new Edge() { Origin = this, Target = n1, Cost = cost };
+            SmoothEdges.Add(edge);
+            n1.SmoothEdges.Add(edge);
         }
     }
 }

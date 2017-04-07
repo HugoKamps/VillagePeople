@@ -159,6 +159,20 @@ namespace VillagePeople.Util
                         e.Color = Color.Gray;
                     }
                 }
+
+                for (int k = 0; k <= n.SmoothEdges.Count - 1; k++)
+                {
+                    var e = n.SmoothEdges[k];
+
+                    bool pathContainsTarget = _path.Contains(_path.FirstOrDefault(l => l.WorldPosition == e.Target.WorldPosition));
+                    bool pathContainsOrigin = _path.Contains(_path.FirstOrDefault(l => l.WorldPosition == e.Origin.WorldPosition));
+                    if (pathContainsOrigin && pathContainsTarget)
+                    {
+                        e.Color = Color.Red;
+                        e.Render(g);
+                        e.Color = Color.Gray;
+                    }
+                }
                 n.Color = Color.Gray;
             }
         }

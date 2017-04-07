@@ -59,17 +59,17 @@ namespace VillagePeople
 
             Tree t1 = new Tree(new Vector2D(40, 40), this);
             StaticEntities.Add(t1);
-            //StoneMine t2 = new StoneMine(new Vector2D(345, 320), this);
-            //StaticEntities.Add(t2);
-            //GoldMine t3 = new GoldMine(new Vector2D(128, 280), this);
-            //StaticEntities.Add(t3);
+            StoneMine t2 = new StoneMine(new Vector2D(345, 320), this);
+            StaticEntities.Add(t2);
+            GoldMine t3 = new GoldMine(new Vector2D(128, 280), this);
+            StaticEntities.Add(t3);
 
-            //Villager v1 = new Villager(new Vector2D(150, 100), this)
-            //{
-            //    Color = Color.CadetBlue,
-            //    MaxInventorySpace = 12
-            //};
-            //MovingEntities.Add(v1);
+            Villager v1 = new Villager(new Vector2D(150, 100), this)
+            {
+                Color = Color.CadetBlue,
+                MaxInventorySpace = 12
+            };
+            MovingEntities.Add(v1);
 
             //Villager v2 = new Villager(new Vector2D(200, 90), this)
             //{

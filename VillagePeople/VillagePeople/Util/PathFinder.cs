@@ -10,9 +10,11 @@ namespace VillagePeople.Util
         public Vector2D seeker, target;
         public Graph grid;
         public List<Node> path = new List<Node>();
+        public List<Node> NodesWithSmoothEdges = new List<Node>();
 
         public void Update()
         {
+            NodesWithSmoothEdges.ForEach(n => n.SmoothEdges = new List<Edge>());
             FindPath(seeker, target);
         }
 
@@ -119,6 +121,11 @@ namespace VillagePeople.Util
                     if (!grid.IntersectsStaticObjects(path[i].WorldPosition, path[j].WorldPosition))
                     {
                         path[j].parent = path[i];
+                        path[i].ConnectSmoothEdge(path[j]);
+
+                        NodesWithSmoothEdges.Add(path[i]);
+                        NodesWithSmoothEdges.Add(path[j]);
+
                         edgeCreated = true;
                         break;
                     }

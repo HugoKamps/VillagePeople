@@ -98,6 +98,7 @@ namespace VillagePeople.Entities
             _pathFinder.seeker = Position;
             _pathFinder.target = target;
             _pathFinder.Update();
+            _pathFinder.PathSmoothing();
             _path = _pathFinder.path;
             _currentNodeInPath = 0;
 

@@ -8,7 +8,8 @@ namespace VillagePeople.Util
 {
     public class LinearFunction
     {
-        private float dXY, c, maxX, maxY, minX, minY;
+        private float dX, dY, c, maxX, maxY, minX, minY;
+        public bool Horizontal;
 
         public LinearFunction(Vector2D A, Vector2D B)
         {
@@ -17,25 +18,31 @@ namespace VillagePeople.Util
             minX = Math.Min(A.X, B.X);
             minY = Math.Min(A.Y, B.Y);
 
-            var dX = B.X - A.X;
-            var dY = B.Y - A.Y;
+            dX = B.X - A.X;
+            dY = B.Y - A.Y;
+
+            if (dX != 0)
+                Horizontal = true;
             
             if (dY == 0) // Prevent division by 0
             {
+                dY = dX;
                 dX = 0;
-                dY = 1;
             }
-
-            dXY = (dX / dY);
-
-            c = A.X - A.Y * dXY;
+            c = A.X - A.Y * (dX / dY);
         }
 
         public float F(float x)
         {
+            if (x < minX || x > maxX)
+                return float.MinValue;
+
+            if ((dX / dY) == 0)
+                return minY;
+
             if (x >= minX && x <= maxX)
             {
-                var y = dXY * x + c;
+                var y = (dX / dY) * x + c;
 
                 if (y >= minY && y <= maxY)
                 {
@@ -46,23 +53,55 @@ namespace VillagePeople.Util
             return float.MinValue;
         }
 
+        public static bool IntersectsVerticalLine(LinearFunction line, LinearFunction verticalLine)
+        {
+            var y = line.F(verticalLine.minX);
+            return (y >= verticalLine.minY) && (y <= verticalLine.maxY);
+        }
+
         public bool Intersects(LinearFunction f2)
         {
-            float newC, newdXOverdY, newX;
+            if (!Horizontal && !f2.Horizontal)
+            {
+                bool res= 
+                    minX == f2.minX &&                          // on same line and
+                    ((minY >= f2.minY && minY <= f2.maxY) ||    // minY in range (f2.minY, f2.maxY) or
+                    (maxY >= f2.minY && maxY <= f2.maxY));      // maxY in range (f2.minY, f2.maxY)
+                return res;
+            }
+            else if (Horizontal && !f2.Horizontal)
+            {
+                return IntersectsVerticalLine(this, f2);
+            }
+            else if (!Horizontal && f2.Horizontal)
+            {
+                return IntersectsVerticalLine(f2, this);
+            }
+            else
+            {
+                float newC, newdXOverdY, newX;
 
-            newC = c - f2.c;
-            newdXOverdY = dXY - f2.dXY;
+                newC = c - f2.c;
+                newdXOverdY = (dX / dY) - (f2.dX / f2.dY);
 
-            newX = newC / newdXOverdY;
+                if (newdXOverdY == 0)
+                    return false;
 
-            if (F(newX) != float.MinValue && f2.F(newX) != float.MinValue)
-                return true;
-            return false;
+                newX = newC / newdXOverdY;
+
+                if (F(newX) != float.MinValue && f2.F(newX) != float.MinValue)
+                    return true;
+                return false;
+            }
         }
 
         public override string ToString()
         {
-            return "f(x) = " + dXY + "x + " + c;
+            if (!Horizontal)
+                return " f(x) = {" + minY + " ... " + maxY + "} ";
+            else if (dX / dY == 0)
+                return " f(x) = " + c + " ";
+            return " f(x) = (" + dX + "/" + dY + ")x + " + c + " ";
         }
     }
 }
