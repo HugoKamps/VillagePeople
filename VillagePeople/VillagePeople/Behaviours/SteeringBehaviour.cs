@@ -4,7 +4,7 @@ using VillagePeople.Util;
 
 namespace VillagePeople.Behaviours
 {
-    abstract class SteeringBehaviour
+    public abstract class SteeringBehaviour
     {
 
         private const float PrArrive = 0.7f;

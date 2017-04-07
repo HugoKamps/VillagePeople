@@ -2,7 +2,7 @@
 
 namespace VillagePeople.StateMachine
 {
-    class StateMachine<T>
+    public class StateMachine<T>
     {
         public State<T> PrevState;
         public State<T> CurrentState;

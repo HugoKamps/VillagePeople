@@ -11,11 +11,11 @@ namespace VillagePeople.Entities.Structures
         {
             Scale = 20;
             Resource.Gold = 200;
-            GatherRate = new Resource() { Gold = 1 };
+            GatherRate = new Resource() { Gold = 2 };
             UnwalkableSpace = new List<Vector2D>()
             {
-                new Vector2D(position.X - Scale / 2, position.Y - Scale / 2), // Top Left
-                new Vector2D(position.X + Scale / 2, position.Y + Scale / 2), // Bottom Right
+                new Vector2D(position.X - Scale / 2 - 5, position.Y - Scale / 2 - 5), // Top Left
+                new Vector2D(position.X + Scale / 2 + 5, position.Y + Scale / 2 + 5), // Bottom Right
             };
         }
 
