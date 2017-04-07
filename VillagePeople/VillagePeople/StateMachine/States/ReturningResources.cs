@@ -12,7 +12,7 @@ namespace VillagePeople.StateMachine.States
 
         public override void Enter(MovingEntity me)
         {
-            me.SetNewTarget(me.Position, new Vector2D((float)me.World.Width / 2, (float)me.World.Height / 2));
+            me.SetNewTarget(new Vector2D((float)me.World.Width / 2, (float)me.World.Height / 2));
         }
 
         public override void Execute(MovingEntity me) {

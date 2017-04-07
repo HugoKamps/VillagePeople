@@ -12,7 +12,7 @@ namespace VillagePeople.StateMachine.States
         public override void Enter(MovingEntity me)
         {
             _tree = (Tree)me.World.StaticEntities.Find(m => m.GetType() == typeof(Tree) && m.Resource.Wood > 0);
-            me.SetNewTarget(me.Position, _tree.Position);
+            me.SetNewTarget(_tree.Position);
         }
 
         public override void Execute(MovingEntity me)

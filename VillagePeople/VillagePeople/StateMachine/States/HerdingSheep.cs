@@ -12,13 +12,13 @@ namespace VillagePeople.StateMachine.States
         public override void Enter(MovingEntity me)
         {
             _sheep = (Sheep)me.World.MovingEntities.Find(m => m.GetType() == typeof(Sheep) && m.Resource.Food > 0);
-            me.SetNewTarget(me.Position, _sheep.Position);
+            me.SetNewTarget(_sheep.Position);
         }
 
         public override void Execute(MovingEntity me)
         {
             _sheep = (Sheep)me.World.MovingEntities.Find(m => m.GetType() == typeof(Sheep) && m.Resource.Food > 0);
-            me.SetNewTarget(me.Position, _sheep.Position);
+            me.SetNewTarget(_sheep.Position);
 
             if (me.CloseEnough(me.Position, _sheep.Position, 5) && _sheep != null)
             {

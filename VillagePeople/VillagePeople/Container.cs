@@ -11,8 +11,10 @@ namespace VillagePeople
     {
         private World _world;
 
-        public const float Delta = 0.8f;
+        public const float Delta = 1.0f;
         public float TimeElapsed = 0;
+
+        Timer timer = new Timer();
 
         public Container()
         {
@@ -22,7 +24,6 @@ namespace VillagePeople
 
             _world = new World(GamePanel.Width, GamePanel.Height, this);
 
-            var timer = new Timer();
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = 20;
             timer.Enabled = true;
@@ -43,7 +44,8 @@ namespace VillagePeople
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            _world.Update(Delta);
+            TimeElapsed += Delta;
+            _world.Update(TimeElapsed);
             GamePanel.Invalidate();
         }
 
@@ -54,7 +56,10 @@ namespace VillagePeople
 
         private void GamePanel_MouseClick(object sender, MouseEventArgs e)
         {
-            //_world.Target.Position = new Vector2D(e.X, e.Y);
+            if (e.Button == MouseButtons.Left)
+                _world.TrySelectEntity(new Vector2D(e.X, e.Y));
+            else
+                _world.Target[0].Position = new Vector2D(e.X, e.Y);
         }
 
         private void cbDebug_CheckedChanged(object sender, EventArgs e)

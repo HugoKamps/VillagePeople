@@ -3,13 +3,22 @@ using System.Drawing;
 
 namespace VillagePeople.Util
 {
-    class Node
+    public class Node
     {
         public List<Edge> Edges;
         public Vector2D WorldPosition;
-        
-        public Color Color = Color.Black;
+
+        public Color Color = Color.Gray;
         public int Size;
+
+        public Node parent; // Used for path planning => points to the previous node in path
+
+        public int gCost; // Travel cost
+        public int hCost; // Heuristic cost
+        public int fCost  // Actual cost
+        {
+            get { return gCost + hCost; }
+        }
 
         public Node(int size = 10)
         {
@@ -25,13 +34,22 @@ namespace VillagePeople.Util
 
             Pen p = new Pen(Color, 2);
             g.DrawEllipse(p, new Rectangle((int)leftCorner, (int)rightCorner, Size, Size));
+        }
 
-            Edges.ForEach(e => e.Render(g));
+        public void RenderEdges(Graphics g)
+        {
+            foreach (var e in Edges)
+            {
+                e.Render(g);
+                e.Color = Color.Gray;
+            }
         }
 
         public void Connect(Node n1, int cost = 1)
         {
-            Edges.Add(new Edge { Origin = this, Target = n1, Cost = cost});
+            var edge = new Edge() { Origin = this, Target = n1, Cost = cost };
+            Edges.Add(edge);
+            n1.Edges.Add(edge);
         }
 
         public bool IsConnected(Node n1)

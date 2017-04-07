@@ -5,14 +5,14 @@ using VillagePeople.Util;
 namespace VillagePeople.Behaviours {
     class WanderBehaviour : SteeringBehaviour {
         private MovingEntity _self;
-        public Vector2D Target { get; set; }
-        public int ElapsedTicks;
+        private Vector2D Target { get; set; }
+        private float _elapsedTime;
         Random random = new Random();
 
-        public WanderBehaviour(MovingEntity m, int elapsedTicks) : base(m) {
+        public WanderBehaviour(MovingEntity m, float elapsedTime) : base(m) {
             _self = m;
             SetRandomTarget();
-            ElapsedTicks = elapsedTicks;
+            _elapsedTime = elapsedTime;
         }
 
         public void SetRandomTarget() {
@@ -22,8 +22,8 @@ namespace VillagePeople.Behaviours {
         }
 
         public override Vector2D Calculate() {
-            ElapsedTicks += 1;
-            if (ElapsedTicks % 50 == 0) SetRandomTarget();
+            _elapsedTime += 1;
+            if (_elapsedTime % 50 == 0) SetRandomTarget();
             return new SeekBehaviour(_self, Target).Calculate();
         }
     }

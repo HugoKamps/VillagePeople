@@ -9,7 +9,7 @@ namespace VillagePeople.StateMachine.States
         public override void Enter(MovingEntity me)
         {
             _stone = (StoneMine)me.World.StaticEntities.Find(m => m.GetType() == typeof(StoneMine) && m.Resource.Stone > 0);
-            me.SetNewTarget(me.Position, _stone.Position);
+            me.SetNewTarget(_stone.Position);
         }
 
         public override void Execute(MovingEntity me)

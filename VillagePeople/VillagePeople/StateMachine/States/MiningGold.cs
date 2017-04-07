@@ -11,7 +11,7 @@ namespace VillagePeople.StateMachine.States
         public override void Enter(MovingEntity me)
         {
             _gold = (GoldMine)me.World.StaticEntities.Find(m => m.GetType() == typeof(GoldMine) && m.Resource.Gold > 0);
-            me.SetNewTarget(me.Position, _gold.Position);
+            me.SetNewTarget(_gold.Position);
         }
 
         public override void Execute(MovingEntity me)

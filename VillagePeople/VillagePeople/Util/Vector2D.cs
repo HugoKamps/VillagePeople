@@ -74,5 +74,7 @@ namespace VillagePeople.Util
         public static Vector2D operator /(float f, Vector2D v) => v / f;
 
         public override string ToString() => $"({X}, {Y})";
+        public static bool operator ==(Vector2D v1, Vector2D v2) => (v1.X == v2.X) && (v1.Y == v2.Y) && (v1.W == v2.W);
+        public static bool operator !=(Vector2D v1, Vector2D v2) => (v1.X != v2.X) || (v1.Y != v2.Y) || (v1.W != v2.W);
     }
 }

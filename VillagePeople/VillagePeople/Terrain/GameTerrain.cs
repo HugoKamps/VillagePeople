@@ -18,13 +18,13 @@ namespace VillagePeople.Terrain
             switch (Type)
             {
                 case TerrainType.Grass:
-                    Speed = 0.7f;
+                    Speed = 1.0f;
                     break;
                 case TerrainType.Water:
-                    Speed = 0.0f;
+                    Speed = 0.2f;
                     break;
                 case TerrainType.Road:
-                    Speed = 1.0f;
+                    Speed = 1.2f;
                     break;
             }
         }
