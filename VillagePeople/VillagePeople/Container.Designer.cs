@@ -39,7 +39,7 @@ namespace VillagePeople {
             this.GamePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.GamePanel.Location = new System.Drawing.Point(12, 22);
             this.GamePanel.Name = "GamePanel";
-            this.GamePanel.Size = new System.Drawing.Size(1096, 605);
+            this.GamePanel.Size = new System.Drawing.Size(307, 265);
             this.GamePanel.TabIndex = 0;
             this.GamePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.GamePanel_Paint);
             this.GamePanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GamePanel_MouseClick);

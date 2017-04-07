@@ -10,6 +10,12 @@ namespace VillagePeople.Util
         public List<Node> Nodes = new List<Node>();
         public List<Node> path = new List<Node>();
         public const int NodeSize = 50;
+        public World w;
+
+        public Graph(World w)
+        {
+            this.w = w;
+        }
 
         public Node GetNodeByWorldPosition(Vector2D worldPos)
         {
@@ -30,30 +36,26 @@ namespace VillagePeople.Util
         float GetDistance(float oX, float oY, float tX, float tY) => GetDistance(Math.Abs(oX - tX), Math.Abs(oY - tY));
         float GetDistance(Vector2D v1, Vector2D v2) => GetDistance(v1.X, v1.Y, v2.X, v2.Y);
 
-        public static List<Node> Generate(World w, Node n, List<Node> nodes)
+        public List<Node> Generate(Node n, List<Node> nodes)
         {
             if (n != null && GetNodeAtWorldPosition(nodes, n.WorldPosition) == null)
             {
                 var Nodes = new List<Node>();
-                GetNeighborWorldPositions(n).ForEach(e => GetValidWorldPositions(w, e, Nodes));
+                GetNeighborWorldPositions(n).ForEach(e => GetValidWorldPositions(e, Nodes));
                 nodes.Add(n);
                 foreach (var node in Nodes)
                 {
-                    var diff = new Vector2D(Math.Abs(n.WorldPosition.X - node.WorldPosition.X), Math.Abs(n.WorldPosition.Y - node.WorldPosition.Y));
-                    var smallest = new Vector2D(Math.Min(n.WorldPosition.X, node.WorldPosition.X), Math.Min(n.WorldPosition.Y, node.WorldPosition.Y));
-                    var center = smallest + (diff / 2);
-
-                    if (IsValidWorldPosition(w, center))
+                    if (!IntersectsStaticObjects(n.WorldPosition, node.WorldPosition))
                         n.Connect(node);
 
-                    Generate(w, node, nodes);
+                    Generate(node, nodes);
                 }
                 return nodes;
             }
             return null;
         }
 
-        public static bool IsValidWorldPosition(World w, Vector2D v1)
+        public bool IsValidWorldPosition(Vector2D v1)
         {
             if (!(v1.X >= 0 && v1.X < w.Width && v1.Y >= 0 && v1.Y < w.Height))
                 return false;
@@ -65,9 +67,40 @@ namespace VillagePeople.Util
             return true;
         }
 
-        public static void GetValidWorldPositions(World w, Vector2D worldPos, List<Node> nodes)
+
+        public bool IntersectsStaticObjects(Vector2D begin, Vector2D end)
         {
-            if (!IsValidWorldPosition(w, worldPos))
+            var line = new LinearFunction(begin, end);
+
+            foreach (var entity in w.StaticEntities)
+            {
+                if (entity.Walkable)
+                    continue;
+
+                List<LinearFunction> unwalkableBox = new List<LinearFunction>()
+                {
+                    // top left to bottom left
+                    new LinearFunction(entity.UnwalkableSpace[0], new Vector2D(entity.UnwalkableSpace[0].X, entity.UnwalkableSpace[1].Y)),
+                    // top left to top right
+                    new LinearFunction(entity.UnwalkableSpace[0], new Vector2D(entity.UnwalkableSpace[1].X, entity.UnwalkableSpace[0].Y)),
+                    // bottom right to bottom left
+                    new LinearFunction(entity.UnwalkableSpace[1], new Vector2D(entity.UnwalkableSpace[0].X, entity.UnwalkableSpace[1].Y)),
+                    // bottom right to top right
+                    new LinearFunction(entity.UnwalkableSpace[1], new Vector2D(entity.UnwalkableSpace[1].X, entity.UnwalkableSpace[0].Y))
+                };
+
+                foreach (var func in unwalkableBox)
+                    if (line.Intersects(func))
+                        return true;
+            }
+
+            return false;
+        }
+
+
+        public void GetValidWorldPositions(Vector2D worldPos, List<Node> nodes)
+        {
+            if (!IsValidWorldPosition(worldPos))
                 return;
 
             if (GetNodeAtWorldPosition(nodes, worldPos) == null) // Node at world position does not yet exist 

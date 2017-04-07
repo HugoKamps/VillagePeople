@@ -59,34 +59,34 @@ namespace VillagePeople
 
             Tree t1 = new Tree(new Vector2D(40, 40), this);
             StaticEntities.Add(t1);
-            StoneMine t2 = new StoneMine(new Vector2D(345, 320), this);
-            StaticEntities.Add(t2);
-            GoldMine t3 = new GoldMine(new Vector2D(128, 280), this);
-            StaticEntities.Add(t3);
+            //StoneMine t2 = new StoneMine(new Vector2D(345, 320), this);
+            //StaticEntities.Add(t2);
+            //GoldMine t3 = new GoldMine(new Vector2D(128, 280), this);
+            //StaticEntities.Add(t3);
 
-            Villager v1 = new Villager(new Vector2D(150, 100), this)
-            {
-                Color = Color.CadetBlue,
-                MaxInventorySpace = 12
-            };
-            MovingEntities.Add(v1);
+            //Villager v1 = new Villager(new Vector2D(150, 100), this)
+            //{
+            //    Color = Color.CadetBlue,
+            //    MaxInventorySpace = 12
+            //};
+            //MovingEntities.Add(v1);
 
-            Villager v2 = new Villager(new Vector2D(200, 90), this)
-            {
-                Color = Color.CadetBlue,
-                MaxSpeed = 1200,
-                MaxInventorySpace = 8
-            };
-            MovingEntities.Add(v2);
+            //Villager v2 = new Villager(new Vector2D(200, 90), this)
+            //{
+            //    Color = Color.CadetBlue,
+            //    MaxSpeed = 1200,
+            //    MaxInventorySpace = 8
+            //};
+            //MovingEntities.Add(v2);
 
-            Villager v3 = new Villager(new Vector2D(200, 290), this) { Color = Color.CadetBlue };
-            MovingEntities.Add(v3);
+            //Villager v3 = new Villager(new Vector2D(200, 290), this) { Color = Color.CadetBlue };
+            //MovingEntities.Add(v3);
 
-            Villager v4 = new Villager(new Vector2D(450, 450), this) { Color = Color.CadetBlue };
-            MovingEntities.Add(v4);
+            //Villager v4 = new Villager(new Vector2D(450, 450), this) { Color = Color.CadetBlue };
+            //MovingEntities.Add(v4);
 
-            Sheep s1 = new Sheep(new Vector2D(700, 300), this) { Color = Color.CadetBlue };
-            MovingEntities.Add(s1);
+            //Sheep s1 = new Sheep(new Vector2D(700, 300), this) { Color = Color.CadetBlue };
+            //MovingEntities.Add(s1);
 
             Villager Target1 = new Villager(new Vector2D(), this)
             {
@@ -121,7 +121,7 @@ namespace VillagePeople
 
             SelectedEntityIndex = -1;
         }
-
+        
         public void UpdatePath()
         {
             if (SelectedEntityIndex != -1)
@@ -157,7 +157,9 @@ namespace VillagePeople
 
         public Graph GenerateGraph()
         {
-            return new Graph { Nodes = Graph.Generate(this, new Node { WorldPosition = new Vector2D(120, 120) }, new List<Node>()) };
+            var g = new Graph(this);
+            g.Nodes = g.Generate(new Node { WorldPosition = new Vector2D(20, 20) }, new List<Node>());
+            return g;
         }
 
         public void Render(Graphics g)

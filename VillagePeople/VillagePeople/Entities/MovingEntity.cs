@@ -87,6 +87,9 @@ namespace VillagePeople.Entities
             _possessed = true;
             _pathFinder.grid = g;
             UpdatePath(target);
+            _pathFinder.PathSmoothing();
+            _path = _pathFinder.path;
+
             return _path;
         }
 

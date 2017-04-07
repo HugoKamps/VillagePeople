@@ -32,7 +32,7 @@ namespace VillagePeople.Util
                 Node currentNode = grid.GetClosestNode(openSet[0].Value.WorldPosition);
                 for (int i = 1; i < openSet.Count; i++)
                 {
-                    if (openSet[i].Value.fCost < currentNode.fCost || openSet[i].Value.fCost == currentNode.fCost && openSet[i].Value.hCost < currentNode.hCost)
+                    if (openSet[i].Value.fCost < currentNode.fCost || (openSet[i].Value.fCost == currentNode.fCost && openSet[i].Value.hCost < currentNode.hCost))
                     {
                         currentNode = openSet[i].Value;
                     }
@@ -73,7 +73,7 @@ namespace VillagePeople.Util
                         neighbor.gCost = newMovementCostToNeighbor;
                         neighbor.hCost = GetDistance(neighbor, targetNode);
                         neighbor.parent = currentNode;
-                        
+
                         if (containsNeighbor)
                         {
                             openSet.Add(new KeyValuePair<string, Node>(neighbor.WorldPosition.ToString(), neighbor));
@@ -85,6 +85,7 @@ namespace VillagePeople.Util
 
         public void RetracePath(Node startNode, Node targetNode)
         {
+            path = new List<Node>();
             Node currentNode = grid.GetClosestNode(targetNode.WorldPosition);
             startNode = grid.GetClosestNode(startNode.WorldPosition);
 
@@ -99,6 +100,39 @@ namespace VillagePeople.Util
             }
             path.Add(startNode);
             path.Reverse();
+        }
+
+        public void PathSmoothing()
+        {
+            for (int i = 0; i < path.Count - 2; )
+            {
+                if (i >= path.Count -1)
+                    break;
+
+                var curr = path[i];
+                var j = path.Count - 1;
+                bool edgeCreated = false;
+
+                while (j > i + 1) // There is still a node between i and j
+                {
+                    var temp = path[j];
+                    if (!grid.IntersectsStaticObjects(path[i].WorldPosition, path[j].WorldPosition))
+                    {
+                        path[j].parent = path[i];
+                        edgeCreated = true;
+                        break;
+                    }
+
+                    j--;
+                }
+
+                if (edgeCreated)
+                    i = j;
+                else
+                    i++;
+            }
+
+            RetracePath(path.FirstOrDefault(), path.LastOrDefault());
         }
 
         int GetDistance(Node nodeA, Node nodeB)

@@ -81,6 +81,7 @@
     <Compile Include="Terrain\GameTerrain.cs" />
     <Compile Include="Util\Edge.cs" />
     <Compile Include="Util\Graph.cs" />
+    <Compile Include="Util\LinearFunction.cs" />
     <Compile Include="Util\Matrix.cs" />
     <Compile Include="Util\Node.cs" />
     <Compile Include="Util\Pathfinder.cs" />
