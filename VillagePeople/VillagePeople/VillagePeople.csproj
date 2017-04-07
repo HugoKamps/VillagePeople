@@ -51,7 +51,7 @@
   <ItemGroup>
     <Compile Include="Behaviours\ArriveBehaviour.cs" />
     <Compile Include="Behaviours\ExploreBehaviour.cs" />
-    <Compile Include="Behaviours\FlockingBehaviour.cs" />
+    <Compile Include="Behaviours\Flocking.cs" />
     <Compile Include="Behaviours\SeekBehaviour.cs" />
     <Compile Include="Behaviours\SteeringBehaviour.cs" />
     <Compile Include="Behaviours\WanderBehaviour.cs" />
@@ -116,7 +116,9 @@
   <ItemGroup>
     <None Include="Resources\spel.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Resources\sheep.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -6,24 +6,19 @@ using VillagePeople.Entities.Structures;
 
 namespace VillagePeople.StateMachine.States
 {
-    class MiningGold : State<MovingEntity>
-    {
+    class MiningGold : State<MovingEntity> {
+        private GoldMine _gold;
         public override void Enter(MovingEntity me)
         {
-            // Move to gold
-            me.SteeringBehaviours = new List<SteeringBehaviour> { new SeekBehaviour(me, me.World.StaticEntities.Find(m => m.GetType() == typeof(GoldMine)).Position) };
-            Console.WriteLine("Mining gold");
+            _gold = (GoldMine)me.World.StaticEntities.Find(m => m.GetType() == typeof(GoldMine) && m.Resource.Gold > 0);
+            me.SetNewTarget(_gold.Position);
         }
 
         public override void Execute(MovingEntity me)
         {
-            var gold = (GoldMine)me.World.StaticEntities.Find(m => m.GetType() == typeof(GoldMine));
-            if (me.CloseEnough(me.Position, gold.Position)) {
-                Console.WriteLine("Gold: " + me.Resource.Gold);
-
-                if (me.Resource.TotalResources() < me.MaxInventorySpace) {
-                    //me.Resource.Gold += 1;
-                    gold.Gather(me);
+            if (me.CloseEnough(me.Position, _gold.Position, 5)) {
+                if (me.Resource.TotalResources() < me.MaxInventorySpace && _gold.Resource.Gold > 0) {
+                    _gold.Gather(me);
                 }
                 else {
                     me.StateMachine.ChangeState(new ReturningResources());
@@ -31,10 +26,6 @@ namespace VillagePeople.StateMachine.States
             }
         }
 
-        public override void Exit(MovingEntity me)
-        {
-            Console.WriteLine("Stop mining gold");
-            // Stop mining gold
-        }
+        public override void Exit(MovingEntity me) { }
     }
 }

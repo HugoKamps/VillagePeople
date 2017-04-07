@@ -8,29 +8,25 @@ namespace VillagePeople.StateMachine.States
 {
     class CuttingWood : State<MovingEntity>
     {
+        private Tree _tree;
         public override void Enter(MovingEntity me)
         {
-            // Move to wood
-            me.SteeringBehaviours = new List<SteeringBehaviour> { new SeekBehaviour(me, me.World.StaticEntities.Find(m => m.GetType() == typeof(Tree)).Position) };
-            Console.WriteLine("Cutting wood");
+            _tree = (Tree)me.World.StaticEntities.Find(m => m.GetType() == typeof(Tree) && m.Resource.Wood > 0);
+            me.SetNewTarget(_tree.Position);
         }
 
         public override void Execute(MovingEntity me)
         {
-            var tree = (Tree)me.World.StaticEntities.Find(m => m.GetType() == typeof(Tree));
-
-            if (tree == null)
+            if (_tree == null)
                 me.StateMachine.ChangeState(new ReturningResources());
-
-            if (me.CloseEnough(me.Position, tree.Position))
+            else
+            if (me.CloseEnough(me.Position, _tree.Position, 5) && _tree != null)
             {
-                Console.WriteLine("Wood: " + me.Resource.Wood);
-
-                if (me.Resource.TotalResources() < me.MaxInventorySpace) {
-                    //me.Resource.Wood += 1;
-                    tree.Gather(me);
-                }
-                else {
+                if (me.Resource.TotalResources() < me.MaxInventorySpace && _tree.Resource.Wood > 0)
+                {
+                    _tree.Gather(me);
+                } else
+                {
                     me.StateMachine.ChangeState(new ReturningResources());
                 }
             }
@@ -38,8 +34,6 @@ namespace VillagePeople.StateMachine.States
 
         public override void Exit(MovingEntity me)
         {
-            // Stop cutting wood
-            Console.WriteLine("Stop cutting wood");
         }
     }
 }

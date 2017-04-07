@@ -12,16 +12,15 @@ namespace VillagePeople.Behaviours
 
         public ArriveBehaviour(MovingEntity me, Vector2D target) : base(me)
         {
-            Target = target.Clone();
+            Target = target;
             _self = me;
-            _deceleration = Decelerations.Normal;
+            _deceleration = Decelerations.Fast;
         }
 
         public override Vector2D Calculate()
         {
             var vehicle = _self.Position;
-            Target -= vehicle;
-            var toTarget = Target;
+            var toTarget = Target - vehicle;
             var distance = toTarget.Length();
 
             if (distance > 0)
