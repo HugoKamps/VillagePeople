@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using VillagePeople.Util;
 
 namespace VillagePeople.Terrain
@@ -34,14 +35,98 @@ namespace VillagePeople.Terrain
             switch (Type)
             {
                 case TerrainType.Grass:
-                    g.FillRectangle(new SolidBrush(Color.Green), new RectangleF(Position.X, Position.Y, 50, 50));
+                    g.DrawImage(new Bitmap(@"..\..\Resources\Terrain\grass.png"), new RectangleF(Position.X, Position.Y, 50, 50));
                     break;
                 case TerrainType.Water:
-                    g.FillRectangle(new SolidBrush(Color.Blue), new RectangleF(Position.X, Position.Y, 50, 50));
+                    g.DrawImage(new Bitmap(@"..\..\Resources\Terrain\water.png"), new RectangleF(Position.X, Position.Y, 50, 50));
                     break;
                 case TerrainType.Road:
-                    g.FillRectangle(new SolidBrush(Color.Gray), new RectangleF(Position.X, Position.Y, 50, 50));
+                    g.DrawImage(new Bitmap(@"..\..\Resources\Terrain\road.png"), new RectangleF(Position.X, Position.Y, 50, 50));
                     break;
+                case TerrainType.Townhall:
+                    g.DrawImage(new Bitmap(@"..\..\Resources\Terrain\town_hall.png"), new RectangleF(Position.X, Position.Y, 50, 50));
+                    break;
+            }
+        }
+
+        public static void GenerateMap(List<GameTerrain> terrain)
+        {
+
+            // Row 1 & 2
+            var y = 0;
+            for (int i = 0; i < 2; i++)
+            {
+                CreateTerrain(terrain, new GameTerrain(new Vector2D(0, y)), 4);
+                CreateTerrain(terrain, new GameTerrain(new Vector2D(200, y), TerrainType.Water), 2);
+                CreateTerrain(terrain, new GameTerrain(new Vector2D(300, y)), 2);
+                CreateTerrain(terrain, new GameTerrain(new Vector2D(400, y), TerrainType.Water), 8);
+                y += 50;
+            }
+
+            // Row 3
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(0, y)), 4);
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(200, y), TerrainType.Water), 12);
+
+            // Row 4
+            y += 50;
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(0, y)), 5);
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(250, y), TerrainType.Water), 7);
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(600, y)), 4);
+
+            // Row 5
+            y += 50;
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(0, y)), 8);
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(400, y), TerrainType.Water), 3);
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(550, y)), 5);
+
+            // Row 6
+            y += 50;
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(0, y)), 12);
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(600, y), TerrainType.Road), 4);
+
+            // Row 7
+            y += 50;
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(0, y)), 11);
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(550, y), TerrainType.Road), 5);
+
+            // Row 8
+            y += 50;
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(0, y)), 1);
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(50, y), TerrainType.Townhall), 1);
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(100, y)), 8);
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(500, y), TerrainType.Road), 3);
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(650, y)), 3);
+
+            // Row 9
+            y += 50;
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(0, y), TerrainType.Road), 12);
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(600, y)), 4);
+
+            // Row 10
+            y += 50;
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(0, y), TerrainType.Road), 11);
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(550, y)), 3);
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(700, y), TerrainType.Water), 2);
+
+            // Row 11
+            y += 50;
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(0, y)), 12);
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(600, y), TerrainType.Water), 4);
+
+            // Row 11
+            y += 50;
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(0, y)), 11);
+            CreateTerrain(terrain, new GameTerrain(new Vector2D(550, y), TerrainType.Water), 5);
+        }
+
+        public static void CreateTerrain(List<GameTerrain> terrains, GameTerrain terrain, int amount)
+        {
+            TerrainType type = terrain.Type;
+            float x = terrain.Position.X, y = terrain.Position.Y;
+            for (int i = 0; i < amount; i++)
+            {
+                terrains.Add(new GameTerrain(new Vector2D(x, y), type));
+                x += 50;
             }
         }
     }
@@ -50,6 +135,7 @@ namespace VillagePeople.Terrain
     {
         Grass,
         Water,
-        Road
+        Road,
+        Townhall
     }
 }

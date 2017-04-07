@@ -9,11 +9,11 @@ namespace VillagePeople.Entities.Structures
         public Tree(Vector2D position, World world) : base(position, world)
         {
             Scale = 20;
-            Resource.Wood = 200;
+            Resource.Wood = 40;
             GatherRate = new Resource { Wood = 4 };
             UnwalkableSpace = new List<Vector2D> {
                 new Vector2D(position.X - Scale / 2 - 5, position.Y - Scale / 2 - 5), // Top Left
-                new Vector2D(position.X + Scale / 2 + 5, position.Y + Scale / 2 + 5), // Bottom Right
+                new Vector2D(position.X + Scale / 2 + 5, position.Y + Scale / 2 + 5) // Bottom Right
             };
         }
 
@@ -35,32 +35,19 @@ namespace VillagePeople.Entities.Structures
 
         public override void Render(Graphics g)
         {
-            var b = new System.Drawing.SolidBrush(Color.Brown);
-
-            if (Resource.Wood > 100) // Normal tree
+            double size = Scale * 2;
+            double leftCorner = Position.X - size / 2;
+            double rightCorner = Position.Y - size / 2;
+            if (Resource.Wood > 0) // Normal tree
             {
-                double size = Scale;
-                double leftCorner = Position.X - size / 2;
-                double rightCorner = Position.Y - size / 2;
-                g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
-            }
-            else if (Resource.Wood > 0) // Half cutdown tree
-            {
-                double size = Scale / 2;
-                double leftCorner = Position.X - size / 2;
-                double rightCorner = Position.Y - size / 2;
-                g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
+                g.DrawImage(new Bitmap(@"..\..\Resources\SE\tree.png"), new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
             }
             else // Tree stump
             {
-                b = new System.Drawing.SolidBrush(Color.Black);
-                double size = Scale / 4;
-                double leftCorner = Position.X - 5;
-                double rightCorner = Position.Y - 5;
-                g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, 10, 10));
+                g.DrawImage(new Bitmap(@"..\..\Resources\SE\tree_broken.png"), new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
             }
 
-            g.DrawString(Resource.Wood.ToString(), new System.Drawing.Font("Arial", 9), new SolidBrush(Color.Black), Position.X, Position.Y);
+            g.DrawString(Resource.Wood.ToString(), new Font("Arial", 9), new SolidBrush(Color.Black), Position.X + 10, Position.Y + 10);
         }
     }
 }

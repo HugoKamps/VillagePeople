@@ -34,7 +34,7 @@ namespace VillagePeople.Entities
         public MovingEntity(Vector2D position, World world) : base(position, world)
         {
             Mass = 150;
-            MaxSpeed = 50;
+            MaxSpeed = 900;
             Radius = 30;
             Velocity = new Vector2D();
             Acceleration = new Vector2D();

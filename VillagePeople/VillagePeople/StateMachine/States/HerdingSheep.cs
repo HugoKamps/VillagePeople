@@ -17,10 +17,9 @@ namespace VillagePeople.StateMachine.States
 
         public override void Execute(MovingEntity me)
         {
-            _sheep = (Sheep)me.World.MovingEntities.Find(m => m.GetType() == typeof(Sheep) && m.Resource.Food > 0);
             me.SetNewTarget(_sheep.Position);
 
-            if (me.CloseEnough(me.Position, _sheep.Position, 5) && _sheep != null)
+            if (me.CloseEnough(me.Position, _sheep.Position) && _sheep != null)
             {
                 if (me.Resource.TotalResources() < me.MaxInventorySpace && _sheep.Resource.Food > 0) {
                     _sheep.Gather(me);

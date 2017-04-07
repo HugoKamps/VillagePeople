@@ -12,16 +12,17 @@ namespace VillagePeople.StateMachine.States
 
         public override void Enter(MovingEntity me)
         {
-            me.SetNewTarget(new Vector2D((float)me.World.Width / 2, (float)me.World.Height / 2));
+            me.SetNewTarget(new Vector2D(25, 375));
         }
 
         public override void Execute(MovingEntity me) {
-            if (me.CloseEnough(me.Position, new Vector2D((float)me.World.Width / 2, (float)me.World.Height / 2), 5))
+            if (me.CloseEnough(me.Position, new Vector2D(25, 375)))
             {
                 Resource.DepositResources(me);
 
                 if(_index == -1) _index = Resource.GetLowestResource(me);
                 if (Resource.IsResourceAvailable(me, _index)) {
+                    _index = 3;
                     switch (_index) {
                         case 0:
                             me.StateMachine.ChangeState(new CuttingWood());
