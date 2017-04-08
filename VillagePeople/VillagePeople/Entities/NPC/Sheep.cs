@@ -6,8 +6,8 @@ namespace VillagePeople.Entities.NPC
 {
     class Sheep : MovingEntity
     {
-        public string Path;
         public Resource GatherRate;
+        public bool Alive;
 
         public Sheep(Vector2D position, World world) : base(position, world)
         {
@@ -18,12 +18,17 @@ namespace VillagePeople.Entities.NPC
             Scale = 20;
             Resource.Food = 50;
             GatherRate = new Resource { Food = 4 };
-            Path = @"..\..\Resources\NPC\sheep.png";
+            Alive = true;
         }
 
         public override void Render(Graphics g)
         {
-            Image img = BitmapLoader.LoadBitmap(Path, this.GetType().ToString());
+            Image img;
+
+            if (Alive)
+                img = BitmapLoader.LoadBitmap(@"..\..\Resources\NPC\sheep.png", this.GetType().ToString());
+            else
+                img = BitmapLoader.LoadBitmap(@"..\..\Resources\NPC\sheep_dead.png", this.GetType().ToString());
 
             double leftCorner = Position.X - Scale;
             double rightCorner = Position.Y - Scale;
@@ -43,7 +48,7 @@ namespace VillagePeople.Entities.NPC
             SetWander(timeElapsed);
             SteeringBehaviour.TagNeighbors(this, World.MovingEntities, 5);
             if (World.MovingEntities.FindAll(m => m.Tagged && m.GetType() == typeof(Villager)).Count > 0) {
-                Path = @"..\..\Resources\NPC\sheep_dead.png";
+                Alive = false;
                 MaxSpeed = 0;
             }
 
