@@ -61,7 +61,7 @@ namespace VillagePeople
             if (e.Button == MouseButtons.Left)
                 _world.TrySelectEntity(new Vector2D(e.X, e.Y));
             else
-                _world.Target[0].Position = new Vector2D(e.X, e.Y);
+                _world.targetLoc = new Vector2D(e.X, e.Y);
         }
 
         private void cbDebug_CheckedChanged(object sender, EventArgs e)

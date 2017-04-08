@@ -26,6 +26,7 @@ namespace VillagePeople
 
         public List<Villager> Target { get; set; }
         public Villager Leader { get; set; }
+        public Vector2D targetLoc;
 
         public Resource Resources { get; set; }
 
@@ -48,6 +49,7 @@ namespace VillagePeople
 
         public void Init()
         {
+            targetLoc = new Vector2D();
             Target = new List<Villager>();
 
             //GameTerrain grass = new GameTerrain(new Vector2D(0, 0), TerrainType.Grass);
@@ -88,18 +90,18 @@ namespace VillagePeople
             Sheep s1 = new Sheep(new Vector2D(700, 300), this) { Color = Color.CadetBlue };
             MovingEntities.Add(s1);
 
-            Villager Target1 = new Villager(new Vector2D(), this)
-            {
-                Color = Color.DarkRed,
-                Position = new Vector2D(40, 60, 40)
-            };
+            //Villager Target1 = new Villager(new Vector2D(), this)
+            //{
+            //    Color = Color.DarkRed,
+            //    Position = new Vector2D(40, 60, 40)
+            //};
 
             //Villager Target2 = new Villager(new Vector2D(300, 300), this)
             //{
             //    Color = Color.DarkRed,
             //    Position = new Vector2D(40, 60, 40)
             //};
-            Target.Add(Target1);
+            //Target.Add(Target1);
             //Target.Add(Target2);
         }
 
@@ -112,7 +114,7 @@ namespace VillagePeople
                     if (SelectedEntityIndex != -1)
                         MovingEntities[SelectedEntityIndex].ExitPossession();
                     SelectedEntityIndex = i;
-                    Graph.path = MovingEntities[i].EnterPossession(Graph, Target[0].Position);
+                    Graph.path = MovingEntities[i].EnterPossession(Graph, targetLoc);
                     Graph.nonSmoothenedPath = MovingEntities[i].nonSmoothenedPath;
                     return;
                 }
@@ -122,12 +124,12 @@ namespace VillagePeople
 
             SelectedEntityIndex = -1;
         }
-        
+
         public void UpdatePath()
         {
             if (SelectedEntityIndex != -1)
             {
-                Graph.path = MovingEntities[SelectedEntityIndex].UpdatePath(Target[0].Position);
+                Graph.path = MovingEntities[SelectedEntityIndex].UpdatePath(targetLoc);
                 Graph.nonSmoothenedPath = MovingEntities[SelectedEntityIndex].nonSmoothenedPath;
             }
         }
