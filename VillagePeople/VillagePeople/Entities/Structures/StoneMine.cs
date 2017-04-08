@@ -40,10 +40,12 @@ namespace VillagePeople.Entities.Structures
             double rightCorner = Position.Y - size / 2;
             if (Resource.Stone > 0) // Normal tree
             {
-                g.DrawImage(new Bitmap(@"..\..\Resources\SE\stone.png"), new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
+                Image img = BitmapLoader.LoadBitmap(@"..\..\Resources\SE\stone.png", this.GetType().ToString() + "1");
+                g.DrawImage(img, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
             } else // Tree stump
             {
-                g.DrawImage(new Bitmap(@"..\..\Resources\SE\stone_broken.png"), new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
+                Image img = BitmapLoader.LoadBitmap(@"..\..\Resources\SE\stone_broken.png", this.GetType().ToString() + "2");
+                g.DrawImage(img, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
             }
 
             g.DrawString(Resource.Stone.ToString(), new Font("Arial", 9), new SolidBrush(Color.Black), Position.X + 10, Position.Y + 10);

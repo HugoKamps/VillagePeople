@@ -39,6 +39,8 @@ namespace VillagePeople.Entities.NPC
 
         public override void Render(Graphics g)
         {
+            Image img = BitmapLoader.LoadBitmap(@"..\..\Resources\NPC\villager.png", this.GetType().ToString());
+
             double leftCorner = Position.X - Scale;
             double rightCorner = Position.Y - Scale;
             double size = Scale * 2;
@@ -55,7 +57,7 @@ namespace VillagePeople.Entities.NPC
                           "Gold: " + Resource.Gold + "\n" +
                           "Food: " + Resource.Food;
 
-            g.DrawImage(new Bitmap(@"..\..\Resources\NPC\villager.png"), new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
+            g.DrawImage(img, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
             if(World.DebugText) g.DrawString(text, font, new SolidBrush(Color.Black), Position.X, Position.Y);
         }
 

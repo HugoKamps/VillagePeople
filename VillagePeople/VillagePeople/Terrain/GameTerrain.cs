@@ -32,19 +32,24 @@ namespace VillagePeople.Terrain
 
         public void Render(Graphics g)
         {
+            Image img;
             switch (Type)
             {
                 case TerrainType.Grass:
-                    g.DrawImage(new Bitmap(@"..\..\Resources\Terrain\grass.png"), new RectangleF(Position.X, Position.Y, 50, 50));
+                    img = BitmapLoader.LoadBitmap(@"..\..\Resources\Terrain\grass.png", this.GetType().ToString() + Type);
+                    g.DrawImage(img, new RectangleF(Position.X, Position.Y, 50, 50));
                     break;
                 case TerrainType.Water:
-                    g.DrawImage(new Bitmap(@"..\..\Resources\Terrain\water.png"), new RectangleF(Position.X, Position.Y, 50, 50));
+                    img = BitmapLoader.LoadBitmap(@"..\..\Resources\Terrain\water.png", this.GetType().ToString() + Type);
+                    g.DrawImage(img, new RectangleF(Position.X, Position.Y, 50, 50));
                     break;
                 case TerrainType.Road:
-                    g.DrawImage(new Bitmap(@"..\..\Resources\Terrain\road.png"), new RectangleF(Position.X, Position.Y, 50, 50));
+                    img = BitmapLoader.LoadBitmap(@"..\..\Resources\Terrain\road.png", this.GetType().ToString() + Type);
+                    g.DrawImage(img, new RectangleF(Position.X, Position.Y, 50, 50));
                     break;
                 case TerrainType.Townhall:
-                    g.DrawImage(new Bitmap(@"..\..\Resources\Terrain\town_hall.png"), new RectangleF(Position.X, Position.Y, 50, 50));
+                    img = BitmapLoader.LoadBitmap(@"..\..\Resources\Terrain\town_hall.png", this.GetType().ToString() + Type);
+                    g.DrawImage(img, new RectangleF(Position.X, Position.Y, 50, 50));
                     break;
             }
         }
