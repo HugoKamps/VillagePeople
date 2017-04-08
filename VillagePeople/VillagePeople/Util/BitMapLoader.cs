@@ -24,7 +24,7 @@ namespace VillagePeople.Util
 
             var temp = Instance._bitmaps.FirstOrDefault(i => i.Key == key);
             if (temp.Value != null)
-                return Instance._bitmaps.FirstOrDefault(i => i.Key == key).Value;
+                return temp.Value;
 
             FileStream bitmapFile = new FileStream(filename, FileMode.Open, FileAccess.Read);
             Image loaded = new Bitmap(bitmapFile);
