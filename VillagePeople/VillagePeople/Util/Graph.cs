@@ -9,6 +9,7 @@ namespace VillagePeople.Util
     {
         public List<Node> Nodes = new List<Node>();
         public List<Node> path = new List<Node>();
+        public List<Node> nonSmoothenedPath = new List<Node>();
         public const int NodeSize = 50;
         public World w;
 
@@ -134,27 +135,32 @@ namespace VillagePeople.Util
 
         public void Render(Graphics g)
         {
-            var _path = path;
             foreach (var n in Nodes)
             {
                 n.Render(g);
                 n.RenderEdges(g);
             }
 
-            for (int i = 0; i <= _path.Count - 1; i++)
+            DrawPath(g, nonSmoothenedPath, Color.Blue);
+            DrawPath(g, path, Color.Red);
+        }
+
+        private void DrawPath(Graphics g, List<Node> path, Color c)
+        {
+            for (int i = 0; i <= path.Count - 1; i++)
             {
-                var n = _path[i];
-                n.Color = Color.Red;
+                var n = path[i];
+                n.Color = c;
                 n.Render(g);
                 for (int k = 0; k <= n.Edges.Count - 1; k++)
                 {
                     var e = n.Edges[k];
 
-                    bool pathContainsTarget = _path.Contains(_path.FirstOrDefault(l => l.WorldPosition == e.Target.WorldPosition));
-                    bool pathContainsOrigin = _path.Contains(_path.FirstOrDefault(l => l.WorldPosition == e.Origin.WorldPosition));
+                    bool pathContainsTarget = path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Target.WorldPosition));
+                    bool pathContainsOrigin = path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Origin.WorldPosition));
                     if (pathContainsOrigin && pathContainsTarget)
                     {
-                        e.Color = Color.Red;
+                        e.Color = c;
                         e.Render(g);
                         e.Color = Color.Gray;
                     }
@@ -164,11 +170,11 @@ namespace VillagePeople.Util
                 {
                     var e = n.SmoothEdges[k];
 
-                    bool pathContainsTarget = _path.Contains(_path.FirstOrDefault(l => l.WorldPosition == e.Target.WorldPosition));
-                    bool pathContainsOrigin = _path.Contains(_path.FirstOrDefault(l => l.WorldPosition == e.Origin.WorldPosition));
+                    bool pathContainsTarget = path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Target.WorldPosition));
+                    bool pathContainsOrigin = path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Origin.WorldPosition));
                     if (pathContainsOrigin && pathContainsTarget)
                     {
-                        e.Color = Color.Red;
+                        e.Color = c;
                         e.Render(g);
                         e.Color = Color.Gray;
                     }

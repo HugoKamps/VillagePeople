@@ -41,8 +41,8 @@ namespace VillagePeople.Entities.NPC
 
         public override void Render(Graphics g)
         {
-            double leftCorner = Position.X - Scale;
-            double rightCorner = Position.Y - Scale;
+            double leftCorner = Position.X - 0.5 * Scale;
+            double rightCorner = Position.Y - 0.5 * Scale;
             double size = Scale;
 
             var p = new Pen(Color, 4);

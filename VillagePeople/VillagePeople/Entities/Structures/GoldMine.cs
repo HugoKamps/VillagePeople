@@ -37,7 +37,7 @@ namespace VillagePeople.Entities.Structures
 
         public override void Render(Graphics g)
         {
-            var b = new System.Drawing.SolidBrush(Color.Gold);
+            var b = new SolidBrush(Color.Gold);
 
             if (Resource.Gold > 100)
             {

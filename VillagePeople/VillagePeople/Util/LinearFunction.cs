@@ -49,7 +49,6 @@ namespace VillagePeople.Util
                     return y;
                 }
             }
-
             return float.MinValue;
         }
 
