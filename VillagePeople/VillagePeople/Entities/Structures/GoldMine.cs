@@ -10,7 +10,7 @@ namespace VillagePeople.Entities.Structures
         public GoldMine(Vector2D position, World world) : base(position, world)
         {
             Scale = 20;
-            Resource.Gold = 200;
+            Resource.Gold = 75;
             GatherRate = new Resource() { Gold = 2 };
             UnwalkableSpace = new List<Vector2D>()
             {
@@ -37,32 +37,18 @@ namespace VillagePeople.Entities.Structures
 
         public override void Render(Graphics g)
         {
-            var b = new System.Drawing.SolidBrush(Color.Gold);
-
-            if (Resource.Gold > 100)
+            double size = Scale * 2;
+            double leftCorner = Position.X - size / 2;
+            double rightCorner = Position.Y - size / 2;
+            if (Resource.Gold > 0) // Normal tree
             {
-                double size = Scale;
-                double leftCorner = Position.X - size / 2;
-                double rightCorner = Position.Y - size / 2;
-                g.FillRectangle(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
-            }
-            else if (Resource.Gold > 0)
+                g.DrawImage(new Bitmap(@"..\..\Resources\SE\gold.png"), new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
+            } else // Tree stump
             {
-                double size = Scale / 2;
-                double leftCorner = Position.X - size / 2;
-                double rightCorner = Position.Y - size / 2;
-                g.FillRectangle(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
-            }
-            else
-            {
-                b = new System.Drawing.SolidBrush(Color.Black);
-                double size = Scale / 4;
-                double leftCorner = Position.X - 5;
-                double rightCorner = Position.Y - 5;
-                g.FillRectangle(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)10, (int)10));
+                g.DrawImage(new Bitmap(@"..\..\Resources\SE\gold_broken.png"), new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
             }
 
-            g.DrawString(Resource.Gold.ToString(), new System.Drawing.Font("Arial", 9), new SolidBrush(Color.Black), Position.X, Position.Y);
+            g.DrawString(Resource.Gold.ToString(), new System.Drawing.Font("Arial", 9), new SolidBrush(Color.Black), Position.X + 10, Position.Y + 10);
         }
     }
 }
