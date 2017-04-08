@@ -37,16 +37,18 @@ namespace VillagePeople.Entities.Structures
 
         public override void Render(Graphics g)
         {
+            Image img;
+
             double size = Scale * 2;
             double leftCorner = Position.X - size / 2;
             double rightCorner = Position.Y - size / 2;
-            if (Resource.Gold > 0) // Normal tree
-            {
-                g.DrawImage(new Bitmap(@"..\..\Resources\SE\gold.png"), new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
-            } else // Tree stump
-            {
-                g.DrawImage(new Bitmap(@"..\..\Resources\SE\gold_broken.png"), new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
-            }
+
+            if (Resource.Gold > 0) // Normal gold mine
+                img = BitmapLoader.LoadBitmap(@"..\..\Resources\SE\gold.png", this.GetType().ToString() + "1");
+            else // Broken gold mine
+                img = BitmapLoader.LoadBitmap(@"..\..\Resources\SE\gold_broken.png", this.GetType().ToString() + "2");
+
+            g.DrawImage(img, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
 
             g.DrawString(Resource.Gold.ToString(), new System.Drawing.Font("Arial", 9), new SolidBrush(Color.Black), Position.X + 10, Position.Y + 10);
         }
