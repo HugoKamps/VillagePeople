@@ -35,23 +35,21 @@ namespace VillagePeople.Terrain
             Image img;
             switch (Type)
             {
-                case TerrainType.Grass:
-                    img = BitmapLoader.LoadBitmap(@"..\..\Resources\Terrain\grass.png", this.GetType().ToString() + Type);
-                    g.DrawImage(img, new RectangleF(Position.X, Position.Y, 50, 50));
-                    break;
                 case TerrainType.Water:
                     img = BitmapLoader.LoadBitmap(@"..\..\Resources\Terrain\water.png", this.GetType().ToString() + Type);
-                    g.DrawImage(img, new RectangleF(Position.X, Position.Y, 50, 50));
                     break;
                 case TerrainType.Road:
                     img = BitmapLoader.LoadBitmap(@"..\..\Resources\Terrain\road.png", this.GetType().ToString() + Type);
-                    g.DrawImage(img, new RectangleF(Position.X, Position.Y, 50, 50));
                     break;
                 case TerrainType.Townhall:
                     img = BitmapLoader.LoadBitmap(@"..\..\Resources\Terrain\town_hall.png", this.GetType().ToString() + Type);
-                    g.DrawImage(img, new RectangleF(Position.X, Position.Y, 50, 50));
+                    break;
+                default: // case TerrainType.Grass
+                    img = BitmapLoader.LoadBitmap(@"..\..\Resources\Terrain\grass.png", this.GetType().ToString() + Type);
                     break;
             }
+
+            g.DrawImage(img, new RectangleF(Position.X, Position.Y, 50, 50));
         }
 
         public static void GenerateMap(List<GameTerrain> terrain)
