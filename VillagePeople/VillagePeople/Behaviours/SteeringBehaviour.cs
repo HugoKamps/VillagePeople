@@ -50,21 +50,5 @@ namespace VillagePeople.Behaviours
             }
             return calculated.Truncate(maxSpeed);
         }
-
-        public static void TagNeighbors(MovingEntity me, List<MovingEntity> entities, double radius)
-        {
-            foreach (var entity in entities)
-            {
-                entity.UnTag();
-
-                Vector2D to = entity.Position - me.Position;
-                double range = radius + entity.Radius;
-
-                if (entity != me && to.LengthSquared() < range * range)
-                    entity.Tag();
-            }
-        }
     }
-
-
 }
