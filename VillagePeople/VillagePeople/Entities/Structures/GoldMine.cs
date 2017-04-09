@@ -51,8 +51,6 @@ namespace VillagePeople.Entities.Structures
 
             g.DrawImage(img, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
             
-            g.DrawLine(new Pen(Color.Black, 4), new Point((int)UnwalkableSpace[0].X, (int)UnwalkableSpace[0].Y), new Point((int)UnwalkableSpace[1].X, (int)UnwalkableSpace[1].Y));
-            g.DrawLine(new Pen(Color.Black, 4), new Point((int)UnwalkableSpace[1].X, (int)UnwalkableSpace[0].Y), new Point((int)UnwalkableSpace[0].X, (int)UnwalkableSpace[1].Y));
             g.DrawString(Resource.Gold.ToString(), new Font("Arial", 9), new SolidBrush(Color.Black), Position.X + 10, Position.Y + 10);
         }
     }
