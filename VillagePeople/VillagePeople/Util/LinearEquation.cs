@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace VillagePeople.Util
 {
-    public class LinearFunction
+    public class LinearEquation
     {
         private float dX, dY, c, maxX, maxY, minX, minY;
         public bool Horizontal;
 
-        public LinearFunction(Vector2D A, Vector2D B)
+        public LinearEquation(Vector2D A, Vector2D B)
         {
             maxX = Math.Max(A.X, B.X);
             maxY = Math.Max(A.Y, B.Y);
@@ -52,13 +52,13 @@ namespace VillagePeople.Util
             return float.MinValue;
         }
 
-        public static bool IntersectsVerticalLine(LinearFunction line, LinearFunction verticalLine)
+        public static bool IntersectsVerticalLine(LinearEquation line, LinearEquation verticalLine)
         {
             var y = line.F(verticalLine.minX);
             return (y >= verticalLine.minY) && (y <= verticalLine.maxY);
         }
 
-        public bool Intersects(LinearFunction f2)
+        public bool Intersects(LinearEquation f2)
         {
             if (!Horizontal && !f2.Horizontal)
             {

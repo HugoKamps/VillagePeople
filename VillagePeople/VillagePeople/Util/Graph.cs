@@ -71,23 +71,23 @@ namespace VillagePeople.Util
 
         public bool IntersectsStaticObjects(Vector2D begin, Vector2D end)
         {
-            var line = new LinearFunction(begin, end);
+            var line = new LinearEquation(begin, end);
 
             foreach (var entity in w.StaticEntities)
             {
                 if (entity.Walkable)
                     continue;
 
-                List<LinearFunction> unwalkableBox = new List<LinearFunction>()
+                List<LinearEquation> unwalkableBox = new List<LinearEquation>()
                 {
                     // top left to bottom left
-                    new LinearFunction(entity.UnwalkableSpace[0], new Vector2D(entity.UnwalkableSpace[0].X, entity.UnwalkableSpace[1].Y)),
+                    new LinearEquation(entity.UnwalkableSpace[0], new Vector2D(entity.UnwalkableSpace[0].X, entity.UnwalkableSpace[1].Y)),
                     // top left to top right
-                    new LinearFunction(entity.UnwalkableSpace[0], new Vector2D(entity.UnwalkableSpace[1].X, entity.UnwalkableSpace[0].Y)),
+                    new LinearEquation(entity.UnwalkableSpace[0], new Vector2D(entity.UnwalkableSpace[1].X, entity.UnwalkableSpace[0].Y)),
                     // bottom right to bottom left
-                    new LinearFunction(entity.UnwalkableSpace[1], new Vector2D(entity.UnwalkableSpace[0].X, entity.UnwalkableSpace[1].Y)),
+                    new LinearEquation(entity.UnwalkableSpace[1], new Vector2D(entity.UnwalkableSpace[0].X, entity.UnwalkableSpace[1].Y)),
                     // bottom right to top right
-                    new LinearFunction(entity.UnwalkableSpace[1], new Vector2D(entity.UnwalkableSpace[1].X, entity.UnwalkableSpace[0].Y))
+                    new LinearEquation(entity.UnwalkableSpace[1], new Vector2D(entity.UnwalkableSpace[1].X, entity.UnwalkableSpace[0].Y))
                 };
 
                 foreach (var func in unwalkableBox)
