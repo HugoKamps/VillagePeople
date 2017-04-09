@@ -1,31 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using VillagePeople.Behaviours;
 using VillagePeople.Entities;
 using VillagePeople.Entities.Structures;
 
 namespace VillagePeople.StateMachine.States
 {
-    class MiningStone : State<MovingEntity>
-    {
+    class MiningStone : State<MovingEntity> {
+        private StoneMine _stone;
         public override void Enter(MovingEntity me)
         {
-            // Move to stone
-            me.SteeringBehaviours = new List<SteeringBehaviour> { new SeekBehaviour(me, me.World.StaticEntities.Find(m => m.GetType() == typeof(StoneMine)).Position) };
-            Console.WriteLine("Mining gold");
+            _stone = (StoneMine)me.World.StaticEntities.Find(m => m.GetType() == typeof(StoneMine) && m.Resource.Stone > 0);
+            me.SetNewTarget(_stone.Position);
         }
 
         public override void Execute(MovingEntity me)
         {
-            var stone = (StoneMine)me.World.StaticEntities.Find(m => m.GetType() == typeof(StoneMine));
-            if (me.CloseEnough(me.Position, stone.Position))
+            if (me.CloseEnough(me.Position, _stone.Position, 5))
             {
-                Console.WriteLine("Stone: " + me.Resource.Stone);
-
-                if (me.Resource.TotalResources() < me.MaxInventorySpace)
+                if (me.Resource.TotalResources() < me.MaxInventorySpace && _stone.Resource.Stone > 0)
                 {
-                    //me.Resource.Stone += 1;
-                    stone.Gather(me);
+                    _stone.Gather(me);
                 } else
                 {
                     me.StateMachine.ChangeState(new ReturningResources());
@@ -33,10 +26,6 @@ namespace VillagePeople.StateMachine.States
             }
         }
 
-        public override void Exit(MovingEntity me)
-        {
-            // Stop mining stone
-            Console.WriteLine("Stop mining stone");
-        }
+        public override void Exit(MovingEntity me) { }
     }
 }

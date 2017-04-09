@@ -32,8 +32,8 @@ namespace VillagePeople.Util
 
         public void Render(Graphics g)
         {
-            var leftCorner = WorldPosition.X - Size / 2;
-            var rightCorner = WorldPosition.Y - Size / 2;
+            var leftCorner = WorldPosition.X - (float)Size / 2;
+            var rightCorner = WorldPosition.Y - (float)Size / 2;
 
             Pen p = new Pen(Color, 2);
             g.DrawEllipse(p, new Rectangle((int)leftCorner, (int)rightCorner, Size, Size));

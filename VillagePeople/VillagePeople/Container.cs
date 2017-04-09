@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Timers;
 using System.Windows.Forms;
-using VillagePeople.Entities;
 using VillagePeople.Util;
 using Timer = System.Timers.Timer;
 
@@ -66,7 +64,7 @@ namespace VillagePeople
 
         private void cbDebug_CheckedChanged(object sender, EventArgs e)
         {
-            _world.Debug = cbDebug.Checked;
+            _world.DebugGraph = cbDebug.Checked;
         }
 
         private void cbUpdate_CheckedChanged(object sender, EventArgs e)
@@ -86,6 +84,12 @@ namespace VillagePeople
             {
                 this.resourcesLabel.Text = txt;
             }
+        }
+
+        private void cbDebugText_CheckedChanged(object sender, EventArgs e)
+        {
+            _world.DebugText = cbDebugText.Checked;
+
         }
     }
 

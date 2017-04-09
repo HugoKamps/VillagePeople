@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using VillagePeople.Behaviours;
-using VillagePeople.Entities.NPC;
 using VillagePeople.StateMachine;
-using VillagePeople.StateMachine.States;
 using VillagePeople.Util;
 
 namespace VillagePeople.Entities
@@ -49,19 +46,7 @@ namespace VillagePeople.Entities
         public override void Update(float timeElapsed) {
             if (!_possessed)
             {
-                if (timeElapsed % 50 == 0) StateMachine.Update();
-
-                FlockingBehaviour.TagNeighbors(this, World.MovingEntities, 5);
-                Neighbours = World.MovingEntities.FindAll(m => m.Tagged);
-
-                /*SteeringBehaviours = new List<SteeringBehaviour> {
-                    new ArriveBehaviour(this, World.Target.Position),
-                    new SeekBehaviour(this, World.Target.Position),
-                    new Alignment(this, Neighbours),
-                    new Cohesion(this, Neighbours),
-                    new Separation(this, Neighbours)
-                };*/
-                Vector2D steering = SteeringBehaviour.CalculateDithered(SteeringBehaviours);
+                Vector2D steering = SteeringBehaviour.CalculateWTS(SteeringBehaviours, MaxSpeed);
                 steering /= Mass;
 
                 Vector2D acceleration = steering;
@@ -113,14 +98,34 @@ namespace VillagePeople.Entities
             _currentNodeInPath = -1;
         }
 
+        public void SetNewTarget(Vector2D to)
+        {
+            SteeringBehaviours = new List<SteeringBehaviour> {
+                new ArriveBehaviour(this, to)
+            };
+        }
+
+        public void SetWander(float elapsedTime)
+        {
+            SteeringBehaviours = new List<SteeringBehaviour> {
+                new WanderBehaviour(this, elapsedTime),
+                new Alignment(this, World.MovingEntities),
+                new Cohesion(this, World.MovingEntities),
+                new Separation(this, World.MovingEntities)
+            };
+        }
+
+        public void UpdateFlocking() {
+            SteeringBehaviours[1] = new Alignment(this, World.MovingEntities);
+            SteeringBehaviours[2] = new Cohesion(this, World.MovingEntities);
+            SteeringBehaviours[3] = new Separation(this, World.MovingEntities);
+        }
+
         public void NextStep(float timeElapsed)
         {
             Update(timeElapsed);
         }
 
-        public override string ToString()
-        {
-            return $"{Velocity}";
-        }
+        public override string ToString() => $"{Velocity}";
     }
 }

@@ -51,7 +51,7 @@
   <ItemGroup>
     <Compile Include="Behaviours\ArriveBehaviour.cs" />
     <Compile Include="Behaviours\ExploreBehaviour.cs" />
-    <Compile Include="Behaviours\FlockingBehaviour.cs" />
+    <Compile Include="Behaviours\Flocking.cs" />
     <Compile Include="Behaviours\SeekBehaviour.cs" />
     <Compile Include="Behaviours\SteeringBehaviour.cs" />
     <Compile Include="Behaviours\WanderBehaviour.cs" />
@@ -79,6 +79,7 @@
     <Compile Include="StateMachine\States\MiningGold.cs" />
     <Compile Include="StateMachine\States\CuttingWood.cs" />
     <Compile Include="Terrain\GameTerrain.cs" />
+    <Compile Include="Util\BitmapLoader.cs" />
     <Compile Include="Util\Edge.cs" />
     <Compile Include="Util\Graph.cs" />
     <Compile Include="Util\LinearEquation.cs" />
@@ -117,7 +118,21 @@
   <ItemGroup>
     <None Include="Resources\spel.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Resources\NPC\sheep.png" />
+    <Content Include="Resources\NPC\sheep_dead.png" />
+    <Content Include="Resources\NPC\villager.png" />
+    <Content Include="Resources\SE\gold.png" />
+    <Content Include="Resources\SE\gold_broken.png" />
+    <Content Include="Resources\SE\stone.png" />
+    <Content Include="Resources\SE\stone_broken.png" />
+    <Content Include="Resources\SE\tree.png" />
+    <Content Include="Resources\SE\tree_broken.png" />
+    <Content Include="Resources\Terrain\grass.png" />
+    <Content Include="Resources\Terrain\road.png" />
+    <Content Include="Resources\Terrain\town_hall.png" />
+    <Content Include="Resources\Terrain\water.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

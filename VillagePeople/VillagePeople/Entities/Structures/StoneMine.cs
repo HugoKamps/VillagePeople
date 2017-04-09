@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using VillagePeople.Util;
 
@@ -9,13 +8,13 @@ namespace VillagePeople.Entities.Structures
     {
         public StoneMine(Vector2D position, World world) : base(position, world)
         {
+            BaseAmount = 75;
+            Resource.Stone = 75;
             Scale = 20;
-            Resource.Stone = 200;
-            GatherRate = new Resource() { Stone = 2 };
-            UnwalkableSpace = new List<Vector2D>()
-            {
+            GatherRate = new Resource { Stone = 2 };
+            UnwalkableSpace = new List<Vector2D> {
                 new Vector2D(position.X - Scale / 2 - 5, position.Y - Scale / 2 - 5), // Top Left
-                new Vector2D(position.X + Scale / 2 + 5, position.Y + Scale / 2 + 5), // Bottom Right
+                new Vector2D(position.X + Scale / 2 + 5, position.Y + Scale / 2 + 5) // Bottom Right
             };
         }
 
@@ -37,34 +36,22 @@ namespace VillagePeople.Entities.Structures
 
         public override void Render(Graphics g)
         {
-            var b = new System.Drawing.SolidBrush(Color.Gray);
+            Image img;
 
-            if (Resource.Stone > 100)
-            {
-                double size = Scale;
-                double leftCorner = Position.X - size / 2;
-                double rightCorner = Position.Y - size / 2;
-                g.FillRectangle(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
-            }
-            else if (Resource.Stone > 0)
-            {
-                double size = Scale / 2;
-                double leftCorner = Position.X - size / 2;
-                double rightCorner = Position.Y - size / 2;
-                g.FillRectangle(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
-            }
-            else
-            {
-                b = new System.Drawing.SolidBrush(Color.Black);
-                double size = Scale / 4;
-                double leftCorner = Position.X - 5;
-                double rightCorner = Position.Y - 5;
-                g.FillRectangle(b, new Rectangle((int)leftCorner, (int)rightCorner, (int)10, (int)10));
-            }
+            double size = Scale * 2;
+            double leftCorner = Position.X - size / 2;
+            double rightCorner = Position.Y - size / 2;
 
+            if (Resource.Stone > 0) // Normal stone mine
+                img = BitmapLoader.LoadBitmap(@"..\..\Resources\SE\stone.png", this.GetType().ToString() + "1");
+            else // Broken stone mine
+                img = BitmapLoader.LoadBitmap(@"..\..\Resources\SE\stone_broken.png", this.GetType().ToString() + "2");
+
+            g.DrawImage(img, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
+            
             g.DrawLine(new Pen(Color.Black, 4), new Point((int)UnwalkableSpace[0].X, (int)UnwalkableSpace[0].Y), new Point((int)UnwalkableSpace[1].X, (int)UnwalkableSpace[1].Y));
             g.DrawLine(new Pen(Color.Black, 4), new Point((int)UnwalkableSpace[1].X, (int)UnwalkableSpace[0].Y), new Point((int)UnwalkableSpace[0].X, (int)UnwalkableSpace[1].Y));
-            g.DrawString(Resource.Stone.ToString(), new System.Drawing.Font("Arial", 9), new SolidBrush(Color.Black), Position.X, Position.Y);
+            g.DrawString(Resource.Stone.ToString(), new Font("Arial", 9), new SolidBrush(Color.Black), Position.X + 10, Position.Y + 10);
         }
     }
 }
