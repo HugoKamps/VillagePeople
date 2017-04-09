@@ -9,7 +9,7 @@ namespace VillagePeople.Util
     public class LinearEquation
     {
         private float dX, dY, c, maxX, maxY, minX, minY;
-        public bool Horizontal;
+        public LineType Type;
 
         public LinearEquation(Vector2D A, Vector2D B)
         {
@@ -21,35 +21,30 @@ namespace VillagePeople.Util
             dX = B.X - A.X;
             dY = B.Y - A.Y;
 
-            if (dX != 0)
-                Horizontal = true;
-            
-            if (dY == 0) // Prevent division by 0
+            if (dX == 0)
             {
-                dY = dX;
-                dX = 0;
+                Type = LineType.Vertical;
+                return;
             }
-            c = A.X - A.Y * (dX / dY);
+            else if (dY == 0)
+            {
+                Type = LineType.Horizontal;
+                return;
+            }
+
+            Type = LineType.Slanted;
+            c = A.X - A.Y * (dY / dX);
         }
 
         public float F(float x)
         {
-            if (x < minX || x > maxX)
-                return float.MinValue;
-
-            if ((dX / dY) == 0)
-                return minY;
-
-            if (x >= minX && x <= maxX)
-            {
-                var y = (dX / dY) * x + c;
-
-                if (y >= minY && y <= maxY)
-                {
-                    return y;
-                }
-            }
-            return float.MinValue;
+            if (Type == LineType.Horizontal && x >= minX && x <= maxX)  // Line is horizontal and x is within range
+                return minY;                                            //  return y
+            else if (Type == LineType.Vertical && x == minX)            // Line is vertical and line is on x
+                return (minY + maxY) / 2;                               //  should actually return everything between minY and maxY
+            else if (x >= minX && x <= maxX)                            // Line is slanted and x is within range
+                return (dY / dX) * x + c;                               //  return y
+            return float.MinValue;                                      // Error => returns min value of float
         }
 
         public static bool IntersectsVerticalLine(LinearEquation line, LinearEquation verticalLine)
@@ -60,47 +55,70 @@ namespace VillagePeople.Util
 
         public bool Intersects(LinearEquation f2)
         {
-            if (!Horizontal && !f2.Horizontal)
+            if (Type == LineType.Horizontal && f2.Type == LineType.Horizontal)
+                return (F(minX) == f2.F(minX));
+            if (Type == LineType.Vertical && f2.Type == LineType.Vertical)
             {
-                bool res= 
-                    minX == f2.minX &&                          // on same line and
-                    ((minY >= f2.minY && minY <= f2.maxY) ||    // minY in range (f2.minY, f2.maxY) or
-                    (maxY >= f2.minY && maxY <= f2.maxY));      // maxY in range (f2.minY, f2.maxY)
-                return res;
-            }
-            else if (Horizontal && !f2.Horizontal)
-            {
-                return IntersectsVerticalLine(this, f2);
-            }
-            else if (!Horizontal && f2.Horizontal)
-            {
-                return IntersectsVerticalLine(f2, this);
-            }
-            else
-            {
-                float newC, newdXOverdY, newX;
-
-                newC = c - f2.c;
-                newdXOverdY = (dX / dY) - (f2.dX / f2.dY);
-
-                if (newdXOverdY == 0)
+                if (minX != f2.minX)
                     return false;
-
-                newX = newC / newdXOverdY;
-
-                if (F(newX) != float.MinValue && f2.F(newX) != float.MinValue)
-                    return true;
-                return false;
+                if (minX > f2.maxX || maxX < f2.minX)
+                    return false;
+                return true;
             }
+            if (Type == LineType.Slanted && f2.Type == LineType.Slanted ||
+                Type == LineType.Slanted && f2.Type == LineType.Horizontal ||
+                Type == LineType.Horizontal && f2.Type == LineType.Slanted)
+            {
+                float derivedC, derivedDYoverDX, derivedX;
+
+                derivedC = f2.c - c;
+                derivedDYoverDX = (dY / dX) / (f2.dY / f2.dX);
+                derivedX = derivedC / derivedDYoverDX;
+
+                return (F(derivedX) != f2.F(derivedX));
+            }
+            
+            if (Type == LineType.Vertical)
+            {
+                if (f2.Type == LineType.Horizontal)
+                {
+                    if (f2.minY < minY || f2.minY > maxY)
+                        return false;
+                    if (f2.minX > minX || f2.maxX < maxX)
+                        return false;
+                    return true;
+                }
+                // f2 must be slanted
+                return f2.F(minX) <= maxY && f2.F(minX) >= minY;
+            }
+
+            // f2 must be Vertical
+            if (Type == LineType.Horizontal)
+            {
+                if (minY < f2.minY || minY > f2.maxY)
+                    return false;
+                if (minX > f2.minX || maxX < f2.maxX)
+                    return false;
+                return true;
+            }
+            // this must be slanted
+            return F(f2.minX) <= f2.maxY && F(f2.minX) >= f2.minY;
         }
 
         public override string ToString()
         {
-            if (!Horizontal)
-                return " f(x) = {" + minY + " ... " + maxY + "} ";
-            else if (dX / dY == 0)
-                return " f(x) = " + c + " ";
-            return " f(x) = (" + dX + "/" + dY + ")x + " + c + " ";
+            if (Type == LineType.Horizontal)
+                return " f( { " + minX + " .. " + maxX + " } ) = " + minY + " ";
+            else if (Type == LineType.Vertical)
+                return " f( " + minX + " ) = { " + minY + " .. " + maxY + " } ";
+            return " f(x) = (" + dY + "/" + dX + ")x + " + c + " ";
         }
+    }
+
+    public enum LineType
+    {
+        Horizontal,
+        Vertical,
+        Slanted
     }
 }
