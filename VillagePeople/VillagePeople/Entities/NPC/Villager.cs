@@ -62,7 +62,7 @@ namespace VillagePeople.Entities.NPC
         }
 
         public override void Update(float timeElapsed) {
-            if (timeElapsed % 50 == 0) StateMachine.Update();
+            if (timeElapsed % 20 == 0) StateMachine.Update();
             base.Update(timeElapsed);
         }
     }

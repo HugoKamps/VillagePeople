@@ -22,7 +22,7 @@ namespace VillagePeople.Behaviours {
         }
 
         public override Vector2D Calculate() {
-            SetRandomTarget();
+            if(_elapsedTime % 100 == 0) SetRandomTarget();
             return new SeekBehaviour(_self, Target).Calculate();
         }
     }

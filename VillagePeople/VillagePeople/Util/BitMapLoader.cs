@@ -7,12 +7,7 @@ namespace VillagePeople.Util
 {
     public class BitmapLoader
     {
-        public static BitmapLoader GetInstance()
-        {
-            if (_instance == null)
-                _instance = new BitmapLoader();
-            return _instance;
-        }
+        public static BitmapLoader GetInstance() => _instance ?? (_instance = new BitmapLoader());
 
         private static BitmapLoader _instance;
 

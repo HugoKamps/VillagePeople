@@ -22,7 +22,6 @@ namespace VillagePeople.StateMachine.States
 
                 if(_index == -1) _index = Resource.GetLowestResource(me);
                 if (Resource.IsResourceAvailable(me, _index)) {
-                    _index = 3;
                     switch (_index) {
                         case 0:
                             me.StateMachine.ChangeState(new CuttingWood());
@@ -41,8 +40,10 @@ namespace VillagePeople.StateMachine.States
                             break;
                     }
                 }
-                else {
-                    _index++;
+                else
+                {
+                    if (_index == 3) _index = 0;
+                    else _index++;
                 }
             }
         }
