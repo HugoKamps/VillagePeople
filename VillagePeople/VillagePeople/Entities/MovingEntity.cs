@@ -45,6 +45,30 @@ namespace VillagePeople.Entities
 
         public override void Update(float timeElapsed)
         {
+
+            if (_path.Count > 0 && _currentNodeInPath != _path.Count && _currentNodeInPath != -1)
+            {
+                var diff = _path[_currentNodeInPath].WorldPosition - Position;
+
+                SetNewTarget(Position += diff.Scale(10f));
+                if (CloseEnough(Position, _path[_currentNodeInPath].WorldPosition, 10))
+                    _currentNodeInPath++;
+            }
+
+            var steering = SteeringBehaviour.CalculateWts(SteeringBehaviours, MaxSpeed);
+            steering /= Mass;
+
+            var acceleration = steering;
+            acceleration *= 0.8f;
+            Velocity += acceleration;
+
+            Velocity *= 0.8f;
+            Position += Velocity;
+        }
+
+        /*
+        public override void Update(float timeElapsed)
+        {
             if (!_possessed)
             {
                 var steering = SteeringBehaviour.CalculateWts(SteeringBehaviours, MaxSpeed);
@@ -64,7 +88,7 @@ namespace VillagePeople.Entities
                 if (CloseEnough(Position, _path[_currentNodeInPath].WorldPosition, 10))
                     _currentNodeInPath++;
             }
-        }
+        }*/
 
         public List<Node> EnterPossession(Graph g, Vector2D target)
         {

@@ -77,6 +77,9 @@ namespace VillagePeople.Util
 
         public void RetracePath(Node startNode, Node targetNode)
         {
+            if (startNode == null || targetNode == null)
+                return;
+
             Path = new List<Node>();
             var currentNode = Grid.GetClosestNode(targetNode.WorldPosition);
             startNode = Grid.GetClosestNode(startNode.WorldPosition);
