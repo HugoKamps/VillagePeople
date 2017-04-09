@@ -46,13 +46,7 @@ namespace VillagePeople.Util
                 return (dY / dX) * x + c;                               //  return y
             return float.MinValue;                                      // Error => returns min value of float
         }
-
-        public static bool IntersectsVerticalLine(LinearEquation line, LinearEquation verticalLine)
-        {
-            var y = line.F(verticalLine.minX);
-            return (y >= verticalLine.minY) && (y <= verticalLine.maxY);
-        }
-
+        
         public bool Intersects(LinearEquation f2)
         {
             if (Type == LineType.Horizontal && f2.Type == LineType.Horizontal)
@@ -65,9 +59,7 @@ namespace VillagePeople.Util
                     return false;
                 return true;
             }
-            if (Type == LineType.Slanted && f2.Type == LineType.Slanted ||
-                Type == LineType.Slanted && f2.Type == LineType.Horizontal ||
-                Type == LineType.Horizontal && f2.Type == LineType.Slanted)
+            if (Type == LineType.Slanted && f2.Type == LineType.Slanted)
             {
                 float derivedC, derivedDYoverDX, derivedX;
 
@@ -76,6 +68,26 @@ namespace VillagePeople.Util
                 derivedX = derivedC / derivedDYoverDX;
 
                 return (F(derivedX) != f2.F(derivedX));
+            }
+
+            if (Type == LineType.Slanted && f2.Type == LineType.Horizontal)
+            {
+                float derivedC, derivedX;
+
+                derivedC = f2.minY - c;
+                derivedX = derivedC / (dY / dX);
+
+                return derivedX >= f2.minX && derivedX <= f2.maxX && F(derivedX) != float.MinValue;
+            }
+
+            if (Type == LineType.Horizontal && f2.Type == LineType.Slanted)
+            {
+                float derivedC, derivedX;
+
+                derivedC = minY - f2.c;
+                derivedX = derivedC / (f2.dY / f2.dX);
+
+                return derivedX >= minX && derivedX <= maxX && f2.F(derivedX) != float.MinValue;
             }
             
             if (Type == LineType.Vertical)
