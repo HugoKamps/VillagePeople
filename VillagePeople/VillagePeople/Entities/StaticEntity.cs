@@ -8,6 +8,7 @@ namespace VillagePeople.Entities
         public bool Walkable = false;
         public Resource GatherRate;
         public List<Vector2D> UnwalkableSpace;
+        public int BaseAmount;
 
         public StaticEntity(Vector2D position, World world) : base(position, world)
         {

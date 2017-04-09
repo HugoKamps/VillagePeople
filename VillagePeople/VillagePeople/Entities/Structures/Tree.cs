@@ -8,8 +8,9 @@ namespace VillagePeople.Entities.Structures
     {
         public Tree(Vector2D position, World world) : base(position, world)
         {
+            BaseAmount = 40;
+            Resource.Wood = BaseAmount;
             Scale = 20;
-            Resource.Wood = 40;
             GatherRate = new Resource { Wood = 4 };
             UnwalkableSpace = new List<Vector2D> {
                 new Vector2D(position.X - Scale / 2 - 5, position.Y - Scale / 2 - 5), // Top Left

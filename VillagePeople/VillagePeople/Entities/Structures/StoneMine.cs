@@ -8,8 +8,9 @@ namespace VillagePeople.Entities.Structures
     {
         public StoneMine(Vector2D position, World world) : base(position, world)
         {
-            Scale = 20;
+            BaseAmount = 75;
             Resource.Stone = 75;
+            Scale = 20;
             GatherRate = new Resource { Stone = 2 };
             UnwalkableSpace = new List<Vector2D> {
                 new Vector2D(position.X - Scale / 2 - 5, position.Y - Scale / 2 - 5), // Top Left

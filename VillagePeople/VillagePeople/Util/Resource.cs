@@ -118,5 +118,35 @@ namespace VillagePeople.Util
                     return false;
             }
         }
+
+        public static bool NoResources(World world)
+        {
+            bool woodAvailable =
+                world.StaticEntities.FindAll(m => m.GetType() == typeof(Tree)).Count(x => x.Resource.Wood > 0) > 0;
+            bool stoneAvailable =
+                world.StaticEntities.FindAll(m => m.GetType() == typeof(StoneMine)).Count(x => x.Resource.Stone > 0) > 0;
+            bool goldAvailable =
+                world.StaticEntities.FindAll(m => m.GetType() == typeof(GoldMine)).Count(x => x.Resource.Gold > 0) > 0;
+            bool foodAvailable =
+                world.MovingEntities.FindAll(m => m.GetType() == typeof(Sheep)).Count(x => x.Resource.Food > 0) > 0;
+
+            return !(woodAvailable || stoneAvailable || goldAvailable || foodAvailable);
+        }
+
+        public static void ResetResources(World world)
+        {
+            foreach (var se in world.StaticEntities)
+            {
+                if (se.GetType() == typeof(Tree)) se.Resource.Wood = se.BaseAmount;
+                if (se.GetType() == typeof(StoneMine)) se.Resource.Stone = se.BaseAmount;
+                if (se.GetType() == typeof(GoldMine)) se.Resource.Gold = se.BaseAmount;
+            }
+
+            foreach (var me in world.MovingEntities.FindAll(me => me.GetType() == typeof(Sheep)))
+            {
+                Sheep s = (Sheep)me;
+                me.Resource.Food = s.BaseAmount;
+            }
+        }
     }
 }

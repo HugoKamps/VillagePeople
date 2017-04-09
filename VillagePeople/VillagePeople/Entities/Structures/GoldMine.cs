@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using VillagePeople.Util;
 
@@ -7,15 +6,17 @@ namespace VillagePeople.Entities.Structures
 {
     class GoldMine : StaticEntity
     {
+        
         public GoldMine(Vector2D position, World world) : base(position, world)
         {
+            BaseAmount = 75;
+            Resource.Gold = BaseAmount;
             Scale = 20;
-            Resource.Gold = 75;
-            GatherRate = new Resource() { Gold = 2 };
-            UnwalkableSpace = new List<Vector2D>()
+            GatherRate = new Resource { Gold = 2 };
+            UnwalkableSpace = new List<Vector2D>
             {
                 new Vector2D(position.X - Scale / 2 - 5, position.Y - Scale / 2 - 5), // Top Left
-                new Vector2D(position.X + Scale / 2 + 5, position.Y + Scale / 2 + 5), // Bottom Right
+                new Vector2D(position.X + Scale / 2 + 5, position.Y + Scale / 2 + 5) // Bottom Right
             };
         }
 
@@ -44,13 +45,13 @@ namespace VillagePeople.Entities.Structures
             double rightCorner = Position.Y - size / 2;
 
             if (Resource.Gold > 0) // Normal gold mine
-                img = BitmapLoader.LoadBitmap(@"..\..\Resources\SE\gold.png", this.GetType().ToString() + "1");
+                img = BitmapLoader.LoadBitmap(@"..\..\Resources\SE\gold.png", GetType() + "1");
             else // Broken gold mine
-                img = BitmapLoader.LoadBitmap(@"..\..\Resources\SE\gold_broken.png", this.GetType().ToString() + "2");
+                img = BitmapLoader.LoadBitmap(@"..\..\Resources\SE\gold_broken.png", GetType() + "2");
 
             g.DrawImage(img, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
 
-            g.DrawString(Resource.Gold.ToString(), new System.Drawing.Font("Arial", 9), new SolidBrush(Color.Black), Position.X + 10, Position.Y + 10);
+            g.DrawString(Resource.Gold.ToString(), new Font("Arial", 9), new SolidBrush(Color.Black), Position.X + 10, Position.Y + 10);
         }
     }
 }
