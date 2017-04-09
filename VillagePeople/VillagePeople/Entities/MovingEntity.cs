@@ -8,29 +8,17 @@ namespace VillagePeople.Entities
 {
     public abstract class MovingEntity : BaseGameEntity
     {
+        private int _currentNodeInPath = -1;
+        private List<Node> _path = new List<Node>();
+        private Pathfinder _pathFinder;
+        private bool _possessed;
         public Color Color;
 
-        public Vector2D Velocity { get; set; }
-        public Vector2D Acceleration { get; set; }
-        public Vector2D Heading { get; set; }
-
-
-        public List<SteeringBehaviour> SteeringBehaviours { get; set; }
-
-        public float Mass { get; set; }
-        public float MaxSpeed { get; set; }
-        public int MaxInventorySpace { get; set; }
-        public double TargetSpeed;
+        public List<Node> NonSmoothenedPath = new List<Node>();
         public double Radius;
-        public List<MovingEntity> Neighbours { get; set; }
 
         public StateMachine<MovingEntity> StateMachine;
-
-        public List<Node> nonSmoothenedPath = new List<Node>();
-        private Pathfinder _pathFinder;
-        private List<Node> _path = new List<Node>();
-        private bool _possessed = false;
-        private int _currentNodeInPath = -1;
+        public double TargetSpeed;
 
         public MovingEntity(Vector2D position, World world) : base(position, world)
         {
@@ -43,27 +31,38 @@ namespace VillagePeople.Entities
             SteeringBehaviours = new List<SteeringBehaviour>();
         }
 
-        public override void Update(float timeElapsed) {
+        public Vector2D Velocity { get; set; }
+        public Vector2D Acceleration { get; set; }
+        public Vector2D Heading { get; set; }
+
+
+        public List<SteeringBehaviour> SteeringBehaviours { get; set; }
+
+        public float Mass { get; set; }
+        public float MaxSpeed { get; set; }
+        public int MaxInventorySpace { get; set; }
+        public List<MovingEntity> Neighbours { get; set; }
+
+        public override void Update(float timeElapsed)
+        {
             if (!_possessed)
             {
-                Vector2D steering = SteeringBehaviour.CalculateWTS(SteeringBehaviours, MaxSpeed);
+                var steering = SteeringBehaviour.CalculateWts(SteeringBehaviours, MaxSpeed);
                 steering /= Mass;
 
-                Vector2D acceleration = steering;
+                var acceleration = steering;
                 acceleration *= 0.8f;
                 Velocity += acceleration;
 
                 Velocity *= 0.8f;
                 Position += Velocity;
             }
-            else if(_path.Count > 0 && _currentNodeInPath != _path.Count && _currentNodeInPath != -1)
+            else if (_path.Count > 0 && _currentNodeInPath != _path.Count && _currentNodeInPath != -1)
             {
                 var diff = _path[_currentNodeInPath].WorldPosition - Position;
                 Position += diff.Scale(10f);
                 if (CloseEnough(Position, _path[_currentNodeInPath].WorldPosition, 10))
-                {
                     _currentNodeInPath++;
-                }
             }
         }
 
@@ -71,7 +70,7 @@ namespace VillagePeople.Entities
         {
             _pathFinder = new Pathfinder();
             _possessed = true;
-            _pathFinder.grid = g;
+            _pathFinder.Grid = g;
             UpdatePath(target);
 
             return _path;
@@ -79,12 +78,12 @@ namespace VillagePeople.Entities
 
         public List<Node> UpdatePath(Vector2D target)
         {
-            _pathFinder.seeker = Position;
-            _pathFinder.target = target;
+            _pathFinder.Seeker = Position;
+            _pathFinder.Target = target;
             _pathFinder.Update();
-            nonSmoothenedPath = _pathFinder.path;
+            NonSmoothenedPath = _pathFinder.Path;
             _pathFinder.PathSmoothing();
-            _path = _pathFinder.path;
+            _path = _pathFinder.Path;
             _currentNodeInPath = 0;
 
             return _path;
@@ -100,14 +99,16 @@ namespace VillagePeople.Entities
 
         public void SetNewTarget(Vector2D to)
         {
-            SteeringBehaviours = new List<SteeringBehaviour> {
+            SteeringBehaviours = new List<SteeringBehaviour>
+            {
                 new ArriveBehaviour(this, to)
             };
         }
 
         public void SetWander(float elapsedTime)
         {
-            SteeringBehaviours = new List<SteeringBehaviour> {
+            SteeringBehaviours = new List<SteeringBehaviour>
+            {
                 new WanderBehaviour(this, elapsedTime),
                 new Alignment(this, World.MovingEntities),
                 new Cohesion(this, World.MovingEntities),
@@ -115,7 +116,8 @@ namespace VillagePeople.Entities
             };
         }
 
-        public void UpdateFlocking() {
+        public void UpdateFlocking()
+        {
             SteeringBehaviours[1] = new Alignment(this, World.MovingEntities);
             SteeringBehaviours[2] = new Cohesion(this, World.MovingEntities);
             SteeringBehaviours[3] = new Separation(this, World.MovingEntities);

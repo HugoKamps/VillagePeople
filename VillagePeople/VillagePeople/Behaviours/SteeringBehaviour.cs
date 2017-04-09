@@ -13,18 +13,18 @@ namespace VillagePeople.Behaviours
         private const float DCohesion = 0.7f;
         private const float DWander = 1.0f;
         private const float DExplore = 1.0f;
-        
-        public MovingEntity M { get; set; }
-        public abstract Vector2D Calculate();
 
         public SteeringBehaviour(MovingEntity m)
         {
             M = m;
         }
 
-        public static Vector2D CalculateWTS(List<SteeringBehaviour> sb, float maxSpeed)
+        public MovingEntity M { get; set; }
+        public abstract Vector2D Calculate();
+
+        public static Vector2D CalculateWts(List<SteeringBehaviour> sb, float maxSpeed)
         {
-            Vector2D calculated = new Vector2D();
+            var calculated = new Vector2D();
             foreach (var behaviour in sb)
             {
                 if (behaviour.GetType() == typeof(ArriveBehaviour))
@@ -49,6 +49,20 @@ namespace VillagePeople.Behaviours
                     calculated += behaviour.Calculate() * DExplore;
             }
             return calculated.Truncate(maxSpeed);
+        }
+
+        public static void TagNeighbors(MovingEntity me, List<MovingEntity> entities, double radius)
+        {
+            foreach (var entity in entities)
+            {
+                entity.UnTag();
+
+                Vector2D to = entity.Position - me.Position;
+                double range = radius + entity.Radius;
+
+                if (entity != me && to.LengthSquared() < range * range)
+                    entity.Tag();
+            }
         }
     }
 }

@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using VillagePeople.Behaviours;
-using VillagePeople.Entities;
+﻿using VillagePeople.Entities;
 using VillagePeople.Entities.Structures;
 
 namespace VillagePeople.StateMachine.States
 {
-    class CuttingWood : State<MovingEntity>
+    internal class CuttingWood : State<MovingEntity>
     {
         private Tree _tree;
+
         public override void Enter(MovingEntity me)
         {
-            _tree = (Tree)me.World.StaticEntities.Find(m => m.GetType() == typeof(Tree) && m.Resource.Wood > 0);
+            _tree = (Tree) me.World.StaticEntities.Find(m => m.GetType() == typeof(Tree) && m.Resource.Wood > 0);
             me.SetNewTarget(_tree.Position);
         }
 
@@ -19,17 +17,11 @@ namespace VillagePeople.StateMachine.States
         {
             if (_tree == null)
                 me.StateMachine.ChangeState(new ReturningResources());
-            else
-            if (me.CloseEnough(me.Position, _tree.Position, 5) && _tree != null)
-            {
+            else if (me.CloseEnough(me.Position, _tree.Position, 5) && _tree != null)
                 if (me.Resource.TotalResources() < me.MaxInventorySpace && _tree.Resource.Wood > 0)
-                {
                     _tree.Gather(me);
-                } else
-                {
+                else
                     me.StateMachine.ChangeState(new ReturningResources());
-                }
-            }
         }
 
         public override void Exit(MovingEntity me)

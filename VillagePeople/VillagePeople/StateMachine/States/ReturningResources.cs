@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using VillagePeople.Behaviours;
-using VillagePeople.Entities;
+﻿using VillagePeople.Entities;
 using VillagePeople.Util;
 
 namespace VillagePeople.StateMachine.States
 {
-    class ReturningResources : State<MovingEntity> {
+    internal class ReturningResources : State<MovingEntity>
+    {
         private int _index = -1;
 
         public override void Enter(MovingEntity me)
@@ -15,14 +12,17 @@ namespace VillagePeople.StateMachine.States
             me.SetNewTarget(new Vector2D(25, 375));
         }
 
-        public override void Execute(MovingEntity me) {
+        public override void Execute(MovingEntity me)
+        {
             if (me.CloseEnough(me.Position, new Vector2D(25, 375)))
             {
                 Resource.DepositResources(me);
 
-                if(_index == -1) _index = Resource.GetLowestResource(me);
-                if (Resource.IsResourceAvailable(me, _index)) {
-                    switch (_index) {
+                if (_index == -1) _index = Resource.GetLowestResource(me);
+                if (Resource.IsResourceAvailable(me, _index))
+                {
+                    switch (_index)
+                    {
                         case 0:
                             me.StateMachine.ChangeState(new CuttingWood());
                             break;
@@ -48,6 +48,8 @@ namespace VillagePeople.StateMachine.States
             }
         }
 
-        public override void Exit(MovingEntity me) { }
+        public override void Exit(MovingEntity me)
+        {
+        }
     }
 }

@@ -9,24 +9,25 @@ namespace VillagePeople
 {
     public partial class Container : Form
     {
-        private World _world;
-
         public const float Delta = 1.0f;
-        public float TimeElapsed = 0;
 
-        Timer timer = new Timer();
+        private Timer _timer = new Timer();
+        private World _world;
+        public float TimeElapsed;
 
         public Container()
         {
             InitializeComponent();
 
-            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, GamePanel, new object[] { true });
+            typeof(Panel).InvokeMember("DoubleBuffered",
+                BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, GamePanel,
+                new object[] {true});
 
             _world = new World(GamePanel.Width, GamePanel.Height, this);
 
-            timer.Elapsed += Timer_Elapsed;
-            timer.Interval = 20;
-            timer.Enabled = true;
+            _timer.Elapsed += Timer_Elapsed;
+            _timer.Interval = 20;
+            _timer.Enabled = true;
         }
 
         public void DebugInfo(DebugType type, string value)
@@ -59,7 +60,7 @@ namespace VillagePeople
             if (e.Button == MouseButtons.Left)
                 _world.TrySelectEntity(new Vector2D(e.X, e.Y));
             else
-                _world.targetLoc = new Vector2D(e.X, e.Y);
+                _world.TargetLoc = new Vector2D(e.X, e.Y);
         }
 
         private void cbDebug_CheckedChanged(object sender, EventArgs e)
@@ -75,21 +76,16 @@ namespace VillagePeople
         public void UpdateResourcesLabel()
         {
             var txt = "Wood: " + _world.Resources.Wood + " - " + "Stone: " + _world.Resources.Stone + " - " +
-                                  "Gold: " + _world.Resources.Gold + " - " + "Food: " + _world.Resources.Food;
-            if (this.resourcesLabel.InvokeRequired)
-            {
-                this.resourcesLabel.BeginInvoke((MethodInvoker)delegate () { this.resourcesLabel.Text = txt; });
-            }
+                      "Gold: " + _world.Resources.Gold + " - " + "Food: " + _world.Resources.Food;
+            if (resourcesLabel.InvokeRequired)
+                resourcesLabel.BeginInvoke((MethodInvoker) delegate { resourcesLabel.Text = txt; });
             else
-            {
-                this.resourcesLabel.Text = txt;
-            }
+                resourcesLabel.Text = txt;
         }
 
         private void cbDebugText_CheckedChanged(object sender, EventArgs e)
         {
             _world.DebugText = cbDebugText.Checked;
-
         }
     }
 

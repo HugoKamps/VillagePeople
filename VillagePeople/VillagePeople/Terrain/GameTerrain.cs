@@ -6,11 +6,9 @@ namespace VillagePeople.Terrain
 {
     public class GameTerrain
     {
+        public Vector2D Position;
         public float Speed;
         public TerrainType Type;
-        public Vector2D Position;
-
-        public bool Walkable => Speed > 0.0f;
 
         public GameTerrain(Vector2D position, TerrainType t = TerrainType.Grass)
         {
@@ -30,22 +28,24 @@ namespace VillagePeople.Terrain
             }
         }
 
+        public bool Walkable => Speed > 0.0f;
+
         public void Render(Graphics g)
         {
             Image img;
             switch (Type)
             {
                 case TerrainType.Water:
-                    img = BitmapLoader.LoadBitmap(@"..\..\Resources\Terrain\water.png", this.GetType().ToString() + Type);
+                    img = BitmapLoader.LoadBitmap(@"..\..\Resources\Terrain\water.png", GetType().ToString() + Type);
                     break;
                 case TerrainType.Road:
-                    img = BitmapLoader.LoadBitmap(@"..\..\Resources\Terrain\road.png", this.GetType().ToString() + Type);
+                    img = BitmapLoader.LoadBitmap(@"..\..\Resources\Terrain\road.png", GetType().ToString() + Type);
                     break;
                 case TerrainType.Townhall:
-                    img = BitmapLoader.LoadBitmap(@"..\..\Resources\Terrain\town_hall.png", this.GetType().ToString() + Type);
+                    img = BitmapLoader.LoadBitmap(@"..\..\Resources\Terrain\town_hall.png", GetType().ToString() + Type);
                     break;
                 default: // case TerrainType.Grass
-                    img = BitmapLoader.LoadBitmap(@"..\..\Resources\Terrain\grass.png", this.GetType().ToString() + Type);
+                    img = BitmapLoader.LoadBitmap(@"..\..\Resources\Terrain\grass.png", GetType().ToString() + Type);
                     break;
             }
 
@@ -54,10 +54,9 @@ namespace VillagePeople.Terrain
 
         public static void GenerateMap(List<GameTerrain> terrain)
         {
-
             // Row 1 & 2
             var y = 0;
-            for (int i = 0; i < 2; i++)
+            for (var i = 0; i < 2; i++)
             {
                 CreateTerrain(terrain, new GameTerrain(new Vector2D(0, y)), 4);
                 CreateTerrain(terrain, new GameTerrain(new Vector2D(200, y), TerrainType.Water), 2);
@@ -124,9 +123,9 @@ namespace VillagePeople.Terrain
 
         public static void CreateTerrain(List<GameTerrain> terrains, GameTerrain terrain, int amount)
         {
-            TerrainType type = terrain.Type;
+            var type = terrain.Type;
             float x = terrain.Position.X, y = terrain.Position.Y;
-            for (int i = 0; i < amount; i++)
+            for (var i = 0; i < amount; i++)
             {
                 terrains.Add(new GameTerrain(new Vector2D(x, y), type));
                 x += 50;

@@ -23,23 +23,19 @@ namespace VillagePeople.Entities.NPC
 
         public override Resource AddResource(Resource r)
         {
-            int capacity = MaxInventorySpace - Resource.TotalResources();
+            var capacity = MaxInventorySpace - Resource.TotalResources();
 
-            if (capacity <=0)
-            {
+            if (capacity <= 0)
                 return r;
-            }
 
             if (capacity >= r.TotalResources())
-            {
                 return base.AddResource(r);
-            }
             return base.AddResource(r.Cap(capacity));
         }
 
         public override void Render(Graphics g)
         {
-            Image img = BitmapLoader.LoadBitmap(@"..\..\Resources\NPC\villager.png", this.GetType().ToString());
+            var img = BitmapLoader.LoadBitmap(@"..\..\Resources\NPC\villager.png", GetType().ToString());
 
             double leftCorner = Position.X - Scale;
             double rightCorner = Position.Y - Scale;
@@ -51,17 +47,18 @@ namespace VillagePeople.Entities.NPC
             var fontFamily = new FontFamily("Arial");
             var font = new Font(fontFamily, 10, FontStyle.Regular, GraphicsUnit.Pixel);
 
-            string text = "Current state: " + StateMachine.CurrentState.GetType().Name + "\n" +
-                          "Wood:" + Resource.Wood + "\n" +
-                          "Stone: " + Resource.Stone + "\n" + 
-                          "Gold: " + Resource.Gold + "\n" +
-                          "Food: " + Resource.Food;
+            var text = "Current state: " + StateMachine.CurrentState.GetType().Name + "\n" +
+                       "Wood:" + Resource.Wood + "\n" +
+                       "Stone: " + Resource.Stone + "\n" +
+                       "Gold: " + Resource.Gold + "\n" +
+                       "Food: " + Resource.Food;
 
-            g.DrawImage(img, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
-            if(World.DebugText) g.DrawString(text, font, new SolidBrush(Color.Black), Position.X, Position.Y);
+            g.DrawImage(img, new Rectangle((int) leftCorner, (int) rightCorner, (int) size, (int) size));
+            if (World.DebugText) g.DrawString(text, font, new SolidBrush(Color.Black), Position.X, Position.Y);
         }
 
-        public override void Update(float timeElapsed) {
+        public override void Update(float timeElapsed)
+        {
             if (timeElapsed % 20 == 0) StateMachine.Update();
             base.Update(timeElapsed);
         }
