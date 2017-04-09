@@ -28,6 +28,7 @@ namespace VillagePeople
 
         public List<Villager> Target = new List<Villager>();
         public Villager Leader { get; set; }
+        public Vector2D targetLoc;
 
         public Resource Resources { get; set; }
 
@@ -50,6 +51,7 @@ namespace VillagePeople
 
         public void Init()
         {
+            targetLoc = new Vector2D();
             GameTerrain.GenerateMap(Terrains);
 
             Tree t1 = new Tree(new Vector2D(25, 25), this);
@@ -104,15 +106,6 @@ namespace VillagePeople
 
 
             MovingEntities = new List<MovingEntity> { v1, v2, v3, v4, s1, s2 };
-
-            Villager target1 = new Villager(new Vector2D(), this)
-            {
-                Color = Color.DarkRed,
-                Position = new Vector2D(40, 60, 40)
-            };
-
-            Target.Add(target1);
-
         }
 
         public void InitTerrain()
@@ -144,7 +137,8 @@ namespace VillagePeople
                     if (SelectedEntityIndex != -1)
                         MovingEntities[SelectedEntityIndex].ExitPossession();
                     SelectedEntityIndex = i;
-                    Graph.path = MovingEntities[i].EnterPossession(Graph, Target[0].Position);
+                    Graph.path = MovingEntities[i].EnterPossession(Graph, targetLoc);
+                    Graph.nonSmoothenedPath = MovingEntities[i].nonSmoothenedPath;
                     return;
                 }
             }
@@ -158,7 +152,8 @@ namespace VillagePeople
         {
             if (SelectedEntityIndex != -1)
             {
-                Graph.path = MovingEntities[SelectedEntityIndex].UpdatePath(Target[0].Position);
+                Graph.path = MovingEntities[SelectedEntityIndex].UpdatePath(targetLoc);
+                Graph.nonSmoothenedPath = MovingEntities[SelectedEntityIndex].nonSmoothenedPath;
             }
         }
 
@@ -169,6 +164,7 @@ namespace VillagePeople
                 if (timeElapsed % 20 == 0)
                 {
                     Graph.path = new List<Node>();
+                    Graph.nonSmoothenedPath = new List<Node>();
                     UpdatePath();
                 }
 
@@ -192,7 +188,9 @@ namespace VillagePeople
 
         public Graph GenerateGraph()
         {
-            return new Graph { Nodes = Graph.Generate(this, new Node { WorldPosition = new Vector2D(120, 120) }, new List<Node>()) };
+            var g = new Graph(this);
+            g.Nodes = g.Generate(new Node { WorldPosition = new Vector2D(20, 20) }, new List<Node>());
+            return g;
         }
 
         public void Render(Graphics g)

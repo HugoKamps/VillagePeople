@@ -26,6 +26,7 @@ namespace VillagePeople.Entities
 
         public StateMachine<MovingEntity> StateMachine;
 
+        public List<Node> nonSmoothenedPath = new List<Node>();
         private Pathfinder _pathFinder;
         private List<Node> _path = new List<Node>();
         private bool _possessed = false;
@@ -72,6 +73,7 @@ namespace VillagePeople.Entities
             _possessed = true;
             _pathFinder.grid = g;
             UpdatePath(target);
+
             return _path;
         }
 
@@ -80,6 +82,8 @@ namespace VillagePeople.Entities
             _pathFinder.seeker = Position;
             _pathFinder.target = target;
             _pathFinder.Update();
+            nonSmoothenedPath = _pathFinder.path;
+            _pathFinder.PathSmoothing();
             _path = _pathFinder.path;
             _currentNodeInPath = 0;
 
@@ -89,6 +93,7 @@ namespace VillagePeople.Entities
         public void ExitPossession()
         {
             _possessed = false;
+            _pathFinder.NodesWithSmoothEdges.ForEach(n => n.SmoothEdges = new List<Edge>());
             _pathFinder = null;
             _currentNodeInPath = -1;
         }
