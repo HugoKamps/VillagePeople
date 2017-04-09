@@ -7,44 +7,43 @@ namespace VillagePeople.Util
 {
     public class Graph
     {
-        public List<Node> Nodes = new List<Node>();
-        public List<Node> path = new List<Node>();
-        public List<Node> nonSmoothenedPath = new List<Node>();
         public const int NodeSize = 50;
-        public World w;
+        public List<Node> Nodes = new List<Node>();
+        public List<Node> NonSmoothenedPath = new List<Node>();
+        public List<Node> Path = new List<Node>();
+        public World W;
 
         public Graph(World w)
         {
-            this.w = w;
+            W = w;
         }
 
         public Node GetNodeByWorldPosition(Vector2D worldPos)
-        {
-            foreach (var node in Nodes)
-            {
-                if (worldPos.X > node.WorldPosition.X && worldPos.X < node.WorldPosition.X + 10 && worldPos.Y > node.WorldPosition.Y && worldPos.Y < node.WorldPosition.Y + 10)
-                {
-                    return node;
-                }
-            }
-            return null;
-        }
+            =>
+                Nodes.FirstOrDefault(
+                    node =>
+                        worldPos.X > node.WorldPosition.X && worldPos.X < node.WorldPosition.X + 10 &&
+                        worldPos.Y > node.WorldPosition.Y && worldPos.Y < node.WorldPosition.Y + 10);
 
-        public Node GetClosestNode(Vector2D worldPos) => Nodes.Select(x => x).OrderBy(x => GetDistance(x.WorldPosition, worldPos)).First();
+        public Node GetClosestNode(Vector2D worldPos)
+            => Nodes.Select(x => x).OrderBy(x => GetDistance(x.WorldPosition, worldPos)).First();
 
         // Pythagorean Theorem
-        float GetDistance(float a, float b) => (int)Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
-        float GetDistance(float oX, float oY, float tX, float tY) => GetDistance(Math.Abs(oX - tX), Math.Abs(oY - tY));
-        float GetDistance(Vector2D v1, Vector2D v2) => GetDistance(v1.X, v1.Y, v2.X, v2.Y);
+        private float GetDistance(float a, float b) => (int) Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
+
+        private float GetDistance(float oX, float oY, float tX, float tY)
+            => GetDistance(Math.Abs(oX - tX), Math.Abs(oY - tY));
+
+        private float GetDistance(Vector2D v1, Vector2D v2) => GetDistance(v1.X, v1.Y, v2.X, v2.Y);
 
         public List<Node> Generate(Node n, List<Node> nodes)
         {
             if (n != null && GetNodeAtWorldPosition(nodes, n.WorldPosition) == null)
             {
-                var Nodes = new List<Node>();
-                GetNeighborWorldPositions(n).ForEach(e => GetValidWorldPositions(e, Nodes));
+                var tempNodes = new List<Node>();
+                GetNeighborWorldPositions(n).ForEach(e => GetValidWorldPositions(e, tempNodes));
                 nodes.Add(n);
-                foreach (var node in Nodes)
+                foreach (var node in tempNodes)
                 {
                     if (!IntersectsStaticObjects(n.WorldPosition, node.WorldPosition))
                         n.Connect(node);
@@ -58,10 +57,10 @@ namespace VillagePeople.Util
 
         public bool IsValidWorldPosition(Vector2D v1)
         {
-            if (!(v1.X >= 0 && v1.X < w.Width && v1.Y >= 0 && v1.Y < w.Height))
+            if (!(v1.X >= 0 && v1.X < W.Width && v1.Y >= 0 && v1.Y < W.Height))
                 return false;
 
-            foreach (var se in w.StaticEntities)
+            foreach (var se in W.StaticEntities)
                 if (se.IsWalkable(v1) == false)
                     return false;
 
@@ -73,21 +72,25 @@ namespace VillagePeople.Util
         {
             var line = new LinearEquation(begin, end);
 
-            foreach (var entity in w.StaticEntities)
+            foreach (var entity in W.StaticEntities)
             {
                 if (entity.Walkable)
                     continue;
 
-                List<LinearEquation> unwalkableBox = new List<LinearEquation>()
+                var unwalkableBox = new List<LinearEquation>
                 {
                     // top left to bottom left
-                    new LinearEquation(entity.UnwalkableSpace[0], new Vector2D(entity.UnwalkableSpace[0].X, entity.UnwalkableSpace[1].Y)),
+                    new LinearEquation(entity.UnwalkableSpace[0],
+                        new Vector2D(entity.UnwalkableSpace[0].X, entity.UnwalkableSpace[1].Y)),
                     // top left to top right
-                    new LinearEquation(entity.UnwalkableSpace[0], new Vector2D(entity.UnwalkableSpace[1].X, entity.UnwalkableSpace[0].Y)),
+                    new LinearEquation(entity.UnwalkableSpace[0],
+                        new Vector2D(entity.UnwalkableSpace[1].X, entity.UnwalkableSpace[0].Y)),
                     // bottom right to bottom left
-                    new LinearEquation(entity.UnwalkableSpace[1], new Vector2D(entity.UnwalkableSpace[0].X, entity.UnwalkableSpace[1].Y)),
+                    new LinearEquation(entity.UnwalkableSpace[1],
+                        new Vector2D(entity.UnwalkableSpace[0].X, entity.UnwalkableSpace[1].Y)),
                     // bottom right to top right
-                    new LinearEquation(entity.UnwalkableSpace[1], new Vector2D(entity.UnwalkableSpace[1].X, entity.UnwalkableSpace[0].Y))
+                    new LinearEquation(entity.UnwalkableSpace[1],
+                        new Vector2D(entity.UnwalkableSpace[1].X, entity.UnwalkableSpace[0].Y))
                 };
 
                 foreach (var func in unwalkableBox)
@@ -105,22 +108,22 @@ namespace VillagePeople.Util
                 return;
 
             if (GetNodeAtWorldPosition(nodes, worldPos) == null) // Node at world position does not yet exist 
-                nodes.Add(new Node { WorldPosition = worldPos });
+                nodes.Add(new Node {WorldPosition = worldPos});
         }
 
         public static List<Vector2D> GetNeighborWorldPositions(Node n)
         {
             return new List<Vector2D>
-                {
-                    new Vector2D(n.WorldPosition.X - NodeSize, n.WorldPosition.Y - NodeSize),
-                    new Vector2D(n.WorldPosition.X, n.WorldPosition.Y - NodeSize),
-                    new Vector2D(n.WorldPosition.X + NodeSize, n.WorldPosition.Y - NodeSize),
-                    new Vector2D(n.WorldPosition.X - NodeSize, n.WorldPosition.Y),
-                    new Vector2D(n.WorldPosition.X + NodeSize, n.WorldPosition.Y),
-                    new Vector2D(n.WorldPosition.X - NodeSize, n.WorldPosition.Y + NodeSize),
-                    new Vector2D(n.WorldPosition.X, n.WorldPosition.Y + NodeSize),
-                    new Vector2D(n.WorldPosition.X + NodeSize, n.WorldPosition.Y + NodeSize)
-                };
+            {
+                new Vector2D(n.WorldPosition.X - NodeSize, n.WorldPosition.Y - NodeSize),
+                new Vector2D(n.WorldPosition.X, n.WorldPosition.Y - NodeSize),
+                new Vector2D(n.WorldPosition.X + NodeSize, n.WorldPosition.Y - NodeSize),
+                new Vector2D(n.WorldPosition.X - NodeSize, n.WorldPosition.Y),
+                new Vector2D(n.WorldPosition.X + NodeSize, n.WorldPosition.Y),
+                new Vector2D(n.WorldPosition.X - NodeSize, n.WorldPosition.Y + NodeSize),
+                new Vector2D(n.WorldPosition.X, n.WorldPosition.Y + NodeSize),
+                new Vector2D(n.WorldPosition.X + NodeSize, n.WorldPosition.Y + NodeSize)
+            };
         }
 
         public static Node GetNodeAtWorldPosition(List<Node> list, Vector2D worldPos)
@@ -141,23 +144,25 @@ namespace VillagePeople.Util
                 n.RenderEdges(g);
             }
 
-            DrawPath(g, nonSmoothenedPath, Color.Blue);
-            DrawPath(g, path, Color.Red);
+            DrawPath(g, NonSmoothenedPath, Color.Blue);
+            DrawPath(g, Path, Color.Red);
         }
 
         private void DrawPath(Graphics g, List<Node> path, Color c)
         {
-            for (int i = 0; i <= path.Count - 1; i++)
+            for (var i = 0; i <= path.Count - 1; i++)
             {
                 var n = path[i];
                 n.Color = c;
                 n.Render(g);
-                for (int k = 0; k <= n.Edges.Count - 1; k++)
+                for (var k = 0; k <= n.Edges.Count - 1; k++)
                 {
                     var e = n.Edges[k];
 
-                    bool pathContainsTarget = path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Target.WorldPosition));
-                    bool pathContainsOrigin = path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Origin.WorldPosition));
+                    var pathContainsTarget =
+                        path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Target.WorldPosition));
+                    var pathContainsOrigin =
+                        path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Origin.WorldPosition));
                     if (pathContainsOrigin && pathContainsTarget)
                     {
                         e.Color = c;
@@ -166,12 +171,14 @@ namespace VillagePeople.Util
                     }
                 }
 
-                for (int k = 0; k <= n.SmoothEdges.Count - 1; k++)
+                for (var k = 0; k <= n.SmoothEdges.Count - 1; k++)
                 {
                     var e = n.SmoothEdges[k];
 
-                    bool pathContainsTarget = path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Target.WorldPosition));
-                    bool pathContainsOrigin = path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Origin.WorldPosition));
+                    var pathContainsTarget =
+                        path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Target.WorldPosition));
+                    var pathContainsOrigin =
+                        path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Origin.WorldPosition));
                     if (pathContainsOrigin && pathContainsTarget)
                     {
                         e.Color = c;

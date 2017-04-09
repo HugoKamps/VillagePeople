@@ -3,12 +3,14 @@ using System.Windows.Forms;
 
 namespace VillagePeople
 {
-    static class Program {
+    internal static class Program
+    {
         /// <summary>
-        /// The main entry point for the application.
+        ///     The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main() {
+        private static void Main()
+        {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Container());

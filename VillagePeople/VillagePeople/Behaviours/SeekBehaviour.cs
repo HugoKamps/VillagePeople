@@ -3,9 +3,8 @@ using VillagePeople.Util;
 
 namespace VillagePeople.Behaviours
 {
-    class SeekBehaviour : SteeringBehaviour
+    internal class SeekBehaviour : SteeringBehaviour
     {
-        public Vector2D Target { get; set; }
         private MovingEntity _self;
 
         public SeekBehaviour(MovingEntity m, Vector2D target) : base(m)
@@ -13,6 +12,8 @@ namespace VillagePeople.Behaviours
             Target = target;
             _self = m;
         }
+
+        public Vector2D Target { get; set; }
 
         public override Vector2D Calculate()
         {

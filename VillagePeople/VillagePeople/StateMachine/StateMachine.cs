@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace VillagePeople.StateMachine
+﻿namespace VillagePeople.StateMachine
 {
     public class StateMachine<T>
     {
-        public State<T> PrevState;
-        public State<T> CurrentState;
         private readonly T _entity;
+        public State<T> CurrentState;
+        public State<T> PrevState;
 
         public StateMachine(T entity)
         {

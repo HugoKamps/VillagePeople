@@ -1,44 +1,40 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using VillagePeople.Entities.NPC;
+using System.Linq;
 
 namespace VillagePeople.Util
 {
     public class Pathfinder
     {
-        public Vector2D seeker, target;
-        public Graph grid;
-        public List<Node> path = new List<Node>();
+        public Graph Grid;
         public List<Node> NodesWithSmoothEdges = new List<Node>();
+        public List<Node> Path = new List<Node>();
+        public Vector2D Seeker, Target;
 
         public void Update()
         {
             NodesWithSmoothEdges.ForEach(n => n.SmoothEdges = new List<Edge>());
-            FindPath(seeker, target);
+            FindPath(Seeker, Target);
         }
 
         public void FindPath(Vector2D startPos, Vector2D targetPos)
         {
-            Node startNode = grid.GetClosestNode(startPos);
-            Node targetNode = grid.GetClosestNode(targetPos);
-            path = new List<Node>();
+            var startNode = Grid.GetClosestNode(startPos);
+            var targetNode = Grid.GetClosestNode(targetPos);
+            Path = new List<Node>();
 
-            List<KeyValuePair<string, Node>> openSet = new List<KeyValuePair<string, Node>>();
-            HashSet<Node> closedSet = new HashSet<Node>();
+            var openSet = new List<KeyValuePair<string, Node>>();
+            var closedSet = new HashSet<Node>();
 
             openSet.Add(new KeyValuePair<string, Node>(startNode.WorldPosition.ToString(), startNode));
 
             while (openSet.Count > 0)
             {
-                Node currentNode = grid.GetClosestNode(openSet[0].Value.WorldPosition);
-                for (int i = 1; i < openSet.Count; i++)
-                {
-                    if (openSet[i].Value.fCost < currentNode.fCost || (openSet[i].Value.fCost == currentNode.fCost && openSet[i].Value.hCost < currentNode.hCost))
-                    {
+                var currentNode = Grid.GetClosestNode(openSet[0].Value.WorldPosition);
+                for (var i = 1; i < openSet.Count; i++)
+                    if (openSet[i].Value.FCost < currentNode.FCost ||
+                        openSet[i].Value.FCost == currentNode.FCost && openSet[i].Value.HCost < currentNode.HCost)
                         currentNode = openSet[i].Value;
-                    }
-                }
 
                 openSet.Remove(openSet.First(item => item.Key.Equals(currentNode.WorldPosition.ToString())));
                 closedSet.Add(currentNode);
@@ -48,38 +44,32 @@ namespace VillagePeople.Util
                     RetracePath(startNode, currentNode);
                     return;
                 }
-                foreach (Edge edge in currentNode.Edges)
+                foreach (var edge in currentNode.Edges)
                 {
-                    Node neighbor = grid.GetClosestNode(edge.Origin.WorldPosition);
-                    Node temp = grid.GetClosestNode(edge.Target.WorldPosition);
+                    var neighbor = Grid.GetClosestNode(edge.Origin.WorldPosition);
+                    var temp = Grid.GetClosestNode(edge.Target.WorldPosition);
                     if (temp != currentNode)
-                    {
                         neighbor = temp;
-                    }
 
                     if (closedSet.Contains(neighbor))
-                    {
                         continue;
-                    }
 
-                    int newMovementCostToNeighbor = currentNode.gCost + GetDistance(currentNode, neighbor);
+                    var newMovementCostToNeighbor = currentNode.GCost + GetDistance(currentNode, neighbor);
 
-                    bool containsNeighbor = true;
+                    var containsNeighbor = true;
                     if (openSet.Count != 0)
-                    {
-                        containsNeighbor = !openSet.Contains(openSet.FirstOrDefault(item => item.Key.Equals(neighbor.WorldPosition.ToString())));
-                    }
+                        containsNeighbor =
+                            !openSet.Contains(
+                                openSet.FirstOrDefault(item => item.Key.Equals(neighbor.WorldPosition.ToString())));
 
-                    if (newMovementCostToNeighbor < neighbor.gCost || containsNeighbor)
+                    if (newMovementCostToNeighbor < neighbor.GCost || containsNeighbor)
                     {
-                        neighbor.gCost = newMovementCostToNeighbor;
-                        neighbor.hCost = GetDistance(neighbor, targetNode);
-                        neighbor.parent = currentNode;
+                        neighbor.GCost = newMovementCostToNeighbor;
+                        neighbor.HCost = GetDistance(neighbor, targetNode);
+                        neighbor.Parent = currentNode;
 
                         if (containsNeighbor)
-                        {
                             openSet.Add(new KeyValuePair<string, Node>(neighbor.WorldPosition.ToString(), neighbor));
-                        }
                     }
                 }
             }
@@ -87,44 +77,45 @@ namespace VillagePeople.Util
 
         public void RetracePath(Node startNode, Node targetNode)
         {
-            path = new List<Node>();
-            Node currentNode = grid.GetClosestNode(targetNode.WorldPosition);
-            startNode = grid.GetClosestNode(startNode.WorldPosition);
+            if (startNode == null || targetNode == null)
+                return;
+
+            Path = new List<Node>();
+            var currentNode = Grid.GetClosestNode(targetNode.WorldPosition);
+            startNode = Grid.GetClosestNode(startNode.WorldPosition);
 
             while (currentNode != startNode)
             {
                 if (currentNode == null)
                     break;
 
-                currentNode = grid.GetClosestNode(currentNode.WorldPosition);
-                path.Add(currentNode);
-                currentNode = grid.GetClosestNode(currentNode.parent.WorldPosition);
+                currentNode = Grid.GetClosestNode(currentNode.WorldPosition);
+                Path.Add(currentNode);
+                currentNode = Grid.GetClosestNode(currentNode.Parent.WorldPosition);
             }
-            path.Add(startNode);
-            path.Reverse();
+            Path.Add(startNode);
+            Path.Reverse();
         }
 
         public void PathSmoothing()
         {
-            for (int i = 0; i < path.Count - 2; )
+            for (var i = 0; i < Path.Count - 2;)
             {
-                if (i >= path.Count -1)
+                if (i >= Path.Count - 1)
                     break;
 
-                var curr = path[i];
-                var j = path.Count - 1;
-                bool edgeCreated = false;
+                var j = Path.Count - 1;
+                var edgeCreated = false;
 
                 while (j > i + 1) // There is still a node between i and j
                 {
-                    var temp = path[j];
-                    if (!grid.IntersectsStaticObjects(path[i].WorldPosition, path[j].WorldPosition))
+                    if (!Grid.IntersectsStaticObjects(Path[i].WorldPosition, Path[j].WorldPosition))
                     {
-                        path[j].parent = path[i];
-                        path[i].ConnectSmoothEdge(path[j]);
+                        Path[j].Parent = Path[i];
+                        Path[i].ConnectSmoothEdge(Path[j]);
 
-                        NodesWithSmoothEdges.Add(path[i]);
-                        NodesWithSmoothEdges.Add(path[j]);
+                        NodesWithSmoothEdges.Add(Path[i]);
+                        NodesWithSmoothEdges.Add(Path[j]);
 
                         edgeCreated = true;
                         break;
@@ -139,14 +130,14 @@ namespace VillagePeople.Util
                     i++;
             }
 
-            RetracePath(path.FirstOrDefault(), path.LastOrDefault());
+            RetracePath(Path.FirstOrDefault(), Path.LastOrDefault());
         }
 
-        int GetDistance(Node nodeA, Node nodeB)
+        private int GetDistance(Node nodeA, Node nodeB)
         {
-            double xSqr = Math.Pow(Math.Abs(nodeA.WorldPosition.X - nodeB.WorldPosition.X), 2);
-            double ySqr = Math.Pow(Math.Abs(nodeA.WorldPosition.Y - nodeB.WorldPosition.Y), 2);
-            return (int)Math.Sqrt(xSqr + ySqr);
+            var xSqr = Math.Pow(Math.Abs(nodeA.WorldPosition.X - nodeB.WorldPosition.X), 2);
+            var ySqr = Math.Pow(Math.Abs(nodeA.WorldPosition.Y - nodeB.WorldPosition.Y), 2);
+            return (int) Math.Sqrt(xSqr + ySqr);
         }
     }
 }

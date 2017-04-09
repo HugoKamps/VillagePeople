@@ -5,10 +5,6 @@ namespace VillagePeople.Entities
 {
     public abstract class BaseGameEntity
     {
-        public Vector2D Position { get; set; }
-        public float Scale { get; set; }
-        public World World { get; set; }
-        public bool Tagged { get; set; }
         public Resource Resource = new Resource();
 
         public BaseGameEntity(Vector2D position, World world)
@@ -16,6 +12,11 @@ namespace VillagePeople.Entities
             Position = position;
             World = world;
         }
+
+        public Vector2D Position { get; set; }
+        public float Scale { get; set; }
+        public World World { get; set; }
+        public bool Tagged { get; set; }
 
         public virtual Resource AddResource(Resource r)
         {

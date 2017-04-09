@@ -1,129 +1,125 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VillagePeople.Util
 {
     public class LinearEquation
     {
-        private float dX, dY, c, maxX, maxY, minX, minY;
+        private float _dX, _dY, _c, _maxX, _maxY, _minX, _minY;
         public LineType Type;
 
-        public LinearEquation(Vector2D A, Vector2D B)
+        public LinearEquation(Vector2D a, Vector2D b)
         {
-            maxX = Math.Max(A.X, B.X);
-            maxY = Math.Max(A.Y, B.Y);
-            minX = Math.Min(A.X, B.X);
-            minY = Math.Min(A.Y, B.Y);
+            _maxX = Math.Max(a.X, b.X);
+            _maxY = Math.Max(a.Y, b.Y);
+            _minX = Math.Min(a.X, b.X);
+            _minY = Math.Min(a.Y, b.Y);
 
-            dX = B.X - A.X;
-            dY = B.Y - A.Y;
+            _dX = b.X - a.X;
+            _dY = b.Y - a.Y;
 
-            if (dX == 0)
+            if (_dX == 0)
             {
                 Type = LineType.Vertical;
                 return;
             }
-            else if (dY == 0)
+            if (_dY == 0)
             {
                 Type = LineType.Horizontal;
                 return;
             }
 
             Type = LineType.Slanted;
-            c = A.Y - A.X * (dY / dX);
+            _c = a.Y - a.X * (_dY / _dX);
         }
 
         public float F(float x)
         {
-            if (Type == LineType.Horizontal && x >= minX && x <= maxX)  // Line is horizontal and x is within range
-                return minY;                                            //  return y
-            else if (Type == LineType.Vertical && x == minX)            // Line is vertical and line is on x
-                return (minY + maxY) / 2;                               //  should actually return everything between minY and maxY
-            else if (x >= minX && x <= maxX)                            // Line is slanted and x is within range
-                return (dY / dX) * x + c;                               //  return y
-            return float.MinValue;                                      // Error => returns min value of float
+            if (Type == LineType.Horizontal && x >= _minX && x <= _maxX) // Line is horizontal and x is within range
+                return _minY; //  return y
+            if (Type == LineType.Vertical && x == _minX) // Line is vertical and line is on x
+                return (_minY + _maxY) / 2; //  should actually return everything between minY and maxY
+            if (x >= _minX && x <= _maxX) // Line is slanted and x is within range
+                return _dY / _dX * x + _c; //  return y
+            return float.MinValue; // Error => returns min value of float
         }
-        
+
         public bool Intersects(LinearEquation f2)
         {
             if (Type == LineType.Horizontal && f2.Type == LineType.Horizontal)
-                return (F(minX) == f2.F(minX));
+                return F(_minX) == f2.F(_minX);
             if (Type == LineType.Vertical && f2.Type == LineType.Vertical)
             {
-                if (minX != f2.minX)
+                if (_minX != f2._minX)
                     return false;
-                if (minX > f2.maxX || maxX < f2.minX)
+                if (_minX > f2._maxX || _maxX < f2._minX)
                     return false;
                 return true;
             }
             if (Type == LineType.Slanted && f2.Type == LineType.Slanted)
             {
-                float derivedC, derivedDYoverDX, derivedX;
+                float derivedC, derivedDYoverDx, derivedX;
 
-                derivedC = f2.c - c;
-                derivedDYoverDX = (dY / dX) / (f2.dY / f2.dX);
-                derivedX = derivedC / derivedDYoverDX;
+                derivedC = f2._c - _c;
+                derivedDYoverDx = _dY / _dX / (f2._dY / f2._dX);
+                derivedX = derivedC / derivedDYoverDx;
 
-                return (F(derivedX) != f2.F(derivedX));
+                return F(derivedX) != f2.F(derivedX);
             }
 
             if (Type == LineType.Slanted && f2.Type == LineType.Horizontal)
             {
                 float derivedC, derivedX;
 
-                derivedC = f2.minY - c;
-                derivedX = derivedC / (dY / dX);
+                derivedC = f2._minY - _c;
+                derivedX = derivedC / (_dY / _dX);
 
-                return derivedX >= f2.minX && derivedX <= f2.maxX && F(derivedX) != float.MinValue;
+                return derivedX >= f2._minX && derivedX <= f2._maxX && F(derivedX) != float.MinValue;
             }
 
             if (Type == LineType.Horizontal && f2.Type == LineType.Slanted)
             {
                 float derivedC, derivedX;
 
-                derivedC = minY - f2.c;
-                derivedX = derivedC / (f2.dY / f2.dX);
+                derivedC = _minY - f2._c;
+                derivedX = derivedC / (f2._dY / f2._dX);
 
-                return derivedX >= minX && derivedX <= maxX && f2.F(derivedX) != float.MinValue;
+                return derivedX >= _minX && derivedX <= _maxX && f2.F(derivedX) != float.MinValue;
             }
-            
+
             if (Type == LineType.Vertical)
             {
                 if (f2.Type == LineType.Horizontal)
                 {
-                    if (f2.minY < minY || f2.minY > maxY)
+                    if (f2._minY < _minY || f2._minY > _maxY)
                         return false;
-                    if (f2.minX > minX || f2.maxX < maxX)
+                    if (f2._minX > _minX || f2._maxX < _maxX)
                         return false;
                     return true;
                 }
                 // f2 must be slanted
-                return f2.F(minX) <= maxY && f2.F(minX) >= minY;
+                return f2.F(_minX) <= _maxY && f2.F(_minX) >= _minY;
             }
 
             // f2 must be Vertical
             if (Type == LineType.Horizontal)
             {
-                if (minY < f2.minY || minY > f2.maxY)
+                if (_minY < f2._minY || _minY > f2._maxY)
                     return false;
-                if (minX > f2.minX || maxX < f2.maxX)
+                if (_minX > f2._minX || _maxX < f2._maxX)
                     return false;
                 return true;
             }
             // this must be slanted
-            return F(f2.minX) <= f2.maxY && F(f2.minX) >= f2.minY;
+            return F(f2._minX) <= f2._maxY && F(f2._minX) >= f2._minY;
         }
 
         public override string ToString()
         {
             if (Type == LineType.Horizontal)
-                return " f( { " + minX + " .. " + maxX + " } ) = " + minY + " ";
-            else if (Type == LineType.Vertical)
-                return " f( " + minX + " ) = { " + minY + " .. " + maxY + " } ";
-            return " f(x) = (" + dY + "/" + dX + ")x + " + c + " ";
+                return " f( { " + _minX + " .. " + _maxX + " } ) = " + _minY + " ";
+            if (Type == LineType.Vertical)
+                return " f( " + _minX + " ) = { " + _minY + " .. " + _maxY + " } ";
+            return " f(x) = (" + _dY + "/" + _dX + ")x + " + _c + " ";
         }
     }
 

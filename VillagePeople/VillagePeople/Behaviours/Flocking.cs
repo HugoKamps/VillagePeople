@@ -2,27 +2,31 @@
 using VillagePeople.Entities;
 using VillagePeople.Util;
 
-namespace VillagePeople.Behaviours {
-    class Alignment : SteeringBehaviour {
-        private MovingEntity _self;
+namespace VillagePeople.Behaviours
+{
+    internal class Alignment : SteeringBehaviour
+    {
         private List<MovingEntity> _movingEntities;
+        private MovingEntity _self;
 
-        public Alignment(MovingEntity m, List<MovingEntity> movingEntities) : base(m) {
+        public Alignment(MovingEntity m, List<MovingEntity> movingEntities) : base(m)
+        {
             _self = m;
             _movingEntities = movingEntities;
         }
 
-        public override Vector2D Calculate() {
-            Vector2D v = new Vector2D();
-            int neighborCount = 0;
+        public override Vector2D Calculate()
+        {
+            var v = new Vector2D();
+            var neighborCount = 0;
 
-            foreach (MovingEntity me in _movingEntities) {
-                if (me != _self && _self.CloseEnough(_self.Position, me.Position, 40)) {
+            foreach (var me in _movingEntities)
+                if (me != _self && _self.CloseEnough(_self.Position, me.Position, 40))
+                {
                     v.X += me.Velocity.X;
                     v.Y += me.Velocity.Y;
                     neighborCount += 1;
                 }
-            }
 
             if (neighborCount == 0) return v;
             v.X /= neighborCount;
@@ -32,26 +36,29 @@ namespace VillagePeople.Behaviours {
         }
     }
 
-    class Cohesion : SteeringBehaviour {
-        private MovingEntity _self;
+    internal class Cohesion : SteeringBehaviour
+    {
         private List<MovingEntity> _movingEntities;
+        private MovingEntity _self;
 
-        public Cohesion(MovingEntity m, List<MovingEntity> movingEntities) : base(m) {
+        public Cohesion(MovingEntity m, List<MovingEntity> movingEntities) : base(m)
+        {
             _self = m;
             _movingEntities = movingEntities;
         }
 
-        public override Vector2D Calculate() {
-            Vector2D v = new Vector2D();
-            int neighborCount = 0;
+        public override Vector2D Calculate()
+        {
+            var v = new Vector2D();
+            var neighborCount = 0;
 
-            foreach (MovingEntity me in _movingEntities) {
-                if (me != _self && _self.CloseEnough(_self.Position, me.Position, 80)) {
+            foreach (var me in _movingEntities)
+                if (me != _self && _self.CloseEnough(_self.Position, me.Position, 80))
+                {
                     v.X += me.Position.X;
                     v.Y += me.Position.Y;
                     neighborCount += 1;
                 }
-            }
 
             if (neighborCount == 0) return v;
             v.X /= neighborCount;
@@ -63,10 +70,10 @@ namespace VillagePeople.Behaviours {
     }
 
 
-    class Separation : SteeringBehaviour
+    internal class Separation : SteeringBehaviour
     {
-        private MovingEntity _self;
         private List<MovingEntity> _movingEntities;
+        private MovingEntity _self;
 
         public Separation(MovingEntity m, List<MovingEntity> movingEntities) : base(m)
         {
@@ -76,18 +83,16 @@ namespace VillagePeople.Behaviours {
 
         public override Vector2D Calculate()
         {
-            Vector2D v = new Vector2D();
-            int neighborCount = 0;
+            var v = new Vector2D();
+            var neighborCount = 0;
 
-            foreach (MovingEntity me in _movingEntities)
-            {
+            foreach (var me in _movingEntities)
                 if (me != _self && _self.CloseEnough(_self.Position, me.Position, 40))
                 {
                     v.X += me.Position.X - _self.Position.X;
                     v.Y += me.Position.Y - _self.Position.Y;
                     neighborCount += 1;
                 }
-            }
 
             if (neighborCount == 0) return v;
             v.X /= neighborCount;
@@ -98,5 +103,4 @@ namespace VillagePeople.Behaviours {
             return v;
         }
     }
-
 }

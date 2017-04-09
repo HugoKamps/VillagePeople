@@ -4,15 +4,16 @@ using VillagePeople.Util;
 
 namespace VillagePeople.Entities.Structures
 {
-    class Tree : StaticEntity
+    internal class Tree : StaticEntity
     {
         public Tree(Vector2D position, World world) : base(position, world)
         {
             BaseAmount = 40;
             Resource.Wood = BaseAmount;
             Scale = 20;
-            GatherRate = new Resource { Wood = 4 };
-            UnwalkableSpace = new List<Vector2D> {
+            GatherRate = new Resource {Wood = 4};
+            UnwalkableSpace = new List<Vector2D>
+            {
                 new Vector2D(position.X - Scale / 2 - 5, position.Y - Scale / 2 - 5), // Top Left
                 new Vector2D(position.X + Scale / 2 + 5, position.Y + Scale / 2 + 5) // Bottom Right
             };
@@ -39,17 +40,18 @@ namespace VillagePeople.Entities.Structures
             Image img;
 
             double size = Scale * 2;
-            double leftCorner = Position.X - size / 2;
-            double rightCorner = Position.Y - size / 2;
+            var leftCorner = Position.X - size / 2;
+            var rightCorner = Position.Y - size / 2;
 
             if (Resource.Wood > 0) // Normal tree
-                img = BitmapLoader.LoadBitmap(@"..\..\Resources\SE\tree.png", this.GetType().ToString() + "1");
+                img = BitmapLoader.LoadBitmap(@"..\..\Resources\SE\tree.png", GetType() + "1");
             else // Tree stump
-                img = BitmapLoader.LoadBitmap(@"..\..\Resources\SE\tree_broken.png", this.GetType().ToString() + "2");
+                img = BitmapLoader.LoadBitmap(@"..\..\Resources\SE\tree_broken.png", GetType() + "2");
 
-            g.DrawImage(img, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
-            
-            g.DrawString(Resource.Wood.ToString(), new Font("Arial", 9), new SolidBrush(Color.Black), Position.X + 10, Position.Y + 10);
+            g.DrawImage(img, new Rectangle((int) leftCorner, (int) rightCorner, (int) size, (int) size));
+
+            g.DrawString(Resource.Wood.ToString(), new Font("Arial", 9), new SolidBrush(Color.Black), Position.X + 10,
+                Position.Y + 10);
         }
     }
 }

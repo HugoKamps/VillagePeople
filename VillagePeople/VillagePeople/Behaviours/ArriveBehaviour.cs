@@ -3,12 +3,17 @@ using VillagePeople.Util;
 
 namespace VillagePeople.Behaviours
 {
-    public enum Decelerations { Slow = 3, Normal = 2, Fast = 1 }
-    class ArriveBehaviour : SteeringBehaviour
+    public enum Decelerations
     {
-        public Vector2D Target { get; set; }
-        private MovingEntity _self;
+        Slow = 3,
+        Normal = 2,
+        Fast = 1
+    }
+
+    internal class ArriveBehaviour : SteeringBehaviour
+    {
         private Decelerations _deceleration;
+        private MovingEntity _self;
 
         public ArriveBehaviour(MovingEntity me, Vector2D target) : base(me)
         {
@@ -16,6 +21,8 @@ namespace VillagePeople.Behaviours
             _self = me;
             _deceleration = Decelerations.Fast;
         }
+
+        public Vector2D Target { get; set; }
 
         public override Vector2D Calculate()
         {
@@ -26,7 +33,7 @@ namespace VillagePeople.Behaviours
             if (distance > 0)
             {
                 const float decelTweaker = 0.5f;
-                var speed = distance / ((float)_deceleration * decelTweaker);
+                var speed = distance / ((float) _deceleration * decelTweaker);
 
                 toTarget *= speed;
                 toTarget /= distance;

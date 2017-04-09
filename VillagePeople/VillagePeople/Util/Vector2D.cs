@@ -4,11 +4,14 @@ namespace VillagePeople.Util
 {
     public class Vector2D
     {
+        public float W;
         public float X;
         public float Y;
-        public float W;
 
-        public Vector2D() : this(0, 0) { }
+        public Vector2D() : this(0, 0)
+        {
+        }
+
         public Vector2D(float x, float y, float w = 1)
         {
             X = x;
@@ -27,20 +30,16 @@ namespace VillagePeople.Util
             var length = Length();
 
             if (length < target)
-            {
                 diff = 1 + Math.Abs(length / target - 1);
-            }
             else
-            {
                 diff = target / length;
-            }
 
-            return this * Matrix.Scale((float)diff);
+            return this * Matrix.Scale((float) diff);
         }
 
         public Vector2D Normalize()
         {
-            float length = Length();
+            var length = Length();
             if (length != 0.0f)
             {
                 X /= length;
@@ -59,7 +58,8 @@ namespace VillagePeople.Util
             }
             return this;
         }
-        public float Length() => (float)Math.Sqrt(X * X + Y * Y);
+
+        public float Length() => (float) Math.Sqrt(X * X + Y * Y);
         public float LengthSquared() => X * X + Y * Y;
         public Vector2D Clone() => new Vector2D(X, Y, W);
 
@@ -74,7 +74,7 @@ namespace VillagePeople.Util
         public static Vector2D operator /(float f, Vector2D v) => v / f;
 
         public override string ToString() => $"({X}, {Y})";
-        public static bool operator ==(Vector2D v1, Vector2D v2) => (v1.X == v2.X) && (v1.Y == v2.Y) && (v1.W == v2.W);
-        public static bool operator !=(Vector2D v1, Vector2D v2) => (v1.X != v2.X) || (v1.Y != v2.Y) || (v1.W != v2.W);
+        public static bool operator ==(Vector2D v1, Vector2D v2) => v1.X == v2.X && v1.Y == v2.Y && v1.W == v2.W;
+        public static bool operator !=(Vector2D v1, Vector2D v2) => v1.X != v2.X || v1.Y != v2.Y || v1.W != v2.W;
     }
 }
