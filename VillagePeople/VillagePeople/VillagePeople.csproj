@@ -82,6 +82,7 @@
     <Compile Include="Util\BitmapLoader.cs" />
     <Compile Include="Util\Edge.cs" />
     <Compile Include="Util\Graph.cs" />
+    <Compile Include="Util\LinearEquation.cs" />
     <Compile Include="Util\Matrix.cs" />
     <Compile Include="Util\Node.cs" />
     <Compile Include="Util\Pathfinder.cs" />

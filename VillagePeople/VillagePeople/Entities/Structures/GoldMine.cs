@@ -50,7 +50,7 @@ namespace VillagePeople.Entities.Structures
                 img = BitmapLoader.LoadBitmap(@"..\..\Resources\SE\gold_broken.png", GetType() + "2");
 
             g.DrawImage(img, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
-
+            
             g.DrawString(Resource.Gold.ToString(), new Font("Arial", 9), new SolidBrush(Color.Black), Position.X + 10, Position.Y + 10);
         }
     }
