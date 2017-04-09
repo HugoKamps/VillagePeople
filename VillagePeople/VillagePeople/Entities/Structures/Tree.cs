@@ -60,6 +60,9 @@ namespace VillagePeople.Entities.Structures
                 g.FillEllipse(b, new Rectangle((int)leftCorner, (int)rightCorner, 10, 10));
             }
 
+            g.DrawLine(new Pen(Color.Black, 4), new Point((int)UnwalkableSpace[0].X, (int)UnwalkableSpace[0].Y), new Point((int)UnwalkableSpace[1].X, (int)UnwalkableSpace[1].Y));
+            g.DrawLine(new Pen(Color.Black, 4), new Point((int)UnwalkableSpace[1].X, (int)UnwalkableSpace[0].Y), new Point((int)UnwalkableSpace[0].X, (int)UnwalkableSpace[1].Y));
+
             g.DrawString(Resource.Wood.ToString(), new System.Drawing.Font("Arial", 9), new SolidBrush(Color.Black), Position.X, Position.Y);
         }
     }

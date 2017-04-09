@@ -33,7 +33,7 @@ namespace VillagePeople.Util
             }
 
             Type = LineType.Slanted;
-            c = A.X - A.Y * (dY / dX);
+            c = A.Y - A.X * (dY / dX);
         }
 
         public float F(float x)
