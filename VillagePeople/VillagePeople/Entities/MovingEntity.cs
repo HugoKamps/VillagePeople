@@ -15,6 +15,7 @@ namespace VillagePeople.Entities
         public Color Color;
 
         public List<Node> NonSmoothenedPath = new List<Node>();
+        public List<Node> ConsideredEdges = new List<Node>();
         public double Radius;
 
         public StateMachine<MovingEntity> StateMachine;
@@ -106,6 +107,7 @@ namespace VillagePeople.Entities
             _pathFinder.Target = target;
             _pathFinder.Update();
             NonSmoothenedPath = _pathFinder.Path;
+            ConsideredEdges = _pathFinder.ConsideredEdges;
             _pathFinder.PathSmoothing();
             _path = _pathFinder.Path;
             _currentNodeInPath = 0;
