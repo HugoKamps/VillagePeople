@@ -8,18 +8,25 @@ namespace VillagePeople.Entities
 {
     public abstract class MovingEntity : BaseGameEntity
     {
-        private int _currentNodeInPath = -1;
-        private List<Node> _path = new List<Node>();
         private Pathfinder _pathFinder;
+        private List<Node> _path = new List<Node>();
+        private int _currentNodeInPath = -1;
         private bool _possessed;
-        public Color Color;
 
+        public Color Color;
         public List<Node> NonSmoothenedPath = new List<Node>();
         public List<Node> ConsideredEdges = new List<Node>();
-        public double Radius;
-
+        public List<MovingEntity> Neighbours { get; set; }
+        public List<SteeringBehaviour> SteeringBehaviours { get; set; }
         public StateMachine<MovingEntity> StateMachine;
+        public Vector2D Velocity { get; set; }
+        public Vector2D Acceleration { get; set; }
+        public Vector2D Heading { get; set; }
+        public double Radius;
         public double TargetSpeed;
+        public float Mass { get; set; }
+        public float MaxSpeed { get; set; }
+        public int MaxInventorySpace { get; set; }
 
         public MovingEntity(Vector2D position, World world) : base(position, world)
         {
@@ -32,22 +39,9 @@ namespace VillagePeople.Entities
             SteeringBehaviours = new List<SteeringBehaviour>();
         }
 
-        public Vector2D Velocity { get; set; }
-        public Vector2D Acceleration { get; set; }
-        public Vector2D Heading { get; set; }
-
-
-        public List<SteeringBehaviour> SteeringBehaviours { get; set; }
-
-        public float Mass { get; set; }
-        public float MaxSpeed { get; set; }
-        public int MaxInventorySpace { get; set; }
-        public List<MovingEntity> Neighbours { get; set; }
-
         public override void Update(float timeElapsed)
         {
-
-            if (_path.Count > 0 && _currentNodeInPath != _path.Count && _currentNodeInPath != -1)
+            if (_path.Count > 0 && _currentNodeInPath != _path.Count && _currentNodeInPath != -1 && _possessed)
             {
                 var diff = _path[_currentNodeInPath].WorldPosition - Position;
 
@@ -55,16 +49,18 @@ namespace VillagePeople.Entities
                 if (CloseEnough(Position, _path[_currentNodeInPath].WorldPosition, 10))
                     _currentNodeInPath++;
             }
+            else
+            {
+                var steering = SteeringBehaviour.CalculateWts(SteeringBehaviours, MaxSpeed);
+                steering /= Mass;
 
-            var steering = SteeringBehaviour.CalculateWts(SteeringBehaviours, MaxSpeed);
-            steering /= Mass;
+                var acceleration = steering;
+                acceleration *= 0.8f;
+                Velocity += acceleration;
 
-            var acceleration = steering;
-            acceleration *= 0.8f;
-            Velocity += acceleration;
-
-            Velocity *= 0.8f;
-            Position += Velocity;
+                Velocity *= 0.8f;
+                Position += Velocity;
+            }
         }
 
         /*
