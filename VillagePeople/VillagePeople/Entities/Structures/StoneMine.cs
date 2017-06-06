@@ -50,7 +50,7 @@ namespace VillagePeople.Entities.Structures
 
             g.DrawImage(img, new Rectangle((int) leftCorner, (int) rightCorner, (int) size, (int) size));
 
-            g.DrawString(Resource.Stone.ToString(), new Font("Arial", 9), new SolidBrush(Color.Black), Position.X + 10,
+            if (World.DebugText) g.DrawString(Resource.Stone.ToString(), new Font("Arial", 9), new SolidBrush(Color.Black), Position.X + 10,
                 Position.Y + 10);
         }
     }
