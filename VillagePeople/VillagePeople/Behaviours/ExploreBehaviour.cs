@@ -1,41 +1,37 @@
-﻿using VillagePeople.Entities;
+﻿using System;
+using System.Drawing;
+using VillagePeople.Entities;
 using VillagePeople.Util;
 
 namespace VillagePeople.Behaviours
 {
     internal class ExploreBehaviour : SteeringBehaviour
     {
-        private float _radius;
         private MovingEntity _self;
-        private bool _up;
+        private Vector2D Target { get; set; }
 
-        public ExploreBehaviour(MovingEntity m, float radius) : base(m)
+        public ExploreBehaviour(MovingEntity m) : base(m)
         {
             _self = m;
-            _radius = radius;
-            _up = true;
+            SetRandomTarget();
+        }
+
+        public void SetRandomTarget()
+        {
+            var random = new Random();
+            float x = random.Next(0, _self.World.Width);
+            float y = random.Next(0, _self.World.Height);
+            Target = new Vector2D(x, y).Truncate(_self.World.Width);
         }
 
         public override Vector2D Calculate()
         {
-            Vector2D calculated;
+            if(Vector2D.Distance(M.Position, Target) < 2) SetRandomTarget();
+            return new SeekBehaviour(_self, Target).Calculate();
+        }
 
-            if (_up && _self.Position.Y < _self.Position.Y + _radius)
-            {
-                calculated =
-                    new SeekBehaviour(_self, new Vector2D(_self.Position.X + _radius, _self.Position.Y + _radius))
-                        .Calculate();
-                _up = !(_self.Position.Y < _self.Position.Y - _radius);
-            }
-            else
-            {
-                calculated =
-                    new SeekBehaviour(_self, new Vector2D(_self.Position.X + _radius, _self.Position.Y - _radius))
-                        .Calculate();
-                _up = _self.Position.Y > _self.Position.Y + _radius;
-            }
-
-            return calculated;
+        public override void RenderSB(Graphics g) {
+            
         }
     }
 }

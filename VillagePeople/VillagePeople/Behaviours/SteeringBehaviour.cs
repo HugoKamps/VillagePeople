@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using VillagePeople.Entities;
 using VillagePeople.Util;
 
@@ -6,13 +8,15 @@ namespace VillagePeople.Behaviours
 {
     public abstract class SteeringBehaviour
     {
-        private const float DArrive = 0.7f;
-        private const float DSeek = 1.0f;
-        private const float DSeparation = 0.0f;
-        private const float DAlignment = 1.0f;
-        private const float DCohesion = 0.7f;
-        private const float DWander = 1.0f;
+        private const float DArrive = 1f;
+        private const float DSeek = 1f;
+        private const float DSeparation = 10f;
+        private const float DAlignment =  1.5f;
+        private const float DCohesion = 1f;
+        private const float DWander = 0.1f;
         private const float DExplore = 1.0f;
+        private const float DWallAvoidance = 30.0f;
+
 
         public SteeringBehaviour(MovingEntity m)
         {
@@ -21,6 +25,13 @@ namespace VillagePeople.Behaviours
 
         public MovingEntity M { get; set; }
         public abstract Vector2D Calculate();
+
+        public static Vector2D CalculateWeightedAverage(List<SteeringBehaviour> steeringBehaviours, float maxSpeed)
+        {
+            Vector2D accumulate = new Vector2D();
+
+            return steeringBehaviours.Aggregate(accumulate, (current, sb) => current + sb.Calculate());
+        }
 
         public static Vector2D CalculateWts(List<SteeringBehaviour> sb, float maxSpeed)
         {
@@ -47,22 +58,13 @@ namespace VillagePeople.Behaviours
 
                 if (behaviour.GetType() == typeof(ExploreBehaviour))
                     calculated += behaviour.Calculate() * DExplore;
+
+                if (behaviour.GetType() == typeof(WallAvoidance))
+                    calculated += behaviour.Calculate() * DWallAvoidance;
             }
             return calculated.Truncate(maxSpeed);
         }
 
-        public static void TagNeighbors(MovingEntity me, List<MovingEntity> entities, double radius)
-        {
-            foreach (var entity in entities)
-            {
-                entity.UnTag();
-
-                Vector2D to = entity.Position - me.Position;
-                double range = radius + entity.Radius;
-
-                if (entity != me && to.LengthSquared() < range * range)
-                    entity.Tag();
-            }
-        }
+        public abstract void RenderSB(Graphics g); 
     }
 }

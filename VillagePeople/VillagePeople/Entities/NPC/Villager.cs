@@ -5,8 +5,7 @@ using VillagePeople.Util;
 
 namespace VillagePeople.Entities.NPC
 {
-    public class Villager : MovingEntity
-    {
+    public class Villager : MovingEntity {
         public Villager(Vector2D position, World world) : base(position, world)
         {
             StateMachine = new StateMachine<MovingEntity>(this);

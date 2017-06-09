@@ -1,4 +1,5 @@
-﻿using VillagePeople.Entities;
+﻿using System.Drawing;
+using VillagePeople.Entities;
 using VillagePeople.Util;
 
 namespace VillagePeople.Behaviours
@@ -44,6 +45,10 @@ namespace VillagePeople.Behaviours
             }
 
             return new Vector2D(0, 0);
+        }
+
+        public override void RenderSB(Graphics g) {
+
         }
     }
 }

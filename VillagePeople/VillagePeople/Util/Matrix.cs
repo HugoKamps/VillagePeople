@@ -118,6 +118,14 @@ namespace VillagePeople.Util
         public static Vector2D operator *(Matrix m1, Vector2D v1) => ToVector2D(m1 * new Matrix(v1));
         public static Vector2D operator *(Vector2D v1, Matrix m1) => ToVector2D(m1 * new Matrix(v1));
 
+        public Vector2D TransformToVector2D(Vector2D v)
+        {
+            float tempX = M[0,1] * v.X + M[1,1] * v.Y + M[2,1];
+            float tempY = M[0,2] * v.X + M[1,2] * v.Y + M[2,2];
+
+            return new Vector2D(tempX, tempY);
+        }
+
         public override string ToString()
         {
             var s = "";

@@ -13,9 +13,9 @@ namespace VillagePeople.StateMachine.States
             me.SetNewTarget(_sheep.Position);
         }
 
-        public override void Execute(MovingEntity me)
-        {
-            me.SetNewTarget(_sheep.Position);
+        public override void Execute(MovingEntity me) {
+            me.TargetSheep = _sheep;
+            me.SetNewTarget(me.TargetSheep.Position);
 
             if (me.CloseEnough(me.Position, _sheep.Position) && _sheep != null)
                 if (me.Resource.TotalResources() < me.MaxInventorySpace && _sheep.Resource.Food > 0) _sheep.Gather(me);
