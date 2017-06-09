@@ -10,6 +10,7 @@ namespace VillagePeople.Util
         public const int NodeSize = 50;
         public List<Node> Nodes = new List<Node>();
         public List<Node> NonSmoothenedPath = new List<Node>();
+        public List<Node> ConsideredEdges = new List<Node>();
         public List<Node> Path = new List<Node>();
         public World W;
 
@@ -144,6 +145,7 @@ namespace VillagePeople.Util
                 n.RenderEdges(g);
             }
 
+            DrawPath(g, ConsideredEdges, Color.Purple);
             DrawPath(g, NonSmoothenedPath, Color.Blue);
             DrawPath(g, Path, Color.Red);
         }
