@@ -126,6 +126,7 @@ namespace VillagePeople {
                     SelectedEntityIndex = i;
                     Graph.Path = MovingEntities[i].EnterPossession(Graph, TargetLoc);
                     Graph.NonSmoothenedPath = MovingEntities[i].NonSmoothenedPath;
+                    Graph.ConsideredEdges = MovingEntities[i].ConsideredEdges;
                     return;
                 }
             if (SelectedEntityIndex != -1)
@@ -138,6 +139,7 @@ namespace VillagePeople {
             if (SelectedEntityIndex != -1) {
                 Graph.Path = MovingEntities[SelectedEntityIndex].UpdatePath(TargetLoc);
                 Graph.NonSmoothenedPath = MovingEntities[SelectedEntityIndex].NonSmoothenedPath;
+                Graph.ConsideredEdges = MovingEntities[SelectedEntityIndex].ConsideredEdges;
             }
         }
 
@@ -146,6 +148,7 @@ namespace VillagePeople {
                 if (timeElapsed % 20 == 0) {
                     Graph.Path = new List<Node>();
                     Graph.NonSmoothenedPath = new List<Node>();
+                    Graph.ConsideredEdges = new List<Node>();
                     UpdatePath();
                 }
 

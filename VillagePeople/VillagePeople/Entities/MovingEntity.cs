@@ -9,28 +9,25 @@ namespace VillagePeople.Entities
 {
     public abstract class MovingEntity : BaseGameEntity
     {
-        private int _currentNodeInPath = -1;
-        private List<Node> _path = new List<Node>();
         private Pathfinder _pathFinder;
         public Color Color;
         public Sheep TargetSheep;
-
+        private List<Node> _path = new List<Node>();
+        private int _currentNodeInPath = -1;
+        private bool _possessed;
         public List<Node> NonSmoothenedPath = new List<Node>();
-        public double Radius;
-
+        public List<Node> ConsideredEdges = new List<Node>();
+        public List<MovingEntity> Neighbours { get; set; }
+        public List<SteeringBehaviour> SteeringBehaviours { get; set; }
         public StateMachine<MovingEntity> StateMachine;
-        public double TargetSpeed;
-
         public Vector2D Velocity { get; set; }
         public Vector2D Acceleration { get; set; }
         public Vector2D Heading { get; set; }
-
-        public List<SteeringBehaviour> SteeringBehaviours { get; set; }
-
+        public double Radius;
+        public double TargetSpeed;
         public float Mass { get; set; }
         public float MaxSpeed { get; set; }
         public int MaxInventorySpace { get; set; }
-        public List<MovingEntity> Neighbours { get; set; }
 
         public MovingEntity(Vector2D position, World world) : base(position, world)
         {
@@ -44,10 +41,9 @@ namespace VillagePeople.Entities
             SteeringBehaviours = new List<SteeringBehaviour>();
         }
 
-        public override void Update(float timeElapsed) {
-            Neighbours = World.MovingEntities.FindAll(m => m.Tagged);
-
-            if (_path.Count > 0 && _currentNodeInPath != _path.Count && _currentNodeInPath != -1)
+        public override void Update(float timeElapsed)
+        {
+            if (_path.Count > 0 && _currentNodeInPath != _path.Count && _currentNodeInPath != -1 && _possessed)
             {
                 var diff = _path[_currentNodeInPath].WorldPosition - Position;
 
@@ -82,6 +78,7 @@ namespace VillagePeople.Entities
             _pathFinder.Target = target;
             _pathFinder.Update();
             NonSmoothenedPath = _pathFinder.Path;
+            ConsideredEdges = _pathFinder.ConsideredEdges;
             _pathFinder.PathSmoothing();
             _path = _pathFinder.Path;
             _currentNodeInPath = 0;

@@ -9,6 +9,7 @@ namespace VillagePeople.Util
         public Graph Grid;
         public List<Node> NodesWithSmoothEdges = new List<Node>();
         public List<Node> Path = new List<Node>();
+        public List<Node> ConsideredEdges = new List<Node>();
         public Vector2D Seeker, Target;
 
         public void Update()
@@ -24,7 +25,7 @@ namespace VillagePeople.Util
             Path = new List<Node>();
 
             var openSet = new List<KeyValuePair<string, Node>>();
-            var closedSet = new HashSet<Node>();
+            ConsideredEdges = new List<Node>();
 
             openSet.Add(new KeyValuePair<string, Node>(startNode.WorldPosition.ToString(), startNode));
 
@@ -37,7 +38,7 @@ namespace VillagePeople.Util
                         currentNode = openSet[i].Value;
 
                 openSet.Remove(openSet.First(item => item.Key.Equals(currentNode.WorldPosition.ToString())));
-                closedSet.Add(currentNode);
+                ConsideredEdges.Add(currentNode);
 
                 if (currentNode.WorldPosition == targetNode.WorldPosition)
                 {
@@ -51,7 +52,7 @@ namespace VillagePeople.Util
                     if (temp != currentNode)
                         neighbor = temp;
 
-                    if (closedSet.Contains(neighbor))
+                    if (ConsideredEdges.Contains(neighbor))
                         continue;
 
                     var newMovementCostToNeighbor = currentNode.GCost + GetDistance(currentNode, neighbor);
@@ -137,7 +138,7 @@ namespace VillagePeople.Util
         {
             var xSqr = Math.Pow(Math.Abs(nodeA.WorldPosition.X - nodeB.WorldPosition.X), 2);
             var ySqr = Math.Pow(Math.Abs(nodeA.WorldPosition.Y - nodeB.WorldPosition.Y), 2);
-            return (int) Math.Sqrt(xSqr + ySqr);
+            return (int)Math.Sqrt(xSqr + ySqr);
         }
     }
 }
