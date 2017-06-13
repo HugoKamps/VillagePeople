@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Timers;
 using System.Windows.Forms;
+using VillagePeople.Entities.NPC;
 using VillagePeople.Util;
 using Timer = System.Timers.Timer;
 
@@ -86,6 +87,11 @@ namespace VillagePeople
         private void cbDebugText_CheckedChanged(object sender, EventArgs e)
         {
             _world.DebugText = cbDebugText.Checked;
+        }
+
+        private void addSheepButton_Click(object sender, EventArgs e)
+        {
+            _world.MovingEntities.Add(new Sheep(new Vector2D(Width/2.0f, Height/2.0f), _world));
         }
     }
 

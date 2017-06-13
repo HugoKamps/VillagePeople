@@ -54,6 +54,7 @@
     <Compile Include="Behaviours\Flocking.cs" />
     <Compile Include="Behaviours\SeekBehaviour.cs" />
     <Compile Include="Behaviours\SteeringBehaviour.cs" />
+    <Compile Include="Behaviours\WallAvoidance.cs" />
     <Compile Include="Behaviours\WanderBehaviour.cs" />
     <Compile Include="Container.cs">
       <SubType>Form</SubType>
@@ -69,6 +70,7 @@
     <Compile Include="Entities\Structures\GoldMine.cs" />
     <Compile Include="Entities\Structures\StoneMine.cs" />
     <Compile Include="Entities\Structures\Tree.cs" />
+    <Compile Include="Entities\Structures\Wall.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StateMachine\State.cs" />
@@ -131,7 +133,6 @@
     <Content Include="Resources\Terrain\grass.png" />
     <Content Include="Resources\Terrain\road.png" />
     <Content Include="Resources\Terrain\town_hall.png" />
-    <Content Include="Resources\Terrain\water.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
