@@ -17,6 +17,8 @@ namespace VillagePeople.Entities.Structures
                 new Vector2D(position.X - Scale / 2 - 5, position.Y - Scale / 2 - 5), // Top Left
                 new Vector2D(position.X + Scale / 2 + 5, position.Y + Scale / 2 + 5) // Bottom Right
             };
+
+            ID = 1;
         }
 
         public void Gather(BaseGameEntity e)

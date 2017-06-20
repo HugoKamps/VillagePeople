@@ -125,25 +125,25 @@ namespace VillagePeople.Util
             me.Resource.Food = 0;
         }
 
-        public static bool IsResourceAvailable(MovingEntity me, int index)
+        public static bool IsResourceAvailable(World world, int index)
         {
             switch (index)
             {
                 case 0:
                     return
-                        me.World.StaticEntities.FindAll(m => m.GetType() == typeof(Tree))
+                        world.StaticEntities.FindAll(m => m.GetType() == typeof(Tree))
                             .Count(x => x.Resource.Wood > 0) > 0;
                 case 1:
                     return
-                        me.World.StaticEntities.FindAll(m => m.GetType() == typeof(StoneMine))
+                        world.StaticEntities.FindAll(m => m.GetType() == typeof(StoneMine))
                             .Count(x => x.Resource.Stone > 0) > 0;
                 case 2:
                     return
-                        me.World.StaticEntities.FindAll(m => m.GetType() == typeof(GoldMine))
+                        world.StaticEntities.FindAll(m => m.GetType() == typeof(GoldMine))
                             .Count(x => x.Resource.Gold > 0) > 0;
                 case 3:
                     return
-                        me.World.MovingEntities.FindAll(m => m.GetType() == typeof(Sheep))
+                        world.MovingEntities.FindAll(m => m.GetType() == typeof(Sheep))
                             .Count(x => x.Resource.Food > 0) > 0;
                 default:
                     return false;
@@ -178,6 +178,20 @@ namespace VillagePeople.Util
                 var s = (Sheep) me;
                 me.Resource.Food = s.BaseAmount;
             }
+        }
+
+        public static List<BaseGameEntity> ClosestResources(World world) {
+            var tree = world.StaticEntities.Find(m => m.GetType() == typeof(Tree));
+            var stone = world.StaticEntities.Find(m => m.GetType() == typeof(StoneMine));
+            var gold = world.StaticEntities.Find(m => m.GetType() == typeof(GoldMine));
+            var sheep = world.MovingEntities.Find(m => m.GetType() == typeof(Sheep));
+
+            var resources = new List<BaseGameEntity>();
+            if(IsResourceAvailable(world, 0)) resources.Add(tree);
+            if(IsResourceAvailable(world, 1)) resources.Add(stone);
+            if(IsResourceAvailable(world, 2)) resources.Add(gold);
+            if(IsResourceAvailable(world, 3)) resources.Add(sheep);
+            return resources;
         }
     }
 }

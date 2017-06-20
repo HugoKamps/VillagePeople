@@ -1,4 +1,5 @@
 ﻿using VillagePeople.Entities;
+using VillagePeople.Entities.NPC;
 using VillagePeople.Util;
 
 namespace VillagePeople.StateMachine.States
@@ -18,8 +19,10 @@ namespace VillagePeople.StateMachine.States
             {
                 Resource.DepositResources(me);
 
-                if (_index == -1) _index = Resource.GetLowestResource(me);
-                if (Resource.IsResourceAvailable(me, _index))
+                Villager v = (Villager) me;
+                _index =  v.GetNextResource();
+
+                if (Resource.IsResourceAvailable(me.World, _index))
                 {
                     switch (_index)
                     {

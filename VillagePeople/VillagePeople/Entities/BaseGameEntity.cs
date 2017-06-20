@@ -17,6 +17,7 @@ namespace VillagePeople.Entities
         public float Scale { get; set; }
         public World World { get; set; }
         public bool Tagged { get; set; }
+        public int ID { get; set; }
 
         public virtual Resource AddResource(Resource r)
         {

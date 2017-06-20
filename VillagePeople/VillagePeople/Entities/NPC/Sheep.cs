@@ -35,6 +35,8 @@ namespace VillagePeople.Entities.NPC {
             SteeringBehaviours.Add(separation);
             SteeringBehaviours.Add(alignment);
             //SteeringBehaviours.Add(flee);
+
+            ID = 3;
         }
 
         public override void Render(Graphics g) {
