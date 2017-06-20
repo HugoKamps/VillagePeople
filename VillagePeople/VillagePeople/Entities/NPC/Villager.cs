@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using SteeringCS.fuzzylogic;
 using VillagePeople.StateMachine;
 using VillagePeople.StateMachine.States;
 using VillagePeople.Util;
@@ -6,6 +7,8 @@ using VillagePeople.Util;
 namespace VillagePeople.Entities.NPC
 {
     public class Villager : MovingEntity {
+        FuzzyModule fm = new FuzzyModule();
+
         public Villager(Vector2D position, World world) : base(position, world)
         {
             StateMachine = new StateMachine<MovingEntity>(this);
