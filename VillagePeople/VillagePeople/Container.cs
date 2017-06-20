@@ -91,7 +91,7 @@ namespace VillagePeople
 
         private void addSheepButton_Click(object sender, EventArgs e)
         {
-            _world.MovingEntities.Add(new Sheep(new Vector2D(Width/2.0f, Height/2.0f), _world));
+            _world.MovingEntities.Add(new Sheep(new Vector2D(Width / 2.0f, Height / 2.0f), _world));
         }
     }
 

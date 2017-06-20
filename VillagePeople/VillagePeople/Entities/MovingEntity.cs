@@ -68,6 +68,7 @@ namespace VillagePeople.Entities
             _pathFinder = new Pathfinder();
             _pathFinder.Grid = g;
             UpdatePath(target);
+            _possessed = true;
 
             return _path;
         }
@@ -90,6 +91,7 @@ namespace VillagePeople.Entities
         {
             _pathFinder.NodesWithSmoothEdges.ForEach(n => n.SmoothEdges = new List<Edge>());
             _pathFinder = null;
+            _possessed = false;
             _currentNodeInPath = -1;
         }
 

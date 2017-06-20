@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms.VisualStyles;
+﻿using System.Drawing;
 using VillagePeople.Behaviours;
+using VillagePeople.StateMachine;
 using VillagePeople.StateMachine.States;
 using VillagePeople.Util;
 
@@ -18,6 +17,9 @@ namespace VillagePeople.Entities.NPC {
         private WallAvoidance _wallAvoidance;
 
         public Sheep(Vector2D position, World world) : base(position, world) {
+            StateMachine = new StateMachine<MovingEntity>(this);
+            StateMachine.ChangeState(new Wandering());
+
             BaseAmount = 50;
             Velocity = new Vector2D(1, 1);
             Acceleration = new Vector2D(1, 1);
@@ -62,8 +64,10 @@ namespace VillagePeople.Entities.NPC {
         }
 
         public override void Update(float timeElapsed) {
+            if (timeElapsed % 20 == 0) StateMachine.Update();
+
             if (World.MovingEntities.FindAll(m => m.GetType() == typeof(Villager) &&
-                                                  m.StateMachine.CurrentState.GetType() == typeof(HerdingSheep) &&
+                                                  /*m.StateMachine.CurrentState.GetType() == typeof(HerdingSheep) &&*/
                                                   Vector2D.Distance(Position, m.Position) < 10 && m.TargetSheep == this)
                     .Count > 0) {
                 Alive = false;
