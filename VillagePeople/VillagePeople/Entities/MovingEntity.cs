@@ -43,24 +43,23 @@ namespace VillagePeople.Entities
 
         public override void Update(float timeElapsed)
         {
-            if (_path.Count > 0 && _currentNodeInPath != _path.Count && _currentNodeInPath != -1 && _possessed)
-            {
+            if (_path.Count > 0 && _currentNodeInPath != _path.Count && _currentNodeInPath != -1 && _possessed) {
                 var diff = _path[_currentNodeInPath].WorldPosition - Position;
 
                 SetNewTarget(Position += diff.Scale(10f));
                 if (CloseEnough(Position, _path[_currentNodeInPath].WorldPosition, 10))
                     _currentNodeInPath++;
             }
-            
-            var steering = SteeringBehaviour.CalculateWeightedAverage(SteeringBehaviours, MaxSpeed);
+            else {
+                var steering = SteeringBehaviour.CalculateWeightedAverage(SteeringBehaviours, MaxSpeed);
+                Heading = Velocity.Normalize();
 
-            Heading = Velocity.Normalize();
+                steering = steering.Truncate(MaxSpeed);
 
-            steering = steering.Truncate(MaxSpeed);
-
-            var acceleration = steering / Mass;
-            Velocity = (Velocity + acceleration).Truncate(MaxSpeed);
-            Position += Velocity;
+                var acceleration = steering / Mass;
+                Velocity = (Velocity + acceleration).Truncate(MaxSpeed);
+                Position += Velocity;
+            }
         }
 
         public List<Node> EnterPossession(Graph g, Vector2D target)
@@ -68,6 +67,7 @@ namespace VillagePeople.Entities
             _pathFinder = new Pathfinder();
             _pathFinder.Grid = g;
             UpdatePath(target);
+            _possessed = true;
 
             return _path;
         }
@@ -91,6 +91,7 @@ namespace VillagePeople.Entities
             _pathFinder.NodesWithSmoothEdges.ForEach(n => n.SmoothEdges = new List<Edge>());
             _pathFinder = null;
             _currentNodeInPath = -1;
+            _possessed = false;
         }
 
         public void SetNewTarget(Vector2D to)

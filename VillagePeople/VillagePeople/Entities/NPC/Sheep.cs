@@ -11,11 +11,6 @@ namespace VillagePeople.Entities.NPC {
         public int BaseAmount;
         public Resource GatherRate;
 
-        private Alignment _alignment;
-        private Cohesion _cohesion;
-        private Separation _separation;
-        private WanderBehaviour _wanderBehaviour;
-        private WallAvoidance _wallAvoidance;
 
         public Sheep(Vector2D position, World world) : base(position, world) {
             BaseAmount = 50;
@@ -28,16 +23,18 @@ namespace VillagePeople.Entities.NPC {
             GatherRate = new Resource {Food = 4};
             Alive = true;
 
-            _alignment = new Alignment(this);
-            _cohesion = new Cohesion(this);
-            _separation = new Separation(this);
-            _wanderBehaviour = new WanderBehaviour(this);
-            _wallAvoidance = new WallAvoidance(this);
+            var alignment = new Alignment(this);
+            var cohesion = new Cohesion(this);
+            var separation = new Separation(this);
+            var wanderBehaviour = new WanderBehaviour(this);
+            var wallAvoidance = new WallAvoidance(this);
+            var flee = new FleeBehaviour(this);
 
-            SteeringBehaviours.Add(_wanderBehaviour);
-            SteeringBehaviours.Add(_wallAvoidance);
-            SteeringBehaviours.Add(_separation);
-            SteeringBehaviours.Add(_alignment);
+            SteeringBehaviours.Add(wanderBehaviour);
+            SteeringBehaviours.Add(wallAvoidance);
+            SteeringBehaviours.Add(separation);
+            SteeringBehaviours.Add(alignment);
+            //SteeringBehaviours.Add(flee);
         }
 
         public override void Render(Graphics g) {
