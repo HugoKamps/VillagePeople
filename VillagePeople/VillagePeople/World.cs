@@ -101,10 +101,10 @@ namespace VillagePeople {
                 MaxInventorySpace = 8
             };
 
-            v1.StateMachine = new StateMachine<MovingEntity>(v1) {CurrentState = new CuttingWood()};
-            v2.StateMachine = new StateMachine<MovingEntity>(v2) {CurrentState = new MiningStone()};
-            v3.StateMachine = new StateMachine<MovingEntity>(v3) {CurrentState = new MiningGold()};
-            v4.StateMachine = new StateMachine<MovingEntity>(v4) {CurrentState = new CuttingWood()};
+            v1.StateMachine = new StateMachine<MovingEntity>(v1) {CurrentState = new ReturningResources()};
+            v2.StateMachine = new StateMachine<MovingEntity>(v2) {CurrentState = new ReturningResources()};
+            v3.StateMachine = new StateMachine<MovingEntity>(v3) {CurrentState = new ReturningResources()};
+            v4.StateMachine = new StateMachine<MovingEntity>(v4) {CurrentState = new ReturningResources()};
 
             MovingEntities = new List<MovingEntity> {v1, v2, v3, v4};
         }
