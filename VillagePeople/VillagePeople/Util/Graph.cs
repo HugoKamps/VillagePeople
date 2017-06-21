@@ -30,7 +30,7 @@ namespace VillagePeople.Util
             => Nodes.Select(x => x).OrderBy(x => GetDistance(x.WorldPosition, worldPos)).First();
 
         // Pythagorean Theorem
-        private float GetDistance(float a, float b) => (int) Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
+        private float GetDistance(float a, float b) => (int)Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
 
         private float GetDistance(float oX, float oY, float tX, float tY)
             => GetDistance(Math.Abs(oX - tX), Math.Abs(oY - tY));
@@ -109,7 +109,7 @@ namespace VillagePeople.Util
                 return;
 
             if (GetNodeAtWorldPosition(nodes, worldPos) == null) // Node at world position does not yet exist 
-                nodes.Add(new Node {WorldPosition = worldPos});
+                nodes.Add(new Node { WorldPosition = worldPos });
         }
 
         public static List<Vector2D> GetNeighborWorldPositions(Node n)
@@ -176,17 +176,9 @@ namespace VillagePeople.Util
                 for (var k = 0; k <= n.SmoothEdges.Count - 1; k++)
                 {
                     var e = n.SmoothEdges[k];
-
-                    var pathContainsTarget =
-                        path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Target.WorldPosition));
-                    var pathContainsOrigin =
-                        path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Origin.WorldPosition));
-                    if (pathContainsOrigin && pathContainsTarget)
-                    {
-                        e.Color = c;
-                        e.Render(g);
-                        e.Color = Color.Gray;
-                    }
+                    e.Color = c;
+                    e.Render(g);
+                    e.Color = Color.Gray;
                 }
                 n.Color = Color.Gray;
             }
