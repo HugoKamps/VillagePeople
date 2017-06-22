@@ -4,70 +4,58 @@ using VillagePeople.Entities;
 using VillagePeople.Entities.NPC;
 using VillagePeople.Entities.Structures;
 
-namespace VillagePeople.Util
-{
-    public class Resource
-    {
+namespace VillagePeople.Util {
+    public class Resource {
         public int Food;
         public int Gold;
         public int Stone;
         public int Wood;
 
-        public int TotalResources()
-        {
+        public int TotalResources() {
             return Wood + Food + Gold + Stone;
         }
 
-        public Resource Cap(int cap)
-        {
+        public Resource Cap(int cap) {
             var w = 0;
             var f = 0;
             var g = 0;
             var s = 0;
 
             if (Wood > 0)
-                if (Wood > cap)
-                {
+                if (Wood > cap) {
                     w = cap;
                     Wood -= cap;
                     cap = 0;
                 }
-                else
-                {
+                else {
                     w += Wood;
                     Wood = 0;
                     cap -= Wood;
                 }
             if (Food > 0)
-                if (Food > cap)
-                {
+                if (Food > cap) {
                     f = cap;
                     cap = 0;
                 }
-                else
-                {
+                else {
                     f += Food;
                     cap -= Food;
                 }
             if (Gold > 0)
-                if (Gold > cap)
-                {
+                if (Gold > cap) {
                     g = cap;
                     cap = 0;
                 }
-                else
-                {
+                else {
                     g += Gold;
                     cap -= Gold;
                 }
             if (Stone > 0)
-                if (Stone > cap)
-                {
+                if (Stone > cap) {
                     s = cap;
                     cap = 0;
                 }
-                else
-                {
+                else {
                     s += Stone;
                     cap -= Stone;
                 }
@@ -75,10 +63,8 @@ namespace VillagePeople.Util
             return new Resource {Wood = w, Food = f, Gold = g, Stone = s};
         }
 
-        public static Resource operator +(Resource r1, Resource r2)
-        {
-            return new Resource
-            {
+        public static Resource operator +(Resource r1, Resource r2) {
+            return new Resource {
                 Wood = r1.Wood + r2.Wood,
                 Food = r1.Food + r2.Food,
                 Gold = r1.Gold + r2.Gold,
@@ -86,10 +72,8 @@ namespace VillagePeople.Util
             };
         }
 
-        public static Resource operator -(Resource r1, Resource r2)
-        {
-            return new Resource
-            {
+        public static Resource operator -(Resource r1, Resource r2) {
+            return new Resource {
                 Wood = r1.Wood - r2.Wood,
                 Food = r1.Food - r2.Food,
                 Gold = r1.Gold - r2.Gold,
@@ -97,10 +81,8 @@ namespace VillagePeople.Util
             };
         }
 
-        public static int GetLowestResource(MovingEntity me)
-        {
-            var resourceNumbers = new List<int>
-            {
+        public static int GetLowestResource(MovingEntity me) {
+            var resourceNumbers = new List<int> {
                 me.World.Resources.Wood,
                 me.World.Resources.Stone,
                 me.World.Resources.Gold,
@@ -110,8 +92,7 @@ namespace VillagePeople.Util
             return resourceNumbers.FindIndex(m => m == resourceNumbers.Min());
         }
 
-        public static void DepositResources(MovingEntity me)
-        {
+        public static void DepositResources(MovingEntity me) {
             me.World.Resources.Wood += me.Resource.Wood;
             me.Resource.Wood = 0;
 
@@ -125,10 +106,8 @@ namespace VillagePeople.Util
             me.Resource.Food = 0;
         }
 
-        public static bool IsResourceAvailable(World world, int index)
-        {
-            switch (index)
-            {
+        public static bool IsResourceAvailable(World world, int index) {
+            switch (index) {
                 case 0:
                     return
                         world.StaticEntities.FindAll(m => m.GetType() == typeof(Tree))
@@ -150,12 +129,12 @@ namespace VillagePeople.Util
             }
         }
 
-        public static bool NoResources(World world)
-        {
+        public static bool NoResources(World world) {
             var woodAvailable =
                 world.StaticEntities.FindAll(m => m.GetType() == typeof(Tree)).Count(x => x.Resource.Wood > 0) > 0;
             var stoneAvailable =
-                world.StaticEntities.FindAll(m => m.GetType() == typeof(StoneMine)).Count(x => x.Resource.Stone > 0) > 0;
+                world.StaticEntities.FindAll(m => m.GetType() == typeof(StoneMine)).Count(x => x.Resource.Stone > 0) >
+                0;
             var goldAvailable =
                 world.StaticEntities.FindAll(m => m.GetType() == typeof(GoldMine)).Count(x => x.Resource.Gold > 0) > 0;
             var foodAvailable =
@@ -164,17 +143,14 @@ namespace VillagePeople.Util
             return !(woodAvailable || stoneAvailable || goldAvailable || foodAvailable);
         }
 
-        public static void ResetResources(World world)
-        {
-            foreach (var se in world.StaticEntities)
-            {
+        public static void ResetResources(World world) {
+            foreach (var se in world.StaticEntities) {
                 if (se.GetType() == typeof(Tree)) se.Resource.Wood = se.BaseAmount;
                 if (se.GetType() == typeof(StoneMine)) se.Resource.Stone = se.BaseAmount;
                 if (se.GetType() == typeof(GoldMine)) se.Resource.Gold = se.BaseAmount;
             }
 
-            foreach (var me in world.MovingEntities.FindAll(me => me.GetType() == typeof(Sheep)))
-            {
+            foreach (var me in world.MovingEntities.FindAll(me => me.GetType() == typeof(Sheep))) {
                 var s = (Sheep) me;
                 me.Resource.Food = s.BaseAmount;
             }
@@ -187,10 +163,10 @@ namespace VillagePeople.Util
             var sheep = world.MovingEntities.Find(m => m.GetType() == typeof(Sheep));
 
             var resources = new List<BaseGameEntity>();
-            if(IsResourceAvailable(world, 0)) resources.Add(tree);
-            if(IsResourceAvailable(world, 1)) resources.Add(stone);
-            if(IsResourceAvailable(world, 2)) resources.Add(gold);
-            if(IsResourceAvailable(world, 3)) resources.Add(sheep);
+            if (IsResourceAvailable(world, 0)) resources.Add(tree);
+            if (IsResourceAvailable(world, 1)) resources.Add(stone);
+            if (IsResourceAvailable(world, 2)) resources.Add(gold);
+            if (IsResourceAvailable(world, 3)) resources.Add(sheep);
             return resources;
         }
     }

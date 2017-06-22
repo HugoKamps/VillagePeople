@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
-using SteeringCS.fuzzylogic;
 using VillagePeople.Entities.Structures;
+using VillagePeople.FL;
 using VillagePeople.StateMachine;
 using VillagePeople.StateMachine.States;
 using VillagePeople.Util;
@@ -66,7 +66,6 @@ namespace VillagePeople.Entities.NPC {
         }
 
         public override void Render(Graphics g) {
-
             var img = BitmapLoader.LoadBitmap(@"..\..\Resources\NPC\villager.png", GetType().ToString());
 
             double leftCorner = Position.X - Scale;
@@ -89,9 +88,8 @@ namespace VillagePeople.Entities.NPC {
             if (World.DebugText) g.DrawString(text, font, new SolidBrush(Color.Black), Position.X, Position.Y);
 
             if (_possessed)
-            {
-                g.DrawRectangle(new Pen(Brushes.Red, 1), new Rectangle((int)leftCorner + 4, (int)rightCorner, img.Width - 2, img.Height + 6));
-            }
+                g.DrawRectangle(new Pen(Brushes.Red, 1),
+                    new Rectangle((int) leftCorner + 4, (int) rightCorner, img.Width - 2, img.Height + 6));
         }
 
         public int GetNextResource() {

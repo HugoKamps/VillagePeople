@@ -6,10 +6,9 @@ using VillagePeople.Entities.Structures;
 using VillagePeople.Util;
 
 namespace VillagePeople.Behaviours {
-    class WallAvoidance : SteeringBehaviour {
-        private MovingEntity _self;
-
+    internal class WallAvoidance : SteeringBehaviour {
         private Vector2D[] _feelers;
+        private MovingEntity _self;
         private List<Wall> _walls;
 
         public WallAvoidance(MovingEntity m) : base(m) {
@@ -19,7 +18,7 @@ namespace VillagePeople.Behaviours {
         }
 
         public override Vector2D Calculate() {
-            CreateFeelers();
+            SetFeelers();
 
             const double distToThisIp = 0.0;
             var distToClosestIp = double.MaxValue;
@@ -54,7 +53,7 @@ namespace VillagePeople.Behaviours {
             return steeringForce;
         }
 
-        private void CreateFeelers() {
+        private void SetFeelers() {
             const float halfPi = (float) Math.PI / 2;
 
             _feelers[0] = _self.Position + 100 * _self.Heading;
@@ -70,9 +69,10 @@ namespace VillagePeople.Behaviours {
             if (_feelers == null || _feelers.Length <= 0)
                 return;
 
-            foreach (var feeler in _feelers)
-                if (feeler != null)
+            foreach (var feeler in _feelers) {
+                if (feeler == null) continue;
                     g.DrawLine(Pens.Purple, _self.Position.X, _self.Position.Y, feeler.X, feeler.Y);
+            }
         }
     }
 }

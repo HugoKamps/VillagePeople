@@ -1,27 +1,21 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using VillagePeople.Entities;
 using VillagePeople.Util;
 
-namespace VillagePeople.Behaviours
-{
-    internal class Alignment : SteeringBehaviour
-    {
-        public int AlignmentRadius = 100;
+namespace VillagePeople.Behaviours {
+    internal class Alignment : SteeringBehaviour {
         private MovingEntity _self;
+        public int AlignmentRadius = 100;
 
-        public Alignment(MovingEntity m) : base(m)
-        {
+        public Alignment(MovingEntity m) : base(m) {
             _self = m;
         }
 
-        public override Vector2D Calculate()
-        {
+        public override Vector2D Calculate() {
             var j = 0;
 
             var averageDirection = new Vector2D();
-            foreach (var sheep in _self.World.GetLivingSheep())
-            {
+            foreach (var sheep in _self.World.GetLivingSheep()) {
                 var distance = _self.Position - sheep.Position;
                 if (sheep == _self || !(distance.Length() < AlignmentRadius)) continue;
                 j++;
@@ -35,28 +29,22 @@ namespace VillagePeople.Behaviours
             return averageDirection - _self.Velocity;
         }
 
-        public override void RenderSB(Graphics g) {
-
-        }
+        public override void RenderSB(Graphics g) { }
     }
 
-    internal class Cohesion : SteeringBehaviour
-    {
-        public int CohesionRadius = 30;
+    internal class Cohesion : SteeringBehaviour {
         private MovingEntity _self;
+        public int CohesionRadius = 30;
 
-        public Cohesion(MovingEntity m) : base(m)
-        {
+        public Cohesion(MovingEntity m) : base(m) {
             _self = m;
         }
 
-        public override Vector2D Calculate()
-        {
+        public override Vector2D Calculate() {
             var j = 0;
 
             var averagePosition = new Vector2D();
-            foreach (var sheep in _self.World.GetLivingSheep())
-            {
+            foreach (var sheep in _self.World.GetLivingSheep()) {
                 var distance = _self.Position - sheep.Position;
                 if (sheep == _self || !(distance.Length() < CohesionRadius)) continue;
                 j++;
@@ -72,24 +60,19 @@ namespace VillagePeople.Behaviours
             return desired - _self.Velocity;
         }
 
-        public override void RenderSB(Graphics g) {
-
-        }
+        public override void RenderSB(Graphics g) { }
     }
 
 
-    internal class Separation : SteeringBehaviour
-    {
-        public int SeparationRadius = 30;
+    internal class Separation : SteeringBehaviour {
         private MovingEntity _self;
+        private int _separationRadius = 30;
 
-        public Separation(MovingEntity m) : base(m)
-        {
+        public Separation(MovingEntity m) : base(m) {
             _self = m;
         }
 
-        public override Vector2D Calculate()
-        {
+        public override Vector2D Calculate() {
             var j = 0;
 
             var separationForce = new Vector2D();
@@ -97,7 +80,7 @@ namespace VillagePeople.Behaviours
 
             foreach (var sheep in _self.World.GetLivingSheep()) {
                 var distance = _self.Position - sheep.Position;
-                if (sheep == _self || !(distance.Length() < SeparationRadius)) continue;
+                if (sheep == _self || !(distance.Length() < _separationRadius)) continue;
                 j++;
                 separationForce += _self.Position - sheep.Position;
                 separationForce = separationForce.Normalize();
@@ -108,8 +91,6 @@ namespace VillagePeople.Behaviours
             return j == 0 ? new Vector2D() : averageDirection;
         }
 
-        public override void RenderSB(Graphics g) {
-
-        }
+        public override void RenderSB(Graphics g) { }
     }
 }

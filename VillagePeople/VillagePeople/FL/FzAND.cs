@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace SteeringCS.fuzzylogic {
+namespace VillagePeople.FL {
     internal class FzAnd : IFuzzyTerm {
         private List<IFuzzyTerm> _terms;
 

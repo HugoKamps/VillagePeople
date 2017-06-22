@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SteeringCS.fuzzylogic {
+namespace VillagePeople.FL {
     internal class FuzzyVariable {
         private double _maxRange;
         private Dictionary<string, FuzzySet> _memberSets;

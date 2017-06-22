@@ -5,32 +5,21 @@ using VillagePeople.Entities.NPC;
 using VillagePeople.StateMachine;
 using VillagePeople.Util;
 
-namespace VillagePeople.Entities
-{
-    public abstract class MovingEntity : BaseGameEntity
-    {
-        private Pathfinder _pathFinder;
-        public Color Color;
-        public Sheep TargetSheep;
-        private List<Node> _path = new List<Node>();
+namespace VillagePeople.Entities {
+    public abstract class MovingEntity : BaseGameEntity {
         private int _currentNodeInPath = -1;
+        private List<Node> _path = new List<Node>();
+        private Pathfinder _pathFinder;
         protected bool _possessed;
-        public List<Node> NonSmoothenedPath = new List<Node>();
+        public Color Color;
         public List<Node> ConsideredEdges = new List<Node>();
-        public List<MovingEntity> Neighbours { get; set; }
-        public List<SteeringBehaviour> SteeringBehaviours { get; set; }
-        public StateMachine<MovingEntity> StateMachine;
-        public Vector2D Velocity { get; set; }
-        public Vector2D Acceleration { get; set; }
-        public Vector2D Heading { get; set; }
+        public List<Node> NonSmoothenedPath = new List<Node>();
         public double Radius;
+        public StateMachine<MovingEntity> StateMachine;
+        public Sheep TargetSheep;
         public double TargetSpeed;
-        public float Mass { get; set; }
-        public float MaxSpeed { get; set; }
-        public int MaxInventorySpace { get; set; }
 
-        public MovingEntity(Vector2D position, World world) : base(position, world)
-        {
+        public MovingEntity(Vector2D position, World world) : base(position, world) {
             Mass = 150;
             MaxSpeed = 900;
             Radius = 30;
@@ -41,8 +30,16 @@ namespace VillagePeople.Entities
             SteeringBehaviours = new List<SteeringBehaviour>();
         }
 
-        public override void Update(float timeElapsed)
-        {
+        public List<MovingEntity> Neighbours { get; set; }
+        public List<SteeringBehaviour> SteeringBehaviours { get; set; }
+        public Vector2D Velocity { get; set; }
+        public Vector2D Acceleration { get; set; }
+        public Vector2D Heading { get; set; }
+        public float Mass { get; set; }
+        public float MaxSpeed { get; set; }
+        public int MaxInventorySpace { get; set; }
+
+        public override void Update(float timeElapsed) {
             if (_path.Count > 0 && _currentNodeInPath != _path.Count && _currentNodeInPath != -1 && _possessed) {
                 var diff = _path[_currentNodeInPath].WorldPosition - Position;
 
@@ -62,8 +59,7 @@ namespace VillagePeople.Entities
             }
         }
 
-        public List<Node> EnterPossession(Graph g, Vector2D target)
-        {
+        public List<Node> EnterPossession(Graph g, Vector2D target) {
             _pathFinder = new Pathfinder();
             _pathFinder.Grid = g;
             UpdatePath(target);
@@ -72,8 +68,7 @@ namespace VillagePeople.Entities
             return _path;
         }
 
-        public List<Node> UpdatePath(Vector2D target)
-        {
+        public List<Node> UpdatePath(Vector2D target) {
             _pathFinder.Seeker = Position;
             _pathFinder.Target = target;
             _pathFinder.Update();
@@ -86,28 +81,26 @@ namespace VillagePeople.Entities
             return _path;
         }
 
-        public void ExitPossession()
-        {
+        public void ExitPossession() {
             _pathFinder.NodesWithSmoothEdges.ForEach(n => n.SmoothEdges = new List<Edge>());
             _pathFinder = null;
             _currentNodeInPath = -1;
             _possessed = false;
         }
 
-        public void SetNewTarget(Vector2D to)
-        {
-            SteeringBehaviours = new List<SteeringBehaviour>
-            {
+        public void SetNewTarget(Vector2D to) {
+            SteeringBehaviours = new List<SteeringBehaviour> {
                 new SeekBehaviour(this, to),
                 new Separation(this)
             };
         }
 
-        public void NextStep(float timeElapsed)
-        {
+        public void NextStep(float timeElapsed) {
             Update(timeElapsed);
         }
 
-        public override string ToString() => $"{Velocity}";
+        public override string ToString() {
+            return $"{Velocity}";
+        }
     }
 }

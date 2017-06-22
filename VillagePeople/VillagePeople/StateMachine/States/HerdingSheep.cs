@@ -1,14 +1,11 @@
 ﻿using VillagePeople.Entities;
 using VillagePeople.Entities.NPC;
 
-namespace VillagePeople.StateMachine.States
-{
-    internal class HerdingSheep : State<MovingEntity>
-    {
+namespace VillagePeople.StateMachine.States {
+    internal class HerdingSheep : State<MovingEntity> {
         private Sheep _sheep;
 
-        public override void Enter(MovingEntity me)
-        {
+        public override void Enter(MovingEntity me) {
             _sheep = (Sheep) me.World.MovingEntities.Find(m => m.GetType() == typeof(Sheep) && m.Resource.Food > 0);
             me.SetNewTarget(_sheep.Position);
         }
@@ -23,8 +20,6 @@ namespace VillagePeople.StateMachine.States
                     me.StateMachine.ChangeState(new ReturningResources());
         }
 
-        public override void Exit(MovingEntity me)
-        {
-        }
+        public override void Exit(MovingEntity me) { }
     }
 }
