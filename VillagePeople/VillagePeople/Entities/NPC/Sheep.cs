@@ -53,6 +53,10 @@ namespace VillagePeople.Entities.NPC {
 
             g.DrawString(Resource.Food.ToString(), new Font("Arial", 9), new SolidBrush(Color.Black), Position.X + 10,
                 Position.Y + 10);
+
+            if (_possessed)
+                g.DrawRectangle(new Pen(Brushes.Red, 1),
+                    new Rectangle((int)leftCorner, (int)rightCorner, img.Width + 5, img.Height + 6));
         }
 
         public override void Update(float timeElapsed) {
