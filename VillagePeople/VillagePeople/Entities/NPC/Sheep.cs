@@ -22,11 +22,9 @@ namespace VillagePeople.Entities.NPC {
             Alive = true;
 
             var alignment = new Alignment(this);
-            var cohesion = new Cohesion(this);
             var separation = new Separation(this);
             var wanderBehaviour = new WanderBehaviour(this);
             var wallAvoidance = new WallAvoidance(this);
-            var flee = new FleeBehaviour(this);
 
             SteeringBehaviours.Add(wanderBehaviour);
             SteeringBehaviours.Add(wallAvoidance);

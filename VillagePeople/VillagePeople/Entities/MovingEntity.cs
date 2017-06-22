@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Net;
 using VillagePeople.Behaviours;
 using VillagePeople.Entities.NPC;
 using VillagePeople.StateMachine;
+using VillagePeople.StateMachine.States;
 using VillagePeople.Util;
 
 namespace VillagePeople.Entities {
@@ -86,6 +88,7 @@ namespace VillagePeople.Entities {
             _pathFinder = null;
             _currentNodeInPath = -1;
             _possessed = false;
+            StateMachine.ChangeState(new ReturningResources());
         }
 
         public void SetNewTarget(Vector2D to) {

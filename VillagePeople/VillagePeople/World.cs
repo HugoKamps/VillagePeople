@@ -106,7 +106,10 @@ namespace VillagePeople {
             v3.StateMachine = new StateMachine<MovingEntity>(v3) {CurrentState = new ReturningResources()};
             v4.StateMachine = new StateMachine<MovingEntity>(v4) {CurrentState = new ReturningResources()};
 
-            MovingEntities = new List<MovingEntity> {v1, v2, v3, v4};
+            var s1 = new Sheep(new Vector2D(Width / 2.0f, Height / 2.0f), this);
+            var s2 = new Sheep(new Vector2D(Width / 2.0f, Height / 2.0f), this);
+
+            MovingEntities = new List<MovingEntity> {v1, v2, v3, v4, s1, s2};
         }
 
         public void SetWalls() {
@@ -120,7 +123,8 @@ namespace VillagePeople {
 
         public void TrySelectEntity(Vector2D v) {
             for (var i = 0; i < MovingEntities.Count; i++)
-                if (MovingEntities[i].CloseEnough(MovingEntities[i].Position, v, 20)) {
+                if (MovingEntities[i].GetType() != typeof(Sheep)) {
+                    if (!MovingEntities[i].CloseEnough(MovingEntities[i].Position, v, 20)) continue;
                     if (SelectedEntityIndex != -1)
                         MovingEntities[SelectedEntityIndex].ExitPossession();
                     SelectedEntityIndex = i;
@@ -176,7 +180,8 @@ namespace VillagePeople {
             if (DebugGraph)
                 Graph.Render(g);
 
-            for (var i = 0; i < MovingEntities.Count; i++) MovingEntities[i].Render(g);
+            foreach (var t in MovingEntities)
+                t.Render(g);
 
             foreach (var se in StaticEntities) se.Render(g);
             foreach (var w in Walls) w.Render(g);
