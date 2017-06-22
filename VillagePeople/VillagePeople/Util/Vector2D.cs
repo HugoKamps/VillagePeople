@@ -71,6 +71,9 @@ namespace VillagePeople.Util
         public float LengthSquared() => X * X + Y * Y;
         public Vector2D Clone() => new Vector2D(X, Y, W);
 
+        public static bool operator ==(Vector2D v1, Vector2D v2) => (v1.X == v2.X && v1.Y == v2.Y);
+        public static bool operator !=(Vector2D v1, Vector2D v2) => (v1.X != v2.X || v1.Y != v2.Y);
+
         public static Vector2D operator +(Vector2D v1, Vector2D v2) => new Vector2D(v1.X + v2.X, v1.Y + v2.Y);
         public static Vector2D operator -(Vector2D v1, Vector2D v2) => new Vector2D(v1.X - v2.X, v1.Y - v2.Y);
         public static Vector2D operator *(Vector2D v1, Vector2D v2) => new Vector2D(v1.X * v2.X, v1.Y * v2.Y);

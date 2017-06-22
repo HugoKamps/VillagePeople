@@ -45,12 +45,6 @@ namespace VillagePeople.Util
                 e.Render(g);
                 e.Color = Color.Gray;
             }
-
-            foreach (var e in SmoothEdges)
-            {
-                e.Render(g);
-                e.Color = Color.Gray;
-            }
         }
 
         public void Connect(Node n1, int cost = 1)

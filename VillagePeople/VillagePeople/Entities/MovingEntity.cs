@@ -14,7 +14,7 @@ namespace VillagePeople.Entities
         public Sheep TargetSheep;
         private List<Node> _path = new List<Node>();
         private int _currentNodeInPath = -1;
-        private bool _possessed;
+        protected bool _possessed;
         public List<Node> NonSmoothenedPath = new List<Node>();
         public List<Node> ConsideredEdges = new List<Node>();
         public List<MovingEntity> Neighbours { get; set; }

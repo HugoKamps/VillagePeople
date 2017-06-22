@@ -30,7 +30,7 @@ namespace VillagePeople.Util
             => Nodes.Select(x => x).OrderBy(x => GetDistance(x.WorldPosition, worldPos)).First();
 
         // Pythagorean Theorem
-        private float GetDistance(float a, float b) => (int) Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
+        private float GetDistance(float a, float b) => (int)Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
 
         private float GetDistance(float oX, float oY, float tX, float tY)
             => GetDistance(Math.Abs(oX - tX), Math.Abs(oY - tY));
@@ -109,7 +109,7 @@ namespace VillagePeople.Util
                 return;
 
             if (GetNodeAtWorldPosition(nodes, worldPos) == null) // Node at world position does not yet exist 
-                nodes.Add(new Node {WorldPosition = worldPos});
+                nodes.Add(new Node { WorldPosition = worldPos });
         }
 
         public static List<Vector2D> GetNeighborWorldPositions(Node n)
@@ -147,47 +147,47 @@ namespace VillagePeople.Util
 
             DrawPath(g, ConsideredEdges, Color.Purple);
             DrawPath(g, NonSmoothenedPath, Color.Blue);
-            DrawPath(g, Path, Color.Red);
+            DrawSmoothPath(g);
+        }
+
+        private void DrawSmoothPath(Graphics g)
+        {
+            foreach (var n in Path)
+            {
+                for (var k = 0; k <= n.SmoothEdges.Count - 1; k++)
+                {
+                    var e = n.SmoothEdges[k];
+                    e.Color = Color.Red;
+                    e.Render(g);
+                    e.Color = Color.Gray;
+                }
+
+                n.Color = Color.Red;
+                n.Render(g);
+                n.Color = Color.Gray;
+            }
         }
 
         private void DrawPath(Graphics g, List<Node> path, Color c)
         {
-            for (var i = 0; i <= path.Count - 1; i++)
+            foreach (var n in path)
             {
-                var n = path[i];
+                foreach(var e in n.Edges)
+                {
+                    var pathContainsTarget =
+                        path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Target.WorldPosition));
+                    var pathContainsOrigin =
+                        path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Origin.WorldPosition));
+                    if (pathContainsOrigin && pathContainsTarget)
+                    {
+                        e.Color = c;
+                        e.Render(g);
+                        e.Color = Color.Gray;
+                    }
+                }
+
                 n.Color = c;
                 n.Render(g);
-                for (var k = 0; k <= n.Edges.Count - 1; k++)
-                {
-                    var e = n.Edges[k];
-
-                    var pathContainsTarget =
-                        path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Target.WorldPosition));
-                    var pathContainsOrigin =
-                        path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Origin.WorldPosition));
-                    if (pathContainsOrigin && pathContainsTarget)
-                    {
-                        e.Color = c;
-                        e.Render(g);
-                        e.Color = Color.Gray;
-                    }
-                }
-
-                for (var k = 0; k <= n.SmoothEdges.Count - 1; k++)
-                {
-                    var e = n.SmoothEdges[k];
-
-                    var pathContainsTarget =
-                        path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Target.WorldPosition));
-                    var pathContainsOrigin =
-                        path.Contains(path.FirstOrDefault(l => l.WorldPosition == e.Origin.WorldPosition));
-                    if (pathContainsOrigin && pathContainsTarget)
-                    {
-                        e.Color = c;
-                        e.Render(g);
-                        e.Color = Color.Gray;
-                    }
-                }
                 n.Color = Color.Gray;
             }
         }
