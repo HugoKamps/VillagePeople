@@ -1,8 +1,8 @@
-﻿namespace SteeringCS.fuzzylogic {
+﻿namespace VillagePeople.FL {
     internal class FuzzyRule {
         private IFuzzyTerm _antecedent;
         private IFuzzyTerm _consequence;
-        
+
         public FuzzyRule(IFuzzyTerm ant, IFuzzyTerm con) {
             _antecedent = ant;
             _consequence = con;
