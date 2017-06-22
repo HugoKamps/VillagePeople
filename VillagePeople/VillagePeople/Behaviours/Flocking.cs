@@ -80,7 +80,7 @@ namespace VillagePeople.Behaviours
 
     internal class Separation : SteeringBehaviour
     {
-        public int SeparationRadius = 30;
+        private int _separationRadius = 30;
         private MovingEntity _self;
 
         public Separation(MovingEntity m) : base(m)
@@ -97,7 +97,7 @@ namespace VillagePeople.Behaviours
 
             foreach (var sheep in _self.World.GetLivingSheep()) {
                 var distance = _self.Position - sheep.Position;
-                if (sheep == _self || !(distance.Length() < SeparationRadius)) continue;
+                if (sheep == _self || !(distance.Length() < _separationRadius)) continue;
                 j++;
                 separationForce += _self.Position - sheep.Position;
                 separationForce = separationForce.Normalize();

@@ -19,7 +19,7 @@ namespace VillagePeople.Behaviours {
         }
 
         public override Vector2D Calculate() {
-            CreateFeelers();
+            SetFeelers();
 
             const double distToThisIp = 0.0;
             var distToClosestIp = double.MaxValue;
@@ -54,7 +54,7 @@ namespace VillagePeople.Behaviours {
             return steeringForce;
         }
 
-        private void CreateFeelers() {
+        private void SetFeelers() {
             const float halfPi = (float) Math.PI / 2;
 
             _feelers[0] = _self.Position + 100 * _self.Heading;
