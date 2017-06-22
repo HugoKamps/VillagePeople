@@ -66,6 +66,7 @@ namespace VillagePeople.Entities.NPC {
         }
 
         public override void Render(Graphics g) {
+
             var img = BitmapLoader.LoadBitmap(@"..\..\Resources\NPC\villager.png", GetType().ToString());
 
             double leftCorner = Position.X - Scale;
@@ -86,6 +87,11 @@ namespace VillagePeople.Entities.NPC {
 
             g.DrawImage(img, new Rectangle((int) leftCorner, (int) rightCorner, (int) size, (int) size));
             if (World.DebugText) g.DrawString(text, font, new SolidBrush(Color.Black), Position.X, Position.Y);
+
+            if (_possessed)
+            {
+                g.DrawRectangle(new Pen(Brushes.Red, 1), new Rectangle((int)leftCorner + 4, (int)rightCorner, img.Width - 2, img.Height + 6));
+            }
         }
 
         public int GetNextResource() {

@@ -177,10 +177,6 @@ namespace VillagePeople {
                 Graph.Render(g);
 
             for (var i = 0; i < MovingEntities.Count; i++) {
-                MovingEntities[i].Color = Color.CadetBlue;
-                if (i == SelectedEntityIndex)
-                    MovingEntities[i].Color = Color.Cyan;
-
                 MovingEntities[i].Render(g);
             }
 
