@@ -51,7 +51,7 @@ namespace VillagePeople {
             TargetLoc = new Vector2D();
             GameTerrain.GenerateMap(Terrains);
             SetWalls();
-            var t1 = new Tree(new Vector2D(25, 20), this);
+            var t1 = new Tree(new Vector2D(175, 25), this);
             var t2 = new Tree(new Vector2D(75, 25), this);
             var t3 = new Tree(new Vector2D(125, 25), this);
             var t4 = new Tree(new Vector2D(50, 75), this);
@@ -177,10 +177,6 @@ namespace VillagePeople {
                 Graph.Render(g);
 
             for (var i = 0; i < MovingEntities.Count; i++) {
-                MovingEntities[i].Color = Color.CadetBlue;
-                if (i == SelectedEntityIndex)
-                    MovingEntities[i].Color = Color.Cyan;
-
                 MovingEntities[i].Render(g);
             }
 
