@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms.VisualStyles;
+﻿using System.Drawing;
 using VillagePeople.Behaviours;
 using VillagePeople.StateMachine.States;
 using VillagePeople.Util;
@@ -51,9 +49,7 @@ namespace VillagePeople.Entities.NPC {
             g.DrawImage(img, new Rectangle((int) leftCorner, (int) rightCorner, (int) size, (int) size));
 
             if (World.DebugText && Alive)
-                foreach (var sb in SteeringBehaviours) {
-                    sb.RenderSB(g);
-                }
+                foreach (var sb in SteeringBehaviours) sb.RenderSB(g);
 
             g.DrawString(Resource.Food.ToString(), new Font("Arial", 9), new SolidBrush(Color.Black), Position.X + 10,
                 Position.Y + 10);
@@ -63,9 +59,7 @@ namespace VillagePeople.Entities.NPC {
             if (World.MovingEntities.FindAll(m => m.GetType() == typeof(Villager) &&
                                                   m.StateMachine.CurrentState.GetType() == typeof(HerdingSheep) &&
                                                   Vector2D.Distance(Position, m.Position) < 10 && m.TargetSheep == this)
-                    .Count > 0) {
-                Alive = false;
-            }
+                    .Count > 0) Alive = false;
 
             if (Position.X < 0 || Position.X > World.Width || Position.Y < 0 || Position.Y > World.Width)
                 World.MovingEntities.Remove(this);

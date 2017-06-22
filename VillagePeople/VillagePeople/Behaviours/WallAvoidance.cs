@@ -6,10 +6,9 @@ using VillagePeople.Entities.Structures;
 using VillagePeople.Util;
 
 namespace VillagePeople.Behaviours {
-    class WallAvoidance : SteeringBehaviour {
-        private MovingEntity _self;
-
+    internal class WallAvoidance : SteeringBehaviour {
         private Vector2D[] _feelers;
+        private MovingEntity _self;
         private List<Wall> _walls;
 
         public WallAvoidance(MovingEntity m) : base(m) {
@@ -70,9 +69,10 @@ namespace VillagePeople.Behaviours {
             if (_feelers == null || _feelers.Length <= 0)
                 return;
 
-            foreach (var feeler in _feelers)
-                if (feeler != null)
+            foreach (var feeler in _feelers) {
+                if (feeler == null) continue;
                     g.DrawLine(Pens.Purple, _self.Position.X, _self.Position.Y, feeler.X, feeler.Y);
+            }
         }
     }
 }

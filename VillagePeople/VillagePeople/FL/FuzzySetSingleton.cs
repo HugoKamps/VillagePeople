@@ -1,4 +1,4 @@
-﻿namespace SteeringCS.fuzzylogic {
+﻿namespace VillagePeople.FL {
     internal class FuzzySetSingleton : FuzzySet {
         private double _leftOffset;
         private double _midPoint;

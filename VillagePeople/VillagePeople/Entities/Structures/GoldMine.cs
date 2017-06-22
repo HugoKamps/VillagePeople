@@ -2,18 +2,14 @@
 using System.Drawing;
 using VillagePeople.Util;
 
-namespace VillagePeople.Entities.Structures
-{
-    internal class GoldMine : StaticEntity
-    {
-        public GoldMine(Vector2D position, World world) : base(position, world)
-        {
+namespace VillagePeople.Entities.Structures {
+    internal class GoldMine : StaticEntity {
+        public GoldMine(Vector2D position, World world) : base(position, world) {
             BaseAmount = 75;
             Resource.Gold = BaseAmount;
             Scale = 20;
             GatherRate = new Resource {Gold = 2};
-            UnwalkableSpace = new List<Vector2D>
-            {
+            UnwalkableSpace = new List<Vector2D> {
                 new Vector2D(position.X - Scale / 2 - 5, position.Y - Scale / 2 - 5), // Top Left
                 new Vector2D(position.X + Scale / 2 + 5, position.Y + Scale / 2 + 5) // Bottom Right
             };
@@ -21,24 +17,21 @@ namespace VillagePeople.Entities.Structures
             ID = 2;
         }
 
-        public void Gather(BaseGameEntity e)
-        {
+        public void Gather(BaseGameEntity e) {
             if (Resource.Gold > GatherRate.Gold)
                 Resource += e.AddResource(GatherRate);
             else
                 Resource += e.AddResource(Resource);
         }
 
-        public override void Update(float delta)
-        {
+        public override void Update(float delta) {
             //if (Resource.Gold == 0)
             //    Walkable = false;
             //else
             //    Resource -= GatherRate;
         }
 
-        public override void Render(Graphics g)
-        {
+        public override void Render(Graphics g) {
             Image img;
 
             double size = Scale * 2;
@@ -52,8 +45,10 @@ namespace VillagePeople.Entities.Structures
 
             g.DrawImage(img, new Rectangle((int) leftCorner, (int) rightCorner, (int) size, (int) size));
 
-            if (World.DebugText) g.DrawString(Resource.Gold.ToString(), new Font("Arial", 9), new SolidBrush(Color.Black), Position.X + 10,
-                Position.Y + 10);
+            if (World.DebugText)
+                g.DrawString(Resource.Gold.ToString(), new Font("Arial", 9), new SolidBrush(Color.Black),
+                    Position.X + 10,
+                    Position.Y + 10);
         }
     }
 }

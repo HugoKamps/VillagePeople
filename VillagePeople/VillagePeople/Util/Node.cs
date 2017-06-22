@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace VillagePeople.Util
-{
-    public class Node
-    {
+namespace VillagePeople.Util {
+    public class Node {
         public Color Color = Color.Gray;
         public List<Edge> Edges;
 
@@ -16,8 +14,7 @@ namespace VillagePeople.Util
         public List<Edge> SmoothEdges;
         public Vector2D WorldPosition;
 
-        public Node(int size = 10)
-        {
+        public Node(int size = 10) {
             Size = size;
             Edges = new List<Edge>();
             SmoothEdges = new List<Edge>();
@@ -25,12 +22,9 @@ namespace VillagePeople.Util
         }
 
         public int FCost // Actual cost
-        {
-            get { return GCost + HCost; }
-        }
+            => GCost + HCost;
 
-        public void Render(Graphics g)
-        {
+        public void Render(Graphics g) {
             var leftCorner = WorldPosition.X - (float) Size / 2;
             var rightCorner = WorldPosition.Y - (float) Size / 2;
 
@@ -38,24 +32,20 @@ namespace VillagePeople.Util
             g.DrawEllipse(p, new Rectangle((int) leftCorner, (int) rightCorner, Size, Size));
         }
 
-        public void RenderEdges(Graphics g)
-        {
-            foreach (var e in Edges)
-            {
+        public void RenderEdges(Graphics g) {
+            foreach (var e in Edges) {
                 e.Render(g);
                 e.Color = Color.Gray;
             }
         }
 
-        public void Connect(Node n1, int cost = 1)
-        {
+        public void Connect(Node n1, int cost = 1) {
             var edge = new Edge {Origin = this, Target = n1, Cost = cost};
             Edges.Add(edge);
             n1.Edges.Add(edge);
         }
 
-        public bool IsConnected(Node n1)
-        {
+        public bool IsConnected(Node n1) {
             if (n1 == null) return true;
 
             foreach (var edge in Edges)
@@ -69,13 +59,11 @@ namespace VillagePeople.Util
             return false;
         }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return "(" + WorldPosition.X + ", " + WorldPosition.Y + ")";
         }
 
-        internal void ConnectSmoothEdge(Node n1, int cost = 1)
-        {
+        internal void ConnectSmoothEdge(Node n1, int cost = 1) {
             var edge = new Edge {Origin = this, Target = n1, Cost = cost};
             SmoothEdges.Add(edge);
             n1.SmoothEdges.Add(edge);

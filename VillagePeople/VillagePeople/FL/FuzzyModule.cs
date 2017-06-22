@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SteeringCS.fuzzylogic {
+namespace VillagePeople.FL {
     internal class FuzzyModule {
         private List<FuzzyRule> _rules;
 

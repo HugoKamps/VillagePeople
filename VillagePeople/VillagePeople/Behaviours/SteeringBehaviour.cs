@@ -14,7 +14,7 @@ namespace VillagePeople.Behaviours {
         public abstract Vector2D Calculate();
 
         public static Vector2D CalculateWeightedAverage(List<SteeringBehaviour> steeringBehaviours, float maxSpeed) {
-            Vector2D accumulate = new Vector2D();
+            var accumulate = new Vector2D();
 
             return steeringBehaviours.Aggregate(accumulate, (current, sb) => current + sb.Calculate());
         }

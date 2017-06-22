@@ -3,17 +3,17 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 
-namespace VillagePeople.Util
-{
-    public class BitmapLoader
-    {
+namespace VillagePeople.Util {
+    public class BitmapLoader {
         private static BitmapLoader _instance;
 
         private List<KeyValuePair<string, Image>> _bitmaps = new List<KeyValuePair<string, Image>>();
-        public static BitmapLoader GetInstance() => _instance ?? (_instance = new BitmapLoader());
 
-        public static Image LoadBitmap(string filename, string key)
-        {
+        public static BitmapLoader GetInstance() {
+            return _instance ?? (_instance = new BitmapLoader());
+        }
+
+        public static Image LoadBitmap(string filename, string key) {
             var instance = GetInstance();
 
             var temp = instance._bitmaps.FirstOrDefault(i => i.Key == key);

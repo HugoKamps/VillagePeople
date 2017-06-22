@@ -20,14 +20,14 @@ namespace VillagePeople {
         public Graph Graph;
 
         public List<MovingEntity> MovingEntities;
-        public List<StaticEntity> StaticEntities;
-        public List<Wall> Walls;
 
         public int SelectedEntityIndex = -1;
+        public List<StaticEntity> StaticEntities;
 
         public List<Villager> Target = new List<Villager>();
         public Vector2D TargetLoc;
         public List<GameTerrain> Terrains = new List<GameTerrain>();
+        public List<Wall> Walls;
 
         public World(int width, int height, Container container) {
             Width = width;
@@ -176,9 +176,7 @@ namespace VillagePeople {
             if (DebugGraph)
                 Graph.Render(g);
 
-            for (var i = 0; i < MovingEntities.Count; i++) {
-                MovingEntities[i].Render(g);
-            }
+            for (var i = 0; i < MovingEntities.Count; i++) MovingEntities[i].Render(g);
 
             foreach (var se in StaticEntities) se.Render(g);
             foreach (var w in Walls) w.Render(g);
@@ -194,6 +192,11 @@ namespace VillagePeople {
             }
         }
 
-        public List<Sheep> GetLivingSheep() => MovingEntities.FindAll(me => me.GetType() == typeof(Sheep)).Cast<Sheep>().ToList().FindAll(s => s.Alive);
+        public List<Sheep> GetLivingSheep() {
+            return MovingEntities.FindAll(me => me.GetType() == typeof(Sheep))
+                .Cast<Sheep>()
+                .ToList()
+                .FindAll(s => s.Alive);
+        }
     }
 }

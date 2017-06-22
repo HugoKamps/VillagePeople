@@ -1,4 +1,4 @@
-﻿namespace SteeringCS.fuzzylogic {
+﻿namespace VillagePeople.FL {
     internal class FzVery : IFuzzyTerm {
         private FuzzySet _set;
 

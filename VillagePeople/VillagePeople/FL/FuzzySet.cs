@@ -1,4 +1,4 @@
-﻿namespace SteeringCS.fuzzylogic {
+﻿namespace VillagePeople.FL {
     internal abstract class FuzzySet {
         protected double MDDom;
         protected double MDRepresentativeValue;

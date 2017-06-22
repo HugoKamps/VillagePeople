@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SteeringCS.fuzzylogic {
+namespace VillagePeople.FL {
     internal class FzFairly : IFuzzyTerm {
         private FuzzySet _set;
 

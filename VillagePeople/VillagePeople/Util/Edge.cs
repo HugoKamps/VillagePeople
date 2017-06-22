@@ -1,16 +1,13 @@
 ﻿using System.Drawing;
 
-namespace VillagePeople.Util
-{
-    public class Edge
-    {
+namespace VillagePeople.Util {
+    public class Edge {
         public Color Color = Color.Gray;
         public int Cost;
         public Node Origin;
         public Node Target;
 
-        public void Render(Graphics g)
-        {
+        public void Render(Graphics g) {
             var p = new Pen(Color, 2);
             g.DrawLine(
                 p,
@@ -21,8 +18,7 @@ namespace VillagePeople.Util
             );
         }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return "f:" + Origin + " - t:" + Target + " c:" + Cost;
         }
     }
